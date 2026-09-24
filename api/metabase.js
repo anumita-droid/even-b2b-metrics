@@ -16,6 +16,43 @@ const GIDS = {
   internalisation: 336064406,
 };
 
+async function getPublishedCSV(baseUrl, gid) {
+  const urls = gid
+    ? [
+        baseUrl + '?gid=' + gid + '&single=true&output=csv',
+        baseUrl + '?output=csv&gid=' + gid
+      ]
+    : [
+        baseUrl + '?single=true&output=csv',
+        baseUrl + '?output=csv'
+      ];
+
+  let lastError = null;
+  for (const url of urls) {
+    try {
+      const r = await fetch(url, { cache: 'no-store' });
+      const body = await r.text();
+
+      if (!r.ok) {
+        lastError = new Error('Google returned HTTP ' + r.status);
+        continue;
+      }
+
+      const looksHtml = /<html|<head|sign in|google sheets access/i.test(body.slice(0, 2000));
+      if (looksHtml) {
+        lastError = new Error('Google returned HTML instead of CSV');
+        continue;
+      }
+
+      return body;
+    } catch (e) {
+      lastError = e;
+    }
+  }
+
+  throw lastError || new Error('Could not fetch published Google Sheet');
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -24,35 +61,25 @@ export default async function handler(req, res) {
 
   const { tab, master } = req.query;
 
-  // Published Master List
   if (master === '1') {
     try {
-      const r = await fetch(
-        `${MASTER_PUBLISHED_URL}?output=csv`
-      );
-      const text = await r.text();
-
+      const body = await getPublishedCSV(MASTER_PUBLISHED_URL);
       res.setHeader('Cache-Control', 'no-store');
-      res.setHeader('Content-Type', 'text/plain');
-      return res.status(200).send(text);
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      return res.status(200).send(body);
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return res.status(502).json({ error: e.message });
     }
   }
 
-  // Published Google Sheet tab
   if (tab && Object.prototype.hasOwnProperty.call(GIDS, tab)) {
     try {
-      const r = await fetch(
-        `${PUBLISHED_URL}?output=csv&gid=${GIDS[tab]}`
-      );
-      const text = await r.text();
-
-      res.setHeader('Cache-Control', 's-maxage=7200, stale-while-revalidate=86400');
-      res.setHeader('Content-Type', 'text/plain');
-      return res.status(200).send(text);
+      const body = await getPublishedCSV(PUBLISHED_URL, GIDS[tab]);
+      res.setHeader('Cache-Control', 'no-store');
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      return res.status(200).send(body);
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return res.status(502).json({ error: e.message });
     }
   }
 
