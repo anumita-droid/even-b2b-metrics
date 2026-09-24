@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       );
       const text = await r.text();
 
-      res.setHeader('Cache-Control', 's-maxage=7200, stale-while-revalidate=86400');
+      res.setHeader('Cache-Control', 'no-store');
       res.setHeader('Content-Type', 'text/plain');
       return res.status(200).send(text);
     } catch (e) {
