@@ -74,8 +74,8 @@ function parsePublishedHTML(html) {
 async function getPublishedCSV(baseUrl, gid) {
   const urls = gid
     ? [
-        baseUrl.replace(/\\/pub$/, '/pubhtml/sheet') + '?gid=' + gid + '&headers=false',
-        baseUrl.replace(/\\/pub$/, '/pubhtml') + '?gid=' + gid + '&single=true&headers=false'
+        baseUrl.replace('/pub', '/pubhtml') + '?gid=' + gid + '&headers=false',
+        baseUrl.replace('/pub', '/pubhtml') + '?gid=' + gid + '&single=true&headers=false'
       ]
     : [
         baseUrl.replace(/\\/pub$/, '/pubhtml/sheet') + '?headers=false',
