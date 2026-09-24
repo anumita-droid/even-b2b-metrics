@@ -72,40 +72,23 @@ function parsePublishedHTML(html) {
 }
 
 async function getPublishedCSV(baseUrl, gid) {
-  const urls = gid
-    ? [
-        baseUrl.replace('/pub', '/pubhtml') + '?gid=' + gid + '&headers=false',
-        baseUrl.replace('/pub', '/pubhtml') + '?gid=' + gid + '&single=true&headers=false'
-      ]
-    : [
-        baseUrl.replace(/\\/pub$/, '/pubhtml/sheet') + '?headers=false',
-        baseUrl.replace(/\\/pub$/, '/pubhtml') + '?single=true&headers=false'
-      ];
+  const publishedHtmlUrl = baseUrl.replace('/pub', '/pubhtml');
+  const url = gid
+    ? publishedHtmlUrl + '?gid=' + gid + '&single=true&widget=false&headers=false'
+    : publishedHtmlUrl + '?single=true&widget=false&headers=false';
 
-  let lastError = null;
-  for (const url of urls) {
-    try {
-      const r = await fetch(url, { cache: 'no-store' });
-      const body = await r.text();
+  const r = await fetch(url, { cache: 'no-store' });
+  const body = await r.text();
 
-      if (!r.ok) {
-        lastError = new Error('Google returned HTTP ' + r.status);
-        continue;
-      }
-
-      const looksHtmlError = /sign in|google sheets access|can.t access your google account/i.test(body.slice(0, 5000));
-      if (looksHtmlError) {
-        lastError = new Error('Google returned an authentication page');
-        continue;
-      }
-
-      return parsePublishedHTML(body);
-    } catch (e) {
-      lastError = e;
-    }
+  if (!r.ok) {
+    throw new Error('Google returned HTTP ' + r.status);
   }
 
-  throw lastError || new Error('Could not fetch published Google Sheet');
+  if (/sign in|google sheets access|can.t access your google account/i.test(body.slice(0, 5000))) {
+    throw new Error('Google returned an authentication page');
+  }
+
+  return parsePublishedHTML(body);
 }
 
 export default async function handler(req, res) {
