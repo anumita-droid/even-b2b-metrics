@@ -203,11 +203,10 @@ tbody td:first-child{text-align:left;font-family:var(--sans);font-weight:500;col
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
-const VERCEL = 'https://even-b2b-metrics.vercel.app';
+const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/even.in/s/AKfycbxpfINsXrWgntDEf_09Vvz0_jv4Yj3FuiobVSSZ4-rcC8ofUM5P9n6DhaHrdsnD-_jh/exec';
 
-const DATA_VERSION = '20260924-1';
-const sheetUrl = (tab) => `${VERCEL}/api/metabase?tab=${tab}&v=${DATA_VERSION}`;
-const masterUrl = () => `${VERCEL}/api/metabase?master=1&v=${DATA_VERSION}`;
+const sheetUrl = (tab) => `${APPS_SCRIPT_URL}?tab=${encodeURIComponent(tab)}`;
+const masterUrl = () => `${APPS_SCRIPT_URL}?master=1`;
 
 const MONTHS = ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026','Jul 2026','Aug 2026','Sep 2026'];
 const QUARTERS = ["Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
