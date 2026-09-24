@@ -1654,8 +1654,18 @@ function parseMasterList(rows) {
     // ─────────────────────────────────────────
     // EARNED PREMIUM
     //
-    // Based on actual Start Date -> End Date.
-    // Premium is prorated by active days.
+    // Earned Premium is historical and is based
+    // ONLY on the policy's actual Start Date and
+    // End Date. It is independent of GWP / Renewal
+    // Month / Quarter.
+    //
+    // For each period:
+    //   premium × active days in period / total
+    //   policy days
+    //
+    // Dates are inclusive. For example:
+    //   Syrma: 28-Jan-2026 to 27-Jan-2027
+    //   Jan 2026 earned = ₹404,600 × 4 / 365.
     // ─────────────────────────────────────────
 
     const startD = parseDate(
@@ -1670,8 +1680,9 @@ function parseMasterList(rows) {
     );
 
 
-    // Cannot calculate earned premium
-    // without valid policy dates.
+    // A policy cannot contribute to Earned
+    // Premium unless both historical policy
+    // dates are valid.
     if (
       !startD ||
       !endD ||
@@ -1703,10 +1714,9 @@ function parseMasterList(rows) {
       ipGST / totalDays;
 
 
-    // ─────────────────────────────────────────
-    // MONTHLY EARNED PREMIUM
-    // ─────────────────────────────────────────
-
+    // Historical monthly earning:
+    // include every qualifying policy that was
+    // active for at least one day in the month.
     Object.entries(monthRanges).forEach(
       ([month, [monthStart, monthEnd]]) => {
 
@@ -1736,10 +1746,8 @@ function parseMasterList(rows) {
     );
 
 
-    // ─────────────────────────────────────────
-    // QUARTERLY EARNED PREMIUM
-    // ─────────────────────────────────────────
-
+    // Historical quarterly earning follows the
+    // same Start Date / End Date day-proration.
     Object.entries(quarterRanges).forEach(
       ([quarter, [quarterStart, quarterEnd]]) => {
 
@@ -1779,7 +1787,7 @@ function parseMasterList(rows) {
 
     gwpM,
 
-    gwpInclM:gwpmFallback(gwpIM),
+    gwpInclM:gwpIM,
 
     gwpQ,
 
@@ -1796,12 +1804,6 @@ function parseMasterList(rows) {
   });
 }
 
-
-// Small helper to ensure the GST GWP object
-// is always returned correctly.
-function gwpmFallback(obj) {
-  return obj || {};
-}
 
 
 // ══════════════════════════════════════════════
