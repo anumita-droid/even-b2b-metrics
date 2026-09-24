@@ -444,8 +444,13 @@ tbody td:first-child {
 
     <div class="controls-right">
       <div class="toggle-group">
-        <button class="toggle-btn active" onclick="setSummaryView('monthly',this)">Monthly</button>
-        <button class="toggle-btn" onclick="setSummaryView('quarterly',this)">Quarterly</button>
+        <button class="toggle-btn active" onclick="setSummaryView('monthly',this)">
+          Monthly
+        </button>
+
+        <button class="toggle-btn" onclick="setSummaryView('quarterly',this)">
+          Quarterly
+        </button>
       </div>
     </div>
   </div>
@@ -453,13 +458,27 @@ tbody td:first-child {
   <div class="params">
     <div class="param-item">
       <span class="param-label">Network Commission %</span>
-      <input class="param-input" id="networkPct" value="12.5" type="number" step="0.1" onchange="renderAll()">
+      <input
+        class="param-input"
+        id="networkPct"
+        value="12.5"
+        type="number"
+        step="0.1"
+        onchange="renderAll()"
+      >
       <span class="param-label">%</span>
     </div>
 
     <div class="param-item">
       <span class="param-label">IPD Revenue Split</span>
-      <input class="param-input" id="ipdSplit" value="50" type="number" step="1" onchange="renderAll()">
+      <input
+        class="param-input"
+        id="ipdSplit"
+        value="50"
+        type="number"
+        step="1"
+        onchange="renderAll()"
+      >
       <span class="param-label">%</span>
     </div>
   </div>
@@ -510,6 +529,7 @@ tbody td:first-child {
 
 </div>
 
+
 <!-- LOSS RATIOS -->
 <div class="tab-content" id="tab-lossratios">
 
@@ -518,8 +538,13 @@ tbody td:first-child {
 
     <div class="controls-right">
       <div class="toggle-group">
-        <button class="toggle-btn active" onclick="setLRView('monthly',this)">Monthly</button>
-        <button class="toggle-btn" onclick="setLRView('quarterly',this)">Quarterly</button>
+        <button class="toggle-btn active" onclick="setLRView('monthly',this)">
+          Monthly
+        </button>
+
+        <button class="toggle-btn" onclick="setLRView('quarterly',this)">
+          Quarterly
+        </button>
       </div>
     </div>
   </div>
@@ -527,8 +552,20 @@ tbody td:first-child {
   <div class="params">
     <div class="param-item">
       <span class="param-label">ME + Brokerage Factor</span>
-      <input class="param-input" id="meFactor" value="0.94" type="number" step="0.01" onchange="renderAll()">
-      <span class="param-label" style="font-size:10px;color:var(--text3)">
+
+      <input
+        class="param-input"
+        id="meFactor"
+        value="0.94"
+        type="number"
+        step="0.01"
+        onchange="renderAll()"
+      >
+
+      <span
+        class="param-label"
+        style="font-size:10px;color:var(--text3)"
+      >
         (Earned Prem incl GST × factor)
       </span>
     </div>
@@ -553,6 +590,7 @@ tbody td:first-child {
             <th>UW Profit</th>
           </tr>
         </thead>
+
         <tbody id="body-lr-monthly"></tbody>
       </table>
     </div>
@@ -577,12 +615,14 @@ tbody td:first-child {
             <th>UW Profit</th>
           </tr>
         </thead>
+
         <tbody id="body-lr-quarterly"></tbody>
       </table>
     </div>
   </div>
 
 </div>
+
 
 <!-- OPERATIONAL METRICS -->
 <div class="tab-content" id="tab-claims">
@@ -609,12 +649,15 @@ tbody td:first-child {
           <th>Cost / Chat</th>
         </tr>
       </thead>
+
       <tbody id="body-postsales"></tbody>
     </table>
   </div>
 
   <div class="section-divider">
-    <div class="section-divider-title">Claims Team — Cashless + Reimbursements</div>
+    <div class="section-divider-title">
+      Claims Team — Cashless + Reimbursements
+    </div>
     <div class="section-divider-line"></div>
   </div>
 
@@ -630,17 +673,32 @@ tbody td:first-child {
           <th>Cost / Claim</th>
         </tr>
       </thead>
+
       <tbody id="body-claims-combined"></tbody>
     </table>
   </div>
 
   <div class="section-divider">
-    <div class="section-divider-title">Claims Team — Reimbursements</div>
+    <div class="section-divider-title">
+      Claims Team — Reimbursements
+    </div>
+
     <div class="section-divider-line"></div>
 
     <div class="toggle-group">
-      <button class="toggle-btn active" onclick="setRIView('incl',this)">Incl. Tally</button>
-      <button class="toggle-btn" onclick="setRIView('excl',this)">Excl. Tally</button>
+      <button
+        class="toggle-btn active"
+        onclick="setRIView('incl',this)"
+      >
+        Incl. Tally
+      </button>
+
+      <button
+        class="toggle-btn"
+        onclick="setRIView('excl',this)"
+      >
+        Excl. Tally
+      </button>
     </div>
   </div>
 
@@ -662,12 +720,16 @@ tbody td:first-child {
           <th>Rejected # %</th>
         </tr>
       </thead>
+
       <tbody id="body-ri"></tbody>
     </table>
   </div>
 
   <div class="section-divider">
-    <div class="section-divider-title">Claims Team — Cashless</div>
+    <div class="section-divider-title">
+      Claims Team — Cashless
+    </div>
+
     <div class="section-divider-line"></div>
   </div>
 
@@ -681,11 +743,13 @@ tbody td:first-child {
           <th>Approved ₹</th>
         </tr>
       </thead>
+
       <tbody id="body-cashless"></tbody>
     </table>
   </div>
 
 </div>
+
 
 <!-- INTERNALISATION -->
 <div class="tab-content" id="tab-internalisation">
@@ -713,6 +777,7 @@ tbody td:first-child {
           <th>Non EHRC OPD Amount</th>
         </tr>
       </thead>
+
       <tbody id="body-internalisation"></tbody>
     </table>
   </div>
@@ -720,6 +785,7 @@ tbody td:first-child {
 </div>
 
 </div>
+
 
 <script>
 
@@ -758,6 +824,7 @@ const QUARTERS = [
   "Q3'26"
 ];
 
+
 // ══════════════════════════════════════════════
 // DATA STORE
 // ══════════════════════════════════════════════
@@ -791,6 +858,7 @@ const D = {
 
   internalisation:[]
 };
+
 
 // ══════════════════════════════════════════════
 // MANUAL STATE
@@ -961,19 +1029,20 @@ const M = {
   }
 };
 
-let summaryView='monthly';
-let lrView='monthly';
-let riView='incl';
+let summaryView = 'monthly';
+let lrView = 'monthly';
+let riView = 'incl';
+
 
 // ══════════════════════════════════════════════
 // UTILS
 // ══════════════════════════════════════════════
 
-const fmt = (n,dec=0) => {
+const fmt = (n, dec = 0) => {
   if (!n && n !== 0) return '—';
   if (n === 0) return '—';
 
-  return '₹' + Number(n).toLocaleString('en-IN',{
+  return '₹' + Number(n).toLocaleString('en-IN', {
     maximumFractionDigits:dec
   });
 };
@@ -984,8 +1053,10 @@ const fmtN = (n) => {
   return Number(n).toLocaleString('en-IN');
 };
 
-const fmtP = (n,dec=2) => {
-  if (n === null || n === undefined || isNaN(n)) return '—';
+const fmtP = (n, dec = 2) => {
+  if (n === null || n === undefined || isNaN(n)) {
+    return '—';
+  }
 
   return Number(n).toFixed(dec) + '%';
 };
@@ -995,8 +1066,9 @@ const pC = (n) =>
   n < 0 ? 'neg' :
   '';
 
-const v = (obj,k) =>
+const v = (obj, k) =>
   obj?.[k] ?? 0;
+
 
 function toMonthKey(dateStr) {
 
@@ -1008,10 +1080,9 @@ function toMonthKey(dateStr) {
 
   if (isNaN(d)) return null;
 
-  return `${d.toLocaleString('en-US',{
-    month:'short'
-  })} ${d.getFullYear()}`;
+  return `${d.toLocaleString('en-US',{month:'short'})} ${d.getFullYear()}`;
 }
+
 
 function toQuarterKey(dateStr) {
 
@@ -1024,10 +1095,11 @@ function toQuarterKey(dateStr) {
   if (isNaN(d)) return null;
 
   const y = d.getFullYear();
-  const q = Math.floor(d.getMonth()/3)+1;
+  const q = Math.floor(d.getMonth() / 3) + 1;
 
   return `Q${q}'${String(y).slice(2)}`;
 }
+
 
 // ══════════════════════════════════════════════
 // CSV PARSER
@@ -1035,49 +1107,89 @@ function toQuarterKey(dateStr) {
 
 function parseCSV(text) {
 
-  const lines = text.trim().split('\n');
+  const cleanText = String(text || '').trim();
+
+  if (!cleanText) return [];
+
+  const lines = cleanText.split(/\r?\n/);
 
   if (lines.length < 2) return [];
 
-  const headers = lines[0]
-    .split(',')
-    .map(h =>
-      h.replace(/^"|"$/g,'').trim()
-    );
+  const parseCSVLine = (line) => {
+
+    const values = [];
+    let current = '';
+    let insideQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+
+      const char = line[i];
+
+      if (char === '"') {
+
+        if (insideQuotes && line[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          insideQuotes = !insideQuotes;
+        }
+
+      } else if (char === ',' && !insideQuotes) {
+
+        values.push(current);
+        current = '';
+
+      } else {
+
+        current += char;
+      }
+    }
+
+    values.push(current);
+
+    return values;
+  };
+
+
+  const headers = parseCSVLine(lines[0]).map(h =>
+    String(h || '').trim()
+  );
+
 
   return lines
     .slice(1)
     .map(line => {
 
-      const vals =
-        line.match(
-          /(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g
-        ) || [];
-
+      const vals = parseCSVLine(line);
       const row = {};
 
-      headers.forEach((h,i) => {
+      headers.forEach((h, i) => {
 
-        let value =
-          (vals[i] || '')
-            .replace(/^"|"$/g,'')
-            .trim();
+        let value = vals[i] ?? '';
 
-        row[h] =
-          isNaN(value) || value === ''
-            ? value
-            : Number(value);
+        value = String(value)
+          .replace(/^"|"$/g,'')
+          .trim();
+
+        if (value === '') {
+          row[h] = '';
+        } else if (!isNaN(value)) {
+          row[h] = Number(value);
+        } else {
+          row[h] = value;
+        }
       });
 
       return row;
 
     })
-    .filter(r =>
-      Object.values(r).some(
-        v => v !== '' && v !== null
+    .filter(row =>
+      Object.values(row).some(
+        value => value !== '' && value !== null && value !== undefined
       )
     );
 }
+
 
 // ══════════════════════════════════════════════
 // FETCH CSV FROM APPS SCRIPT
@@ -1085,7 +1197,7 @@ function parseCSV(text) {
 
 function fetchCSV(url) {
 
-  return new Promise((resolve,reject) => {
+  return new Promise((resolve, reject) => {
 
     const callback =
       '__appsScriptCb_' +
@@ -1093,23 +1205,24 @@ function fetchCSV(url) {
       '_' +
       Math.random().toString(36).slice(2);
 
-    const script =
-      document.createElement('script');
+    const script = document.createElement('script');
 
     const cleanup = () => {
       delete window[callback];
       script.remove();
     };
 
-    const timer =
-      setTimeout(() => {
-        cleanup();
-        reject(
-          new Error(
-            'Timed out loading Apps Script'
-          )
-        );
-      },30000);
+
+    const timer = setTimeout(() => {
+
+      cleanup();
+
+      reject(
+        new Error('Timed out loading Apps Script')
+      );
+
+    }, 30000);
+
 
     window[callback] = (payload) => {
 
@@ -1117,25 +1230,27 @@ function fetchCSV(url) {
       cleanup();
 
       if (payload && payload.error) {
+
         reject(
           new Error(payload.error)
         );
+
         return;
       }
+
 
       try {
 
         resolve(
-          parseCSV(
-            String(payload || '')
-          )
+          parseCSV(String(payload || ''))
         );
 
-      } catch(e) {
+      } catch (e) {
 
         reject(e);
       }
     };
+
 
     script.onerror = () => {
 
@@ -1143,11 +1258,10 @@ function fetchCSV(url) {
       cleanup();
 
       reject(
-        new Error(
-          'Apps Script request failed'
-        )
+        new Error('Apps Script request failed')
       );
     };
+
 
     script.src =
       url +
@@ -1156,8 +1270,10 @@ function fetchCSV(url) {
       encodeURIComponent(callback);
 
     document.head.appendChild(script);
+
   });
 }
+
 
 // ══════════════════════════════════════════════
 // PARSE MASTER LIST
@@ -1166,16 +1282,11 @@ function fetchCSV(url) {
 
 function parseMasterList(rows) {
 
-  /*
-    Policy types included in the dashboard.
-
-    "Even HCU small product" contains "hcu",
-    so it will also be included.
-  */
   const OPD = [
     'even opd',
     'hcu'
   ];
+
 
   const gwpM = {};
   const gwpIM = {};
@@ -1187,103 +1298,108 @@ function parseMasterList(rows) {
   const epExclQ = {};
   const epInclQ = {};
 
-  // ════════════════════════════════════════════
+
+  // ────────────────────────────────────────────
   // MONTH RANGES
-  // ════════════════════════════════════════════
+  // ────────────────────────────────────────────
 
   const monthRanges = {
 
-    'Jan 2026':[
+    'Jan 2026': [
       new Date(2026,0,1),
       new Date(2026,0,31)
     ],
 
-    'Feb 2026':[
+    'Feb 2026': [
       new Date(2026,1,1),
       new Date(2026,1,28)
     ],
 
-    'Mar 2026':[
+    'Mar 2026': [
       new Date(2026,2,1),
       new Date(2026,2,31)
     ],
 
-    'Apr 2026':[
+    'Apr 2026': [
       new Date(2026,3,1),
       new Date(2026,3,30)
     ],
 
-    'May 2026':[
+    'May 2026': [
       new Date(2026,4,1),
       new Date(2026,4,31)
     ],
 
-    'Jun 2026':[
+    'Jun 2026': [
       new Date(2026,5,1),
       new Date(2026,5,30)
     ],
 
-    'Jul 2026':[
+    'Jul 2026': [
       new Date(2026,6,1),
       new Date(2026,6,31)
     ],
 
-    'Aug 2026':[
+    'Aug 2026': [
       new Date(2026,7,1),
       new Date(2026,7,31)
     ],
 
-    'Sep 2026':[
+    'Sep 2026': [
       new Date(2026,8,1),
       new Date(2026,8,30)
     ]
+
   };
 
-  // ════════════════════════════════════════════
+
+  // ────────────────────────────────────────────
   // QUARTER RANGES
-  // ════════════════════════════════════════════
+  // ────────────────────────────────────────────
 
   const quarterRanges = {
 
-    "Q1'25":[
+    "Q1'25": [
       new Date(2025,0,1),
       new Date(2025,2,31)
     ],
 
-    "Q2'25":[
+    "Q2'25": [
       new Date(2025,3,1),
       new Date(2025,5,30)
     ],
 
-    "Q3'25":[
+    "Q3'25": [
       new Date(2025,6,1),
       new Date(2025,8,30)
     ],
 
-    "Q4'25":[
+    "Q4'25": [
       new Date(2025,9,1),
       new Date(2025,11,31)
     ],
 
-    "Q1'26":[
+    "Q1'26": [
       new Date(2026,0,1),
       new Date(2026,2,31)
     ],
 
-    "Q2'26":[
+    "Q2'26": [
       new Date(2026,3,1),
       new Date(2026,5,30)
     ],
 
-    "Q3'26":[
+    "Q3'26": [
       new Date(2026,6,1),
       new Date(2026,8,30)
     ]
+
   };
 
-  // ════════════════════════════════════════════
-  // DATE HELPERS
-  // ════════════════════════════════════════════
+
+  // ────────────────────────────────────────────
+  // HELPERS
+  // ────────────────────────────────────────────
 
   const daysOverlap = (
     policyStart,
@@ -1292,27 +1408,25 @@ function parseMasterList(rows) {
     periodEnd
   ) => {
 
-    const overlapStart =
-      Math.max(
-        policyStart.getTime(),
-        periodStart.getTime()
-      );
+    const overlapStart = Math.max(
+      policyStart.getTime(),
+      periodStart.getTime()
+    );
 
-    const overlapEnd =
-      Math.min(
-        policyEnd.getTime(),
-        periodEnd.getTime()
-      );
+    const overlapEnd = Math.min(
+      policyEnd.getTime(),
+      periodEnd.getTime()
+    );
 
     if (overlapEnd < overlapStart) {
       return 0;
     }
 
     return Math.floor(
-      (overlapEnd - overlapStart) /
-      86400000
+      (overlapEnd - overlapStart) / 86400000
     ) + 1;
   };
+
 
   const parseAmt = (value) => {
 
@@ -1323,12 +1437,11 @@ function parseMasterList(rows) {
       return 0;
     }
 
-    const cleaned =
-      String(value)
-        .replace(/₹/g,'')
-        .replace(/,/g,'')
-        .replace(/\s/g,'')
-        .trim();
+    const cleaned = String(value)
+      .replace(/₹/g,'')
+      .replace(/,/g,'')
+      .replace(/\s/g,'')
+      .trim();
 
     if (
       !cleaned ||
@@ -1342,12 +1455,12 @@ function parseMasterList(rows) {
     return isNaN(n) ? 0 : n;
   };
 
+
   const parseDate = (value) => {
 
     if (!value) return null;
 
-    const s =
-      String(value).trim();
+    const s = String(value).trim();
 
     if (
       !s ||
@@ -1356,31 +1469,27 @@ function parseMasterList(rows) {
       return null;
     }
 
-    // Explicitly handle DD/MM/YYYY
-    const match =
-      s.match(
-        /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
-      );
+
+    // DD/MM/YYYY
+    const match = s.match(
+      /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+    );
+
 
     if (match) {
 
-      const day =
-        Number(match[1]);
+      const day = Number(match[1]);
+      const month = Number(match[2]) - 1;
+      const year = Number(match[3]);
 
-      const month =
-        Number(match[2]) - 1;
+      const d = new Date(
+        year,
+        month,
+        day
+      );
 
-      const year =
-        Number(match[3]);
 
-      const d =
-        new Date(
-          year,
-          month,
-          day
-        );
-
-      // Validate the date
+      // Validate date
       if (
         d.getFullYear() !== year ||
         d.getMonth() !== month ||
@@ -1392,9 +1501,9 @@ function parseMasterList(rows) {
       return d;
     }
 
+
     // Fallback
-    const d =
-      new Date(s);
+    const d = new Date(s);
 
     if (isNaN(d.getTime())) {
       return null;
@@ -1403,25 +1512,23 @@ function parseMasterList(rows) {
     return d;
   };
 
-  // ════════════════════════════════════════════
-  // PROCESS EACH MASTER LIST ROW
-  // ════════════════════════════════════════════
+
+  // ────────────────────────────────────────────
+  // PROCESS MASTER LIST
+  // ────────────────────────────────────────────
 
   rows.forEach(row => {
 
-    // ──────────────────────────────────────────
-    // POLICY TYPE
-    // ──────────────────────────────────────────
-
-    const pType =
-      String(
-        row['Policy type'] ||
-        row['policy type'] ||
-        ''
-      )
+    const pType = String(
+      row['Policy type'] ||
+      row['policy type'] ||
+      ''
+    )
       .trim()
       .toLowerCase();
 
+
+    // Only Even OPD / HCU policies
     if (
       !OPD.some(
         type => pType.includes(type)
@@ -1430,73 +1537,65 @@ function parseMasterList(rows) {
       return;
     }
 
-    // ──────────────────────────────────────────
+
+    // ─────────────────────────────────────────
     // PREMIUM
-    // ──────────────────────────────────────────
+    // ─────────────────────────────────────────
 
-    const ip =
-      parseAmt(
-        row['Inception Premium'] ||
-        row['inception premium']
-      );
+    const ip = parseAmt(
+      row['Inception Premium'] ||
+      row['inception premium']
+    );
 
-    const ipGST =
-      parseAmt(
-        row['Inception Premium (inc GST)'] ||
-        row['inception premium (inc gst)']
-      );
 
-    /*
-      If both premiums are missing / zero,
-      there is nothing to add.
-    */
+    const ipGST = parseAmt(
+      row['Inception Premium (inc GST)'] ||
+      row['inception premium (inc gst)']
+    );
+
+
+    // Nothing to add if both premiums are missing
     if (!ip && !ipGST) {
       return;
     }
 
-    // ──────────────────────────────────────────
-    // RENEWAL MONTH + QUARTER
-    // ──────────────────────────────────────────
 
-    const renewalMonth =
-      String(
-        row['Renewal Month'] ||
-        row['renewal month'] ||
-        ''
-      ).trim();
-
-    const q =
-      String(
-        row['Quarter'] ||
-        row['quarter'] ||
-        ''
-      ).trim();
-
-    // ══════════════════════════════════════════
-    // GWP MONTHLY
+    // ─────────────────────────────────────────
+    // GWP
     //
-    // Renewal Month is one year after the GWP
-    // month.
+    // Renewal Month is one year AFTER
+    // the GWP month.
     //
-    // Example:
-    // Jan-2027 renewal → Jan 2026 GWP
-    // Feb-2027 renewal → Feb 2026 GWP
-    // ══════════════════════════════════════════
+    // Jan-2027 renewal
+    //        ↓
+    // Jan-2026 GWP
+    // ─────────────────────────────────────────
+
+    const renewalMonth = String(
+      row['Renewal Month'] ||
+      row['renewal month'] ||
+      ''
+    ).trim();
+
+
+    const q = String(
+      row['Quarter'] ||
+      row['quarter'] ||
+      ''
+    ).trim();
+
 
     if (renewalMonth) {
 
-      const match =
-        renewalMonth.match(
-          /^([A-Za-z]{3})-(\d{4})$/
-        );
+      const match = renewalMonth.match(
+        /^([A-Za-z]{3})-(\d{4})$/
+      );
+
 
       if (match) {
 
-        const monthName =
-          match[1];
-
-        const renewalYear =
-          Number(match[2]);
+        const monthName = match[1];
+        const renewalYear = Number(match[2]);
 
         const validMonths = [
           'Jan',
@@ -1513,6 +1612,7 @@ function parseMasterList(rows) {
           'Dec'
         ];
 
+
         if (
           validMonths.includes(monthName) &&
           renewalYear > 0
@@ -1524,75 +1624,63 @@ function parseMasterList(rows) {
           const gwpMonth =
             `${monthName} ${gwpYear}`;
 
+
           gwpM[gwpMonth] =
-            (gwpM[gwpMonth] || 0) +
-            ip;
+            (gwpM[gwpMonth] || 0) + ip;
+
 
           gwpIM[gwpMonth] =
-            (gwpIM[gwpMonth] || 0) +
-            ipGST;
+            (gwpIM[gwpMonth] || 0) + ipGST;
         }
       }
     }
 
-    // ══════════════════════════════════════════
-    // GWP QUARTERLY
-    //
-    // Uses Quarter column directly.
-    //
-    // Example:
-    // Q1'26 → Q1'26
-    // ══════════════════════════════════════════
+
+    // ─────────────────────────────────────────
+    // QUARTERLY GWP
+    // Uses Master List Quarter directly.
+    // ─────────────────────────────────────────
 
     if (q) {
 
       gwpQ[q] =
-        (gwpQ[q] || 0) +
-        ip;
+        (gwpQ[q] || 0) + ip;
 
       gwpIQ[q] =
-        (gwpIQ[q] || 0) +
-        ipGST;
+        (gwpIQ[q] || 0) + ipGST;
     }
 
-    // ══════════════════════════════════════════
+
+    // ─────────────────────────────────────────
     // EARNED PREMIUM
     //
-    // Earn based on actual Start Date → End Date.
+    // Based on actual Start Date -> End Date.
     // Premium is prorated by active days.
-    // ══════════════════════════════════════════
+    // ─────────────────────────────────────────
 
-    const startD =
-      parseDate(
-        row['Start Date'] ||
-        row['start date']
-      );
+    const startD = parseDate(
+      row['Start Date'] ||
+      row['start date']
+    );
 
-    const endD =
-      parseDate(
-        row['End Date'] ||
-        row['end date']
-      );
 
-    /*
-      GWP can still be calculated when dates
-      are missing.
+    const endD = parseDate(
+      row['End Date'] ||
+      row['end date']
+    );
 
-      But earned premium cannot.
-    */
+
+    // Cannot calculate earned premium
+    // without valid policy dates.
     if (
       !startD ||
-      !endD
+      !endD ||
+      endD < startD
     ) {
       return;
     }
 
-    if (endD < startD) {
-      return;
-    }
 
-    // Total policy duration, inclusive of both
-    // start and end dates.
     const totalDays =
       Math.floor(
         (
@@ -1601,24 +1689,26 @@ function parseMasterList(rows) {
         ) / 86400000
       ) + 1;
 
+
     if (totalDays <= 0) {
       return;
     }
 
+
     const dailyPremiumExcl =
       ip / totalDays;
+
 
     const dailyPremiumIncl =
       ipGST / totalDays;
 
-    // ══════════════════════════════════════════
-    // EARNED PREMIUM — MONTHLY
-    // ══════════════════════════════════════════
 
-    Object.entries(
-      monthRanges
-    ).forEach(
-      ([month,[monthStart,monthEnd]]) => {
+    // ─────────────────────────────────────────
+    // MONTHLY EARNED PREMIUM
+    // ─────────────────────────────────────────
+
+    Object.entries(monthRanges).forEach(
+      ([month, [monthStart, monthEnd]]) => {
 
         const overlapDays =
           daysOverlap(
@@ -1628,30 +1718,30 @@ function parseMasterList(rows) {
             monthEnd
           );
 
+
         if (overlapDays <= 0) {
           return;
         }
 
+
         epExclM[month] =
           (epExclM[month] || 0) +
-          dailyPremiumExcl *
-          overlapDays;
+          dailyPremiumExcl * overlapDays;
+
 
         epInclM[month] =
           (epInclM[month] || 0) +
-          dailyPremiumIncl *
-          overlapDays;
+          dailyPremiumIncl * overlapDays;
       }
     );
 
-    // ══════════════════════════════════════════
-    // EARNED PREMIUM — QUARTERLY
-    // ══════════════════════════════════════════
 
-    Object.entries(
-      quarterRanges
-    ).forEach(
-      ([quarter,[quarterStart,quarterEnd]]) => {
+    // ─────────────────────────────────────────
+    // QUARTERLY EARNED PREMIUM
+    // ─────────────────────────────────────────
+
+    Object.entries(quarterRanges).forEach(
+      ([quarter, [quarterStart, quarterEnd]]) => {
 
         const overlapDays =
           daysOverlap(
@@ -1661,122 +1751,129 @@ function parseMasterList(rows) {
             quarterEnd
           );
 
+
         if (overlapDays <= 0) {
           return;
         }
 
+
         epExclQ[quarter] =
           (epExclQ[quarter] || 0) +
-          dailyPremiumExcl *
-          overlapDays;
+          dailyPremiumExcl * overlapDays;
+
 
         epInclQ[quarter] =
           (epInclQ[quarter] || 0) +
-          dailyPremiumIncl *
-          overlapDays;
+          dailyPremiumIncl * overlapDays;
       }
     );
+
   });
 
-  // ════════════════════════════════════════════
-  // SAVE RESULTS
-  // ════════════════════════════════════════════
+
+  // ────────────────────────────────────────────
+  // SAVE INTO DATA STORE
+  // ────────────────────────────────────────────
 
   Object.assign(D, {
 
     gwpM,
 
-    gwpInclM:
-      gwpIM,
+    gwpInclM:gwpmFallback(gwpIM),
 
     gwpQ,
 
-    gwpInclQ:
-      gwpIQ,
+    gwpInclQ:gwpIQ,
 
-    earnedExclM:
-      epExclM,
+    earnedExclM:epExclM,
 
-    earnedInclM:
-      epInclM,
+    earnedInclM:epInclM,
 
-    earnedExclQ:
-      epExclQ,
+    earnedExclQ:epExclQ,
 
-    earnedInclQ:
-      epInclQ
+    earnedInclQ:epInclQ
+
   });
 }
+
+
+// Small helper to ensure the GST GWP object
+// is always returned correctly.
+function gwpmFallback(obj) {
+  return obj || {};
+}
+
 
 // ══════════════════════════════════════════════
 // LOAD ALL DATA
 // ══════════════════════════════════════════════
 
 function setStep(s) {
-  document.getElementById(
-    'loadingStep'
-  ).textContent = s;
+  document.getElementById('loadingStep').textContent = s;
 }
+
 
 async function loadAll() {
 
   document
     .getElementById('loadingOverlay')
-    .classList.remove('hidden');
+    .classList
+    .remove('hidden');
+
 
   document
     .getElementById('errorBanner')
-    .style.display = 'none';
+    .style
+    .display = 'none';
+
 
   const errors = [];
 
-  const safe = async (name,fn) => {
+
+  const safe = async (name, fn) => {
 
     try {
 
       await fn();
 
-    } catch(e) {
+    } catch (e) {
 
       errors.push(
         name + ': ' + e.message
       );
 
-      console.error(
-        name,
-        e
-      );
+      console.error(name, e);
     }
   };
 
-  // ════════════════════════════════════════════
+
+  // ────────────────────────────────────────────
   // MASTER LIST
-  // ════════════════════════════════════════════
+  // ────────────────────────────────────────────
 
   setStep(
     'Loading Master List (GWP & Earned Premium)...'
   );
+
 
   await safe(
     'Master List',
     async () => {
 
       const rows =
-        await fetchCSV(
-          masterUrl()
-        );
+        await fetchCSV(masterUrl());
 
       parseMasterList(rows);
     }
   );
 
-  // ════════════════════════════════════════════
-  // CLAIMS DATA
-  // ════════════════════════════════════════════
 
-  setStep(
-    'Loading claims data...'
-  );
+  // ────────────────────────────────────────────
+  // CLAIMS DATA
+  // ────────────────────────────────────────────
+
+  setStep('Loading claims data...');
+
 
   await Promise.all([
 
@@ -1786,17 +1883,14 @@ async function loadAll() {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'ri_cl_combined'
-            )
+            sheetUrl('ri_cl_combined')
           );
+
 
         rows.forEach(r => {
 
           const k =
-            toMonthKey(
-              r.month
-            );
+            toMonthKey(r.month);
 
           if (k) {
             D.riCL[k] = r;
@@ -1805,23 +1899,21 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'cashless',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'cashless'
-            )
+            sheetUrl('cashless')
           );
+
 
         rows.forEach(r => {
 
           const k =
-            toMonthKey(
-              r.month
-            );
+            toMonthKey(r.month);
 
           if (k) {
             D.cashless[k] = r;
@@ -1830,23 +1922,21 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'ri_incl_tally',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'ri_incl_tally'
-            )
+            sheetUrl('ri_incl_tally')
           );
+
 
         rows.forEach(r => {
 
           const k =
-            toMonthKey(
-              r.month
-            );
+            toMonthKey(r.month);
 
           if (k) {
             D.riIncl[k] = r;
@@ -1855,23 +1945,21 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'ri_excl_tally',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'ri_excl_tally'
-            )
+            sheetUrl('ri_excl_tally')
           );
+
 
         rows.forEach(r => {
 
           const k =
-            toMonthKey(
-              r.month
-            );
+            toMonthKey(r.month);
 
           if (k) {
             D.riExcl[k] = r;
@@ -1879,15 +1967,16 @@ async function loadAll() {
         });
       }
     )
+
   ]);
 
-  // ════════════════════════════════════════════
-  // LOSS RATIO DATA
-  // ════════════════════════════════════════════
 
-  setStep(
-    'Loading loss ratio data...'
-  );
+  // ────────────────────────────────────────────
+  // LOSS RATIO DATA
+  // ────────────────────────────────────────────
+
+  setStep('Loading loss ratio data...');
+
 
   await Promise.all([
 
@@ -1897,10 +1986,9 @@ async function loadAll() {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'approved_monthly'
-            )
+            sheetUrl('approved_monthly')
           );
+
 
         rows.forEach(r => {
 
@@ -1909,7 +1997,9 @@ async function loadAll() {
               r['visit_time: Month']
             );
 
+
           if (k) {
+
             D.approvedM[k] =
               r['Sum of approved_amount'] || 0;
           }
@@ -1917,16 +2007,16 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'os_monthly',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'os_monthly'
-            )
+            sheetUrl('os_monthly')
           );
+
 
         rows.forEach(r => {
 
@@ -1935,7 +2025,9 @@ async function loadAll() {
               r['visit_time: Month']
             );
 
+
           if (k) {
+
             D.osM[k] =
               r['Sum of requested_amount'] || 0;
           }
@@ -1943,16 +2035,16 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'network_comm_monthly',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'network_comm_monthly'
-            )
+            sheetUrl('network_comm_monthly')
           );
+
 
         rows.forEach(r => {
 
@@ -1961,7 +2053,9 @@ async function loadAll() {
               r['visit_time: Month']
             );
 
+
           if (k) {
+
             D.netCommM[k] =
               r['Sum of approved_amount'] || 0;
           }
@@ -1969,16 +2063,16 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'approved_quarterly',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'approved_quarterly'
-            )
+            sheetUrl('approved_quarterly')
           );
+
 
         rows.forEach(r => {
 
@@ -1987,7 +2081,9 @@ async function loadAll() {
               r['visit_time: Quarter']
             );
 
+
           if (k) {
+
             D.approvedQ[k] =
               r['Sum of approved_amount'] || 0;
           }
@@ -1995,16 +2091,16 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'os_quarterly',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'os_quarterly'
-            )
+            sheetUrl('os_quarterly')
           );
+
 
         rows.forEach(r => {
 
@@ -2013,7 +2109,9 @@ async function loadAll() {
               r['visit_time: Quarter']
             );
 
+
           if (k) {
+
             D.osQ[k] =
               r['Sum of requested_amount'] || 0;
           }
@@ -2021,16 +2119,16 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'network_comm_quarterly',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'network_comm_quarterly'
-            )
+            sheetUrl('network_comm_quarterly')
           );
+
 
         rows.forEach(r => {
 
@@ -2039,7 +2137,9 @@ async function loadAll() {
               r['visit_time: Quarter']
             );
 
+
           if (k) {
+
             D.netCommQ[k] =
               r['Sum of approved_amount'] || 0;
           }
@@ -2047,25 +2147,25 @@ async function loadAll() {
       }
     ),
 
+
     safe(
       'hospital_opd',
       async () => {
 
         const rows =
           await fetchCSV(
-            sheetUrl(
-              'hospital_opd'
-            )
+            sheetUrl('hospital_opd')
           );
+
 
         rows.forEach(r => {
 
           const k =
-            toMonthKey(
-              r.month
-            );
+            toMonthKey(r.month);
+
 
           if (k) {
+
             D.hospOPD[k] =
               r.total_billed_amount || 0;
           }
@@ -2073,16 +2173,15 @@ async function loadAll() {
       }
     )
 
-    // hospital_ipd tab not yet created in sheet
   ]);
 
-  // ════════════════════════════════════════════
-  // INTERNALISATION
-  // ════════════════════════════════════════════
 
-  setStep(
-    'Loading internalisation...'
-  );
+  // ────────────────────────────────────────────
+  // INTERNALISATION
+  // ────────────────────────────────────────────
+
+  setStep('Loading internalisation...');
+
 
   await safe(
     'internalisation',
@@ -2090,19 +2189,18 @@ async function loadAll() {
 
       const rows =
         await fetchCSV(
-          sheetUrl(
-            'internalisation'
-          )
+          sheetUrl('internalisation')
         );
 
-      D.internalisation =
-        rows;
+
+      D.internalisation = rows;
     }
   );
 
-  // ════════════════════════════════════════════
-  // ERRORS
-  // ════════════════════════════════════════════
+
+  // ────────────────────────────────────────────
+  // ERROR MESSAGE
+  // ────────────────────────────────────────────
 
   if (errors.length > 0) {
 
@@ -2111,30 +2209,35 @@ async function loadAll() {
         'errorBanner'
       );
 
+
     b.textContent =
       'Some data failed: ' +
       errors.join(' | ');
 
-    b.style.display =
-      'block';
+
+    b.style.display = 'block';
   }
+
 
   document.getElementById(
     'lastUpdated'
   ).textContent =
     'Updated ' +
-    new Date().toLocaleTimeString(
-      'en-IN'
-    );
+    new Date().toLocaleTimeString('en-IN');
+
 
   setStep('Done');
 
+
   renderAll();
+
 
   document
     .getElementById('loadingOverlay')
-    .classList.add('hidden');
+    .classList
+    .add('hidden');
 }
+
 
 // ══════════════════════════════════════════════
 // TAB SWITCHING
@@ -2144,18 +2247,15 @@ function switchTab(name) {
 
   document
     .querySelectorAll('.tab')
-    .forEach((t,i) => {
+    .forEach((t, i) => {
 
       t.classList.toggle(
         'active',
-        [
-          'summary',
-          'lossratios',
-          'claims',
-          'internalisation'
-        ][i] === name
+        ['summary','lossratios','claims','internalisation'][i] === name
       );
+
     });
+
 
   document
     .querySelectorAll('.tab-content')
@@ -2163,12 +2263,15 @@ function switchTab(name) {
       c.classList.remove('active')
     );
 
+
   document
     .getElementById('tab-' + name)
-    .classList.add('active');
+    .classList
+    .add('active');
 }
 
-function setSummaryView(v,btn) {
+
+function setSummaryView(v, btn) {
 
   summaryView = v;
 
@@ -2180,22 +2283,25 @@ function setSummaryView(v,btn) {
 
   btn.classList.add('active');
 
-  document
-    .getElementById('summary-monthly')
-    .style.display =
-      v === 'monthly'
-        ? 'block'
-        : 'none';
 
-  document
-    .getElementById('summary-quarterly')
-    .style.display =
-      v === 'quarterly'
-        ? 'block'
-        : 'none';
+  document.getElementById(
+    'summary-monthly'
+  ).style.display =
+    v === 'monthly'
+      ? 'block'
+      : 'none';
+
+
+  document.getElementById(
+    'summary-quarterly'
+  ).style.display =
+    v === 'quarterly'
+      ? 'block'
+      : 'none';
 }
 
-function setLRView(v,btn) {
+
+function setLRView(v, btn) {
 
   lrView = v;
 
@@ -2207,22 +2313,25 @@ function setLRView(v,btn) {
 
   btn.classList.add('active');
 
-  document
-    .getElementById('lr-monthly')
-    .style.display =
-      v === 'monthly'
-        ? 'block'
-        : 'none';
 
-  document
-    .getElementById('lr-quarterly')
-    .style.display =
-      v === 'quarterly'
-        ? 'block'
-        : 'none';
+  document.getElementById(
+    'lr-monthly'
+  ).style.display =
+    v === 'monthly'
+      ? 'block'
+      : 'none';
+
+
+  document.getElementById(
+    'lr-quarterly'
+  ).style.display =
+    v === 'quarterly'
+      ? 'block'
+      : 'none';
 }
 
-function setRIView(v,btn) {
+
+function setRIView(v, btn) {
 
   riView = v;
 
@@ -2237,8 +2346,9 @@ function setRIView(v,btn) {
   renderRI();
 }
 
+
 // ══════════════════════════════════════════════
-// RENDER
+// RENDER ALL
 // ══════════════════════════════════════════════
 
 function renderAll() {
@@ -2247,7 +2357,9 @@ function renderAll() {
   renderLR();
   renderOps();
   renderInternalisation();
+
 }
+
 
 // ══════════════════════════════════════════════
 // SUMMARY
@@ -2257,221 +2369,253 @@ function renderSummary() {
 
   const netPct =
     parseFloat(
-      document.getElementById(
-        'networkPct'
-      ).value
+      document.getElementById('networkPct').value
     ) / 100;
+
 
   const ipdPct =
     parseFloat(
-      document.getElementById(
-        'ipdSplit'
-      ).value
+      document.getElementById('ipdSplit').value
     ) / 100;
+
 
   const me =
     parseFloat(
-      document.getElementById(
-        'meFactor'
-      ).value
+      document.getElementById('meFactor').value
     ) || 0.94;
 
-  // ──────────────────────────────────────────
-  // MONTHLY
-  // ──────────────────────────────────────────
 
   document.getElementById(
     'body-summary-monthly'
-  ).innerHTML =
+  ).innerHTML = MONTHS.map(m => {
 
-    MONTHS.map(m => {
+    const gwp =
+      v(D.gwpM, m);
 
-      const gwp =
-        v(D.gwpM,m);
 
-      const gwpI =
-        v(D.gwpInclM,m);
+    const gwpI =
+      v(D.gwpInclM, m);
 
-      const epNet =
-        v(D.earnedInclM,m) *
-        me;
 
-      const approved =
-        v(D.approvedM,m);
+    const epNet =
+      v(D.earnedInclM, m) * me;
 
-      const os =
-        v(D.osM,m);
 
-      const ibnr =
-        v(M.ibnr,m) / 100;
+    const approved =
+      v(D.approvedM, m);
 
-      const hospInc =
-        v(D.hospOPD,m);
 
-      const hospLim =
-        v(M.hospLimitDed,m);
+    const os =
+      v(D.osM, m);
 
-      const lr =
-        epNet > 0
-          ? (
-              (
-                approved +
-                os
-              ) *
-              (1 + ibnr) +
-              hospInc -
-              hospLim
-            ) /
-            epNet
-          : 0;
 
-      const uw =
-        (1 - lr) *
-        v(D.earnedExclM,m);
+    const ibnr =
+      v(M.ibnr, m) / 100;
 
-      const sf =
-        v(M.servicingFees,m);
 
-      const nc =
-        v(D.netCommM,m) *
-        (netPct / 0.125);
+    const hospInc =
+      v(D.hospOPD, m);
 
-      const opd =
-        v(D.hospOPD,m);
 
-      const ipd =
-        v(D.hospIPD,m);
+    const hospLim =
+      v(M.hospLimitDed, m);
 
-      const cb =
-        v(M.costBase,m);
 
-      const pnl =
-        uw +
-        sf +
-        nc +
-        opd +
-        (ipd * ipdPct) -
-        cb;
+    const lr =
+      epNet > 0
+        ? (
+            (
+              (approved + os) *
+              (1 + ibnr)
+            ) +
+            hospInc -
+            hospLim
+          ) / epNet
+        : 0;
 
-      return `
-        <tr>
-          <td>${m}</td>
-          <td>${fmt(gwp)}</td>
-          <td>${fmt(gwpI)}</td>
-          <td class="${pC(uw)}">${fmt(uw)}</td>
 
-          <td>
-            <input
-              class="editable-input"
-              value="${sf}"
-              style="min-width:90px"
-              onchange="M.servicingFees['${m}']=Number(this.value);renderAll()"
-              onclick="this.select()"
-            >
-          </td>
+    const uw =
+      (1 - lr) *
+      v(D.earnedExclM, m);
 
-          <td>${fmt(nc)}</td>
-          <td>${fmt(opd)}</td>
-          <td>${fmt(ipd)}</td>
 
-          <td>
-            <input
-              class="editable-input"
-              value="${cb}"
-              style="min-width:90px"
-              onchange="M.costBase['${m}']=Number(this.value);renderAll()"
-              onclick="this.select()"
-            >
-          </td>
+    const sf =
+      v(M.servicingFees, m);
 
-          <td class="${pC(pnl)}">
-            ${fmt(pnl)}
-          </td>
-        </tr>
-      `;
-    }).join('');
 
-  // ──────────────────────────────────────────
-  // QUARTERLY
-  // ──────────────────────────────────────────
+    const nc =
+      v(D.netCommM, m) *
+      (netPct / 0.125);
+
+
+    const opd =
+      v(D.hospOPD, m);
+
+
+    const ipd =
+      v(D.hospIPD, m);
+
+
+    const cb =
+      v(M.costBase, m);
+
+
+    const pnl =
+      uw +
+      sf +
+      nc +
+      opd +
+      (ipd * ipdPct) -
+      cb;
+
+
+    return `
+      <tr>
+        <td>${m}</td>
+
+        <td>${fmt(gwp)}</td>
+
+        <td>${fmt(gwpI)}</td>
+
+        <td class="${pC(uw)}">
+          ${fmt(uw)}
+        </td>
+
+        <td>
+          <input
+            class="editable-input"
+            value="${sf}"
+            style="min-width:90px"
+            onchange="M.servicingFees['${m}']=Number(this.value);renderAll()"
+            onclick="this.select()"
+          >
+        </td>
+
+        <td>${fmt(nc)}</td>
+
+        <td>${fmt(opd)}</td>
+
+        <td>${fmt(ipd)}</td>
+
+        <td>
+          <input
+            class="editable-input"
+            value="${cb}"
+            style="min-width:90px"
+            onchange="M.costBase['${m}']=Number(this.value);renderAll()"
+            onclick="this.select()"
+          >
+        </td>
+
+        <td class="${pC(pnl)}">
+          ${fmt(pnl)}
+        </td>
+      </tr>
+    `;
+
+  }).join('');
+
 
   document.getElementById(
     'body-summary-quarterly'
-  ).innerHTML =
+  ).innerHTML = QUARTERS.map(q => {
 
-    QUARTERS.map(q => {
+    const gwp =
+      v(D.gwpQ, q);
 
-      const gwp =
-        v(D.gwpQ,q);
 
-      const gwpI =
-        v(D.gwpInclQ,q);
+    const gwpI =
+      v(D.gwpInclQ, q);
 
-      const epNet =
-        v(D.earnedInclQ,q) *
-        me;
 
-      const approved =
-        v(D.approvedQ,q);
+    const epNet =
+      v(D.earnedInclQ, q) * me;
 
-      const os =
-        v(D.osQ,q);
 
-      const ibnr =
-        v(M.ibnrQ,q) / 100;
+    const approved =
+      v(D.approvedQ, q);
 
-      const hospLim =
-        v(M.hospLimitDedQ,q);
 
-      const lr =
-        epNet > 0
-          ? (
-              (
-                approved +
-                os
-              ) *
-              (1 + ibnr) -
-              hospLim
-            ) /
-            epNet
-          : 0;
+    const os =
+      v(D.osQ, q);
 
-      const uw =
-        (1 - lr) *
-        v(D.earnedExclQ,q);
 
-      const sf =
-        v(M.servicingFees,q) || 0;
+    const ibnr =
+      v(M.ibnrQ, q) / 100;
 
-      const nc =
-        v(D.netCommQ,q) *
-        (netPct / 0.125);
 
-      const cb =
-        v(M.costBaseQ,q);
+    const hospLim =
+      v(M.hospLimitDedQ, q);
 
-      const pnl =
-        uw +
-        sf +
-        nc -
-        cb;
 
-      return `
-        <tr>
-          <td>${q}</td>
-          <td>${fmt(gwp)}</td>
-          <td>${fmt(gwpI)}</td>
-          <td class="${pC(uw)}">${fmt(uw)}</td>
-          <td>${fmt(sf)}</td>
-          <td>${fmt(nc)}</td>
-          <td>—</td>
-          <td>—</td>
-          <td>${fmt(cb)}</td>
-          <td class="${pC(pnl)}">${fmt(pnl)}</td>
-        </tr>
-      `;
-    }).join('');
+    const lr =
+      epNet > 0
+        ? (
+            (approved + os) *
+            (1 + ibnr) -
+            hospLim
+          ) / epNet
+        : 0;
+
+
+    const uw =
+      (1 - lr) *
+      v(D.earnedExclQ, q);
+
+
+    const sf =
+      v(M.servicingFees, q) || 0;
+
+
+    const nc =
+      v(D.netCommQ, q) *
+      (netPct / 0.125);
+
+
+    const cb =
+      v(M.costBaseQ, q);
+
+
+    const pnl =
+      uw +
+      sf +
+      nc -
+      cb;
+
+
+    return `
+      <tr>
+
+        <td>${q}</td>
+
+        <td>${fmt(gwp)}</td>
+
+        <td>${fmt(gwpI)}</td>
+
+        <td class="${pC(uw)}">
+          ${fmt(uw)}
+        </td>
+
+        <td>${fmt(sf)}</td>
+
+        <td>${fmt(nc)}</td>
+
+        <td>—</td>
+
+        <td>—</td>
+
+        <td>${fmt(cb)}</td>
+
+        <td class="${pC(pnl)}">
+          ${fmt(pnl)}
+        </td>
+
+      </tr>
+    `;
+
+  }).join('');
 }
+
 
 // ══════════════════════════════════════════════
 // LOSS RATIOS
@@ -2481,10 +2625,9 @@ function renderLR() {
 
   const me =
     parseFloat(
-      document.getElementById(
-        'meFactor'
-      ).value
+      document.getElementById('meFactor').value
     ) || 0.94;
+
 
   const row = (
     period,
@@ -2503,8 +2646,10 @@ function renderLR() {
     const epNet =
       epIncl * me;
 
+
     const total =
       approved + os;
+
 
     const lr =
       epNet > 0
@@ -2513,14 +2658,14 @@ function renderLR() {
             (1 + ibnr / 100) +
             hospInc -
             hospLim
-          ) /
-          epNet *
-          100
+          ) / epNet * 100
         : 0;
+
 
     const uw =
       (1 - lr / 100) *
       epExcl;
+
 
     const lrC =
       lr > 100
@@ -2529,17 +2674,22 @@ function renderLR() {
           ? ''
           : 'pos';
 
+
     return `
       <tr>
 
         <td>${period}</td>
 
         <td>${fmt(epExcl)}</td>
+
         <td>${fmt(epIncl)}</td>
+
         <td>${fmt(epNet)}</td>
 
         <td>${fmt(approved)}</td>
+
         <td>${fmt(os)}</td>
+
         <td>${fmt(total)}</td>
 
         <td>
@@ -2588,46 +2738,49 @@ function renderLR() {
     `;
   };
 
+
   document.getElementById(
     'body-lr-monthly'
-  ).innerHTML =
+  ).innerHTML = MONTHS.map(m =>
 
-    MONTHS.map(m =>
-      row(
-        m,
-        v(D.earnedExclM,m),
-        v(D.earnedInclM,m),
-        v(D.approvedM,m),
-        v(D.osM,m),
-        v(M.ibnr,m),
-        v(D.hospOPD,m),
-        v(M.hospLimitDed,m),
-        true,
-        'M.ibnr',
-        'M.hospLimitDed'
-      )
-    ).join('');
+    row(
+      m,
+      v(D.earnedExclM,m),
+      v(D.earnedInclM,m),
+      v(D.approvedM,m),
+      v(D.osM,m),
+      v(M.ibnr,m),
+      v(D.hospOPD,m),
+      v(M.hospLimitDed,m),
+      true,
+      'M.ibnr',
+      'M.hospLimitDed'
+    )
+
+  ).join('');
+
 
   document.getElementById(
     'body-lr-quarterly'
-  ).innerHTML =
+  ).innerHTML = QUARTERS.map(q =>
 
-    QUARTERS.map(q =>
-      row(
-        q,
-        v(D.earnedExclQ,q),
-        v(D.earnedInclQ,q),
-        v(D.approvedQ,q),
-        v(D.osQ,q),
-        v(M.ibnrQ,q),
-        0,
-        v(M.hospLimitDedQ,q),
-        false,
-        '',
-        ''
-      )
-    ).join('');
+    row(
+      q,
+      v(D.earnedExclQ,q),
+      v(D.earnedInclQ,q),
+      v(D.approvedQ,q),
+      v(D.osQ,q),
+      v(M.ibnrQ,q),
+      0,
+      v(M.hospLimitDedQ,q),
+      false,
+      '',
+      ''
+    )
+
+  ).join('');
 }
+
 
 // ══════════════════════════════════════════════
 // OPERATIONAL METRICS
@@ -2635,179 +2788,178 @@ function renderLR() {
 
 function renderOps() {
 
-  // ──────────────────────────────────────────
+  // ────────────────────────────────────────────
   // POST SALES
-  // ──────────────────────────────────────────
+  // ────────────────────────────────────────────
 
   document.getElementById(
     'body-postsales'
-  ).innerHTML =
+  ).innerHTML = MONTHS.map(m => {
 
-    MONTHS.map(m => {
+    const chats =
+      M.chats[m] || 0;
 
-      const chats =
-        M.chats[m] || 0;
 
-      const cost =
-        M.postSalesCost[m] || 0;
+    const cost =
+      M.postSalesCost[m] || 0;
 
-      return `
-        <tr>
 
-          <td>${m}</td>
+    return `
+      <tr>
 
-          <td>
-            <input
-              class="editable-input"
-              value="${fmtN(chats)}"
-              style="min-width:70px"
-              onchange="M.chats['${m}']=Number(this.value.replace(/,/g,''));renderOps()"
-              onclick="this.select()"
-            >
-          </td>
+        <td>${m}</td>
 
-          <td>
-            <input
-              class="editable-input"
-              value="${M.firstResponse[m] || '—'}"
-              style="min-width:50px"
-              onchange="M.firstResponse['${m}']=this.value"
-              onclick="this.select()"
-            >
-          </td>
+        <td>
+          <input
+            class="editable-input"
+            value="${fmtN(chats)}"
+            style="min-width:70px"
+            onchange="M.chats['${m}']=Number(this.value.replace(/,/g,''));renderOps()"
+            onclick="this.select()"
+          >
+        </td>
 
-          <td>
-            <input
-              class="editable-input"
-              value="${M.avgResponse[m] || '—'}"
-              style="min-width:60px"
-              onchange="M.avgResponse['${m}']=this.value"
-              onclick="this.select()"
-            >
-          </td>
+        <td>
+          <input
+            class="editable-input"
+            value="${M.firstResponse[m] || '—'}"
+            style="min-width:50px"
+            onchange="M.firstResponse['${m}']=this.value"
+            onclick="this.select()"
+          >
+        </td>
 
-          <td>
-            <input
-              class="editable-input"
-              value="${M.csat[m] || '—'}"
-              style="min-width:50px"
-              onchange="M.csat['${m}']=Number(this.value);renderOps()"
-              onclick="this.select()"
-            >
-          </td>
+        <td>
+          <input
+            class="editable-input"
+            value="${M.avgResponse[m] || '—'}"
+            style="min-width:60px"
+            onchange="M.avgResponse['${m}']=this.value"
+            onclick="this.select()"
+          >
+        </td>
 
-          <td>
-            <input
-              class="editable-input"
-              value="${cost}"
-              style="min-width:90px"
-              onchange="M.postSalesCost['${m}']=Number(this.value);renderOps()"
-              onclick="this.select()"
-            >
-          </td>
+        <td>
+          <input
+            class="editable-input"
+            value="${M.csat[m] || '—'}"
+            style="min-width:50px"
+            onchange="M.csat['${m}']=Number(this.value);renderOps()"
+            onclick="this.select()"
+          >
+        </td>
 
-          <td>
-            ${fmt(chats > 0 ? cost / chats : 0)}
-          </td>
+        <td>
+          <input
+            class="editable-input"
+            value="${cost}"
+            style="min-width:90px"
+            onchange="M.postSalesCost['${m}']=Number(this.value);renderOps()"
+            onclick="this.select()"
+          >
+        </td>
 
-        </tr>
-      `;
-    }).join('');
+        <td>
+          ${fmt(chats > 0 ? cost / chats : 0)}
+        </td>
 
-  // ──────────────────────────────────────────
+      </tr>
+    `;
+
+  }).join('');
+
+
+  // ────────────────────────────────────────────
   // COMBINED CLAIMS
-  // ──────────────────────────────────────────
+  // ────────────────────────────────────────────
 
   document.getElementById(
     'body-claims-combined'
-  ).innerHTML =
+  ).innerHTML = MONTHS.map(m => {
 
-    MONTHS.map(m => {
+    const r =
+      D.riCL[m] || {};
 
-      const r =
-        D.riCL[m] || {};
 
-      const act =
-        r.total_actioned || 0;
+    const act =
+      r.total_actioned || 0;
 
-      const req =
-        r.requested_amount || 0;
 
-      const app =
-        r.approved_amount || 0;
+    const req =
+      r.requested_amount || 0;
 
-      const cost =
-        M.claimsBaseCost[m] || 0;
 
-      return `
-        <tr>
+    const app =
+      r.approved_amount || 0;
 
-          <td>${m}</td>
 
-          <td>${fmtN(act)}</td>
-          <td>${fmt(req)}</td>
-          <td>${fmt(app)}</td>
+    const cost =
+      M.claimsBaseCost[m] || 0;
 
-          <td>
-            <input
-              class="editable-input"
-              value="${cost}"
-              style="min-width:90px"
-              onchange="M.claimsBaseCost['${m}']=Number(this.value);renderOps()"
-              onclick="this.select()"
-            >
-          </td>
 
-          <td>
-            ${fmt(act > 0 ? cost / act : 0)}
-          </td>
+    return `
+      <tr>
 
-        </tr>
-      `;
-    }).join('');
+        <td>${m}</td>
+
+        <td>${fmtN(act)}</td>
+
+        <td>${fmt(req)}</td>
+
+        <td>${fmt(app)}</td>
+
+        <td>
+          <input
+            class="editable-input"
+            value="${cost}"
+            style="min-width:90px"
+            onchange="M.claimsBaseCost['${m}']=Number(this.value);renderOps()"
+            onclick="this.select()"
+          >
+        </td>
+
+        <td>
+          ${fmt(act > 0 ? cost / act : 0)}
+        </td>
+
+      </tr>
+    `;
+
+  }).join('');
+
 
   renderRI();
 
-  // ──────────────────────────────────────────
+
+  // ────────────────────────────────────────────
   // CASHLESS
-  // ──────────────────────────────────────────
+  // ────────────────────────────────────────────
 
   document.getElementById(
     'body-cashless'
-  ).innerHTML =
+  ).innerHTML = MONTHS.map(m => {
 
-    MONTHS.map(m => {
+    const r =
+      D.cashless[m] || {};
 
-      const r =
-        D.cashless[m] || {};
 
-      return `
-        <tr>
+    return `
+      <tr>
 
-          <td>${m}</td>
+        <td>${m}</td>
 
-          <td>
-            ${fmtN(
-              r.cashless_actioned || 0
-            )}
-          </td>
+        <td>${fmtN(r.cashless_actioned || 0)}</td>
 
-          <td>
-            ${fmt(
-              r.requested_amount || 0
-            )}
-          </td>
+        <td>${fmt(r.requested_amount || 0)}</td>
 
-          <td>
-            ${fmt(
-              r.approved_amount || 0
-            )}
-          </td>
+        <td>${fmt(r.approved_amount || 0)}</td>
 
-        </tr>
-      `;
-    }).join('');
+      </tr>
+    `;
+
+  }).join('');
 }
+
 
 // ══════════════════════════════════════════════
 // REIMBURSEMENTS
@@ -2820,82 +2972,102 @@ function renderRI() {
       ? D.riIncl
       : D.riExcl;
 
+
   document.getElementById(
     'body-ri'
-  ).innerHTML =
+  ).innerHTML = MONTHS.map(m => {
 
-    MONTHS.map(m => {
+    const r =
+      src[m] || {};
 
-      const r =
-        src[m] || {};
 
-      const act =
-        r.ri_actioned || 0;
+    const act =
+      r.ri_actioned || 0;
 
-      const req =
-        r.requested_amount || 0;
 
-      const app =
-        r.approved_amount || 0;
+    const req =
+      r.requested_amount || 0;
 
-      const rej =
-        r.rejected_amount || 0;
 
-      const paid =
-        r.claims_paid || 0;
+    const app =
+      r.approved_amount || 0;
 
-      const queried =
-        r.claims_queried || 0;
 
-      const rejN =
-        r.claims_rejected || 0;
+    const rej =
+      r.rejected_amount || 0;
 
-      const appP =
-        req > 0
-          ? app / req * 100
-          : 0;
 
-      const rejA =
-        req > 0
-          ? rej / req * 100
-          : 0;
+    const paid =
+      r.claims_paid || 0;
 
-      const rejN2 =
-        act > 0
-          ? rejN / act * 100
-          : 0;
 
-      return `
-        <tr>
+    const queried =
+      r.claims_queried || 0;
 
-          <td>${m}</td>
 
-          <td>${fmtN(act)}</td>
-          <td>${fmt(req)}</td>
-          <td>${fmt(app)}</td>
-          <td>${fmt(rej)}</td>
-          <td>${fmtN(paid)}</td>
-          <td>${fmtN(queried)}</td>
-          <td>${fmtN(rejN)}</td>
+    const rejN =
+      r.claims_rejected || 0;
 
-          <td>
-            <input
-              class="editable-input"
-              value="${M.tat[m] || '—'}"
-              style="min-width:50px"
-              onchange="M.tat['${m}']=this.value"
-              onclick="this.select()"
-            >
-          </td>
 
-          <td>${fmtP(appP)}</td>
-          <td>${fmtP(rejA)}</td>
-          <td>${fmtP(rejN2)}</td>
+    const appP =
+      req > 0
+        ? app / req * 100
+        : 0;
 
-        </tr>
-      `;
-    }).join('');
+
+    const rejA =
+      req > 0
+        ? rej / req * 100
+        : 0;
+
+
+    const rejN2 =
+      act > 0
+        ? rejN / act * 100
+        : 0;
+
+
+    return `
+      <tr>
+
+        <td>${m}</td>
+
+        <td>${fmtN(act)}</td>
+
+        <td>${fmt(req)}</td>
+
+        <td>${fmt(app)}</td>
+
+        <td>${fmt(rej)}</td>
+
+        <td>${fmtN(paid)}</td>
+
+        <td>${fmtN(queried)}</td>
+
+        <td>${fmtN(rejN)}</td>
+
+        <td>
+          <input
+            class="editable-input"
+            value="${M.tat[m] || '—'}"
+            style="min-width:50px"
+            onchange="M.tat['${m}']=this.value"
+            onclick="this.select()"
+          >
+        </td>
+
+        <td>${fmtP(appP)}</td>
+
+        <td>${fmtP(rejA)}</td>
+
+        <td>${fmtP(rejN2)}</td>
+
+      </tr>
+    `;
+
+  }).join('');
 }
+
 
 // ══════════════════════════════════════════════
 // INTERNALISATION
@@ -2905,68 +3077,43 @@ function renderInternalisation() {
 
   document.getElementById(
     'body-internalisation'
-  ).innerHTML =
+  ).innerHTML = D.internalisation.map(r => {
 
-    D.internalisation.map(r => `
-
+    return `
       <tr>
 
-        <td>
-          ${r['Data as of'] || '—'}
-        </td>
+        <td>${r['Data as of'] || '—'}</td>
 
-        <td>
-          ${fmtN(r['Total lives'])}
-        </td>
+        <td>${fmtN(r['Total lives'])}</td>
 
-        <td>
-          ${fmtN(r['Downloaded'])}
-        </td>
+        <td>${fmtN(r['Downloaded'])}</td>
 
-        <td>
-          ${fmtN(r['BLR lives'])}
-        </td>
+        <td>${fmtN(r['BLR lives'])}</td>
 
-        <td>
-          ${fmtN(r['10km hospital lives'])}
-        </td>
+        <td>${fmtN(r['10km hospital lives'])}</td>
 
-        <td>
-          ${fmtN(r['Volume (CL+RI)'])}
-        </td>
+        <td>${fmtN(r['Volume (CL+RI)'])}</td>
 
-        <td>
-          ${fmt(r['Amount (CL+RI)'])}
-        </td>
+        <td>${fmt(r['Amount (CL+RI)'])}</td>
 
-        <td>
-          ${fmtN(r['Volume (TC)'])}
-        </td>
+        <td>${fmtN(r['Volume (TC)'])}</td>
 
-        <td>
-          ${fmt(r['Amount (TC)'])}
-        </td>
+        <td>${fmt(r['Amount (TC)'])}</td>
 
-        <td>
-          ${fmtN(r['Even TC'])}
-        </td>
+        <td>${fmtN(r['Even TC'])}</td>
 
-        <td>
-          ${fmt(r['Even TC Amount'])}
-        </td>
+        <td>${fmt(r['Even TC Amount'])}</td>
 
-        <td>
-          ${fmtN(r['Non EHRC OPD'])}
-        </td>
+        <td>${fmtN(r['Non EHRC OPD'])}</td>
 
-        <td>
-          ${fmt(r['Non EHRC OPD Amount'])}
-        </td>
+        <td>${fmt(r['Non EHRC OPD Amount'])}</td>
 
       </tr>
+    `;
 
-    `).join('');
+  }).join('');
 }
+
 
 // ══════════════════════════════════════════════
 // INITIAL LOAD
