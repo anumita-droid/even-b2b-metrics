@@ -1,14 +1,18 @@
 {
-  "outputDirectory": "public",
-  "rewrites": [
-    { "source": "/api/metabase", "destination": "/api/metabase" }
+  "version": 2,
+  "builds": [
+    { "src": "public/index.html", "use": "@vercel/static" },
+    { "src": "api/metabase.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/metabase", "dest": "/api/metabase.js" },
+    { "src": "/(.*)", "dest": "/public/$1" }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Cache-Control", "value": "s-maxage=300, stale-while-revalidate=600" }
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     }
   ]
