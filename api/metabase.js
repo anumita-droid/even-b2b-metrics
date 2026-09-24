@@ -16,15 +16,70 @@ const GIDS = {
   internalisation: 336064406,
 };
 
+function decodeHtml(str) {
+  return str
+    .replace(/<br\\s*\\/?>/gi, '\\n')
+    .replace(/<\\/p>/gi, '\\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&#(\\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/\\r?\\n\\s*\\n+/g, '\\n')
+    .trim();
+}
+
+function csvEscape(value) {
+  const s = String(value ?? '');
+  return '"' + s.replace(/"/g, '""') + '"';
+}
+
+function parsePublishedHTML(html) {
+  const tableMatch = html.match(/<table[^>]*class=["'][^"']*waffle[^"']*["'][^>]*>[\\s\\S]*?<\\/table>/i)
+    || html.match(/<table[\\s\\S]*?<\\/table>/i);
+
+  if (!tableMatch) {
+    throw new Error('Published Google Sheet did not contain a data table');
+  }
+
+  const table = tableMatch[0];
+  const rows = [];
+  const rowRe = /<tr[^>]*>([\\s\\S]*?)<\\/tr>/gi;
+  let rowMatch;
+
+  while ((rowMatch = rowRe.exec(table))) {
+    const cells = [];
+    const cellRe = /<(?:td|th)\\b[^>]*>([\\s\\S]*?)<\\/(?:td|th)>/gi;
+    let cellMatch;
+
+    while ((cellMatch = cellRe.exec(rowMatch[1]))) {
+      cells.push(decodeHtml(cellMatch[1]));
+    }
+
+    if (cells.length) rows.push(cells);
+  }
+
+  if (!rows.length) {
+    throw new Error('Published Google Sheet table contained no rows');
+  }
+
+  const width = Math.max(...rows.map(r => r.length));
+  return rows
+    .map(r => Array.from({ length: width }, (_, i) => csvEscape(r[i] ?? '')).join(','))
+    .join('\\n');
+}
+
 async function getPublishedCSV(baseUrl, gid) {
   const urls = gid
     ? [
-        baseUrl + '?gid=' + gid + '&single=true&output=csv',
-        baseUrl + '?output=csv&gid=' + gid
+        baseUrl.replace(/\\/pub$/, '/pubhtml/sheet') + '?gid=' + gid + '&headers=false',
+        baseUrl.replace(/\\/pub$/, '/pubhtml') + '?gid=' + gid + '&single=true&headers=false'
       ]
     : [
-        baseUrl + '?single=true&output=csv',
-        baseUrl + '?output=csv'
+        baseUrl.replace(/\\/pub$/, '/pubhtml/sheet') + '?headers=false',
+        baseUrl.replace(/\\/pub$/, '/pubhtml') + '?single=true&headers=false'
       ];
 
   let lastError = null;
@@ -38,13 +93,13 @@ async function getPublishedCSV(baseUrl, gid) {
         continue;
       }
 
-      const looksHtml = /<html|<head|sign in|google sheets access/i.test(body.slice(0, 2000));
-      if (looksHtml) {
-        lastError = new Error('Google returned HTML instead of CSV');
+      const looksHtmlError = /sign in|google sheets access|can.t access your google account/i.test(body.slice(0, 5000));
+      if (looksHtmlError) {
+        lastError = new Error('Google returned an authentication page');
         continue;
       }
 
-      return body;
+      return parsePublishedHTML(body);
     } catch (e) {
       lastError = e;
     }
