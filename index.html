@@ -1783,6 +1783,37 @@ function parseMasterList(rows) {
 
 
   // ────────────────────────────────────────────
+  // TALLY EARNED PREMIUM ADJUSTMENT
+  //
+  // Tally has been excluded from the Master List
+  // calculation above. Add the fixed Tally earned
+  // premium adjustment back separately:
+  //   Monthly: ₹5,00,000 to both excl. GST and incl. GST
+  //   Quarterly: ₹15,00,000 to both, except Q1'25
+  // ────────────────────────────────────────────
+
+  Object.keys(monthRanges).forEach(month => {
+    epExclM[month] =
+      (epExclM[month] || 0) + 500000;
+
+    epInclM[month] =
+      (epInclM[month] || 0) + 500000;
+  });
+
+  Object.keys(quarterRanges).forEach(quarter => {
+    if (quarter === "Q1'25") {
+      return;
+    }
+
+    epExclQ[quarter] =
+      (epExclQ[quarter] || 0) + 1500000;
+
+    epInclQ[quarter] =
+      (epInclQ[quarter] || 0) + 1500000;
+  });
+
+
+  // ────────────────────────────────────────────
   // SAVE INTO DATA STORE
   // ────────────────────────────────────────────
 
