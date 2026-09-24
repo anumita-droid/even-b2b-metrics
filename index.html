@@ -1195,82 +1195,77 @@ function parseCSV(text) {
 // FETCH CSV FROM APPS SCRIPT
 // ══════════════════════════════════════════════
 
+// Limit concurrent Apps Script requests so multiple large Sheets do not
+// overwhelm the Apps Script web app at the same time.
+const APPS_SCRIPT_MAX_CONCURRENT = 2;
+let appsScriptActive = 0;
+const appsScriptQueue = [];
+
 function fetchCSV(url) {
-
   return new Promise((resolve, reject) => {
+    appsScriptQueue.push({ url, resolve, reject });
+    pumpAppsScriptQueue();
+  });
+}
 
-    const callback =
-      '__appsScriptCb_' +
-      Date.now() +
-      '_' +
-      Math.random().toString(36).slice(2);
+function pumpAppsScriptQueue() {
+  while (appsScriptActive < APPS_SCRIPT_MAX_CONCURRENT && appsScriptQueue.length > 0) {
+    const job = appsScriptQueue.shift();
+    appsScriptActive++;
+    fetchCSVOnce(job.url)
+      .then(job.resolve)
+      .catch(job.reject)
+      .finally(() => {
+        appsScriptActive--;
+        pumpAppsScriptQueue();
+      });
+  }
+}
 
+function fetchCSVOnce(url, attempt = 0) {
+  return new Promise((resolve, reject) => {
+    const callback = '__appsScriptCb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
     const script = document.createElement('script');
-
     const cleanup = () => {
       delete window[callback];
       script.remove();
     };
 
-
-    const timer = setTimeout(() => {
-
+    const retry = (message) => {
       cleanup();
+      if (attempt < 2) {
+        setTimeout(() => {
+          fetchCSVOnce(url, attempt + 1).then(resolve).catch(reject);
+        }, 1000 * (attempt + 1));
+      } else {
+        reject(new Error(message));
+      }
+    };
 
-      reject(
-        new Error('Timed out loading Apps Script')
-      );
-
-    }, 30000);
-
+    const timer = setTimeout(() => retry('Timed out loading Apps Script'), 45000);
 
     window[callback] = (payload) => {
-
       clearTimeout(timer);
       cleanup();
-
       if (payload && payload.error) {
-
-        reject(
-          new Error(payload.error)
-        );
-
+        reject(new Error(payload.error));
         return;
       }
-
-
       try {
-
-        resolve(
-          parseCSV(String(payload || ''))
-        );
-
+        resolve(parseCSV(String(payload || '')));
       } catch (e) {
-
         reject(e);
       }
     };
 
-
     script.onerror = () => {
-
       clearTimeout(timer);
-      cleanup();
-
-      reject(
-        new Error('Apps Script request failed')
-      );
+      retry('Apps Script request failed');
     };
 
-
-    script.src =
-      url +
-      (url.includes('?') ? '&' : '?') +
-      'callback=' +
-      encodeURIComponent(callback);
-
+    const separator = url.includes('?') ? '&' : '?';
+    script.src = url + separator + 'callback=' + encodeURIComponent(callback) + '&_ts=' + Date.now();
     document.head.appendChild(script);
-
   });
 }
 
