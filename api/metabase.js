@@ -1,4 +1,4 @@
-const SHEET_ID = '1eoBpZtFVFaNrvNsoWwqBify5km1N8wnWzzua-PkxIks';
+const PUBLISHED_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQf3juS1A7q2aaxozajUWIrZgpsWUpHMl0XTS0H0nGa3RgF4oRIfDv2vBx8bqL9ltEFSFq1Q_ZJvAdT/pub';
 const MASTER_ID = '1Ovf4qHm398T3tiGpSFmE1jf354nTPB5rtkgYeFt1w00';
 
 const GIDS = {
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 
   const { tab, master } = req.query;
 
-  // Master List
+  // Master List (still uses the existing source for now)
   if (master === '1') {
     try {
       const r = await fetch(
@@ -40,11 +40,11 @@ export default async function handler(req, res) {
     }
   }
 
-  // Sheet tab
+  // Published Google Sheet tab
   if (tab && Object.prototype.hasOwnProperty.call(GIDS, tab)) {
     try {
       const r = await fetch(
-        `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GIDS[tab]}`
+        `${PUBLISHED_URL}?output=csv&gid=${GIDS[tab]}`
       );
       const text = await r.text();
 
