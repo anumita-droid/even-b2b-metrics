@@ -476,7 +476,7 @@ async function loadAll() {
     }),
     safe('os_monthly', async()=>{
       const rows=await fetchCSV(sheetUrl('os_monthly'));
-      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.osM[k]=r['Distinct values of claim_id']||0});
+      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.osM[k]=r['Sum of requested_amount']||0});
     }),
     safe('network_comm_monthly', async()=>{
       const rows=await fetchCSV(sheetUrl('network_comm_monthly'));
@@ -488,7 +488,7 @@ async function loadAll() {
     }),
     safe('os_quarterly', async()=>{
       const rows=await fetchCSV(sheetUrl('os_quarterly'));
-      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Distinct values of claim_id']||0});
+      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Sum of requested_amount']||0});
     }),
     safe('network_comm_quarterly', async()=>{
       const rows=await fetchCSV(sheetUrl('network_comm_quarterly'));
