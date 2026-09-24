@@ -362,15 +362,50 @@ function parseMasterList(rows) {
     const pType = String(row['Policy type']||row['policy type']||'').toLowerCase();
     if (!OPD.some(t=>pType.includes(t))) return;
 
-    const rm = String(row['Renewal Month']||row['renewal month']||'').trim().replace('-',' ');
-    const q = String(row['Quarter']||row['quarter']||'').trim();
-    const ip = parseAmt(row['Inception Premium']||row['inception premium']);
-    const ipGST = parseAmt(row['Inception Premium (inc GST)']||row['inception premium (inc gst)']);
-    if (!ip && !ipGST) return;
+    const renewalMonth = String(
+  row['Renewal Month'] || row['renewal month'] || ''
+).trim();
 
-    // GWP
-    if (rm) { gwpM[rm]=(gwpM[rm]||0)+ip; gwpIM[rm]=(gwpIM[rm]||0)+ipGST; }
-    if (q) { gwpQ[q]=(gwpQ[q]||0)+ip; gwpIQ[q]=(gwpIQ[q]||0)+ipGST; }
+const q = String(
+  row['Quarter'] || row['quarter'] || ''
+).trim();
+
+const ip = parseAmt(
+  row['Inception Premium'] || row['inception premium']
+);
+
+const ipGST = parseAmt(
+  row['Inception Premium (inc GST)'] ||
+  row['inception premium (inc gst)']
+);
+
+if (!ip && !ipGST) return;
+
+// GWP
+// Renewal Month is one year after the GWP month.
+// e.g. Jan-2027 renewal → Jan 2026 GWP
+const monthMap = {
+  Jan: 'Jan', Feb: 'Feb', Mar: 'Mar',
+  Apr: 'Apr', May: 'May', Jun: 'Jun',
+  Jul: 'Jul', Aug: 'Aug', Sep: 'Sep',
+  Oct: 'Oct', Nov: 'Nov', Dec: 'Dec'
+};
+
+if (renewalMonth) {
+  const match = renewalMonth.match(/^([A-Za-z]{3})-(\d{4})$/);
+
+  if (match && monthMap[match[1]]) {
+    const gwpMonth = `${monthMap[match[1]]} ${Number(match[2]) - 1}`;
+
+    gwpM[gwpMonth] = (gwpM[gwpMonth] || 0) + ip;
+    gwpIM[gwpMonth] = (gwpIM[gwpMonth] || 0) + ipGST;
+  }
+}
+
+if (q) {
+  gwpQ[q] = (gwpQ[q] || 0) + ip;
+  gwpIQ[q] = (gwpIQ[q] || 0) + ipGST;
+}
 
     // Earned Premium
     const startD=new Date(String(row['Start Date']||row['start date']||'').replace(/(\d+)\/(\d+)\/(\d+)/,'$3-$2-$1'));
