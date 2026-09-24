@@ -1523,11 +1523,19 @@ function parseMasterList(rows) {
       .toLowerCase();
 
 
-    // Only Even OPD / HCU policies
+    // Only Even OPD / HCU policies.
+    // Tally policies are excluded from Earned Premium and GWP.
+    const orgName = String(
+      row['Org Name'] ||
+      row['org name'] ||
+      ''
+    ).trim().toLowerCase();
+
     if (
       !OPD.some(
         type => pType.includes(type)
-      )
+      ) ||
+      orgName.includes('tally')
     ) {
       return;
     }
