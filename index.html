@@ -291,7 +291,7 @@ function parseCSV(text) {
 
 async function fetchCSV(url) {
   const r = await fetch(url);
-  if (!r.ok) throw new Error(`Failed: ${url}`);
+  if (!r.ok) { const detail = await r.text().catch(() => ''); throw new Error(`Failed: ${url} (${r.status}) ${detail.slice(0, 300)}`); }
   return parseCSV(await r.text());
 }
 
