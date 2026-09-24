@@ -203,29 +203,10 @@ tbody td:first-child{text-align:left;font-family:var(--sans);font-weight:500;col
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
-const SHEET_ID = '1eoBpZtFVFaNrvNsoWwqBify5km1N8wnWzzua-PkxIks';
-const MASTER_ID = '1Ovf4qHm398T3tiGpSFmE1jf354nTPB5rtkgYeFt1w00';
+const VERCEL = 'https://even-b2b-metrics.vercel.app';
 
-const GIDS = {
-  ri_cl_combined: 1860220766,
-  cashless: 870573513,
-  ri_incl_tally: 239240117,
-  ri_excl_tally: 668091118,
-  approved_monthly: 572385142,
-  os_monthly: 1848642806,
-  network_comm_monthly: 1028462889,
-  approved_quarterly: 1319465919,
-  os_quarterly: 612155943,
-  network_comm_quarterly: 122253378,
-  hospital_opd: 106636389,
-  internalisation: 336064406,
-};
-
-const sheetUrl = (tab) =>
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GIDS[tab]}`;
-
-const masterUrl = () =>
-  `https://docs.google.com/spreadsheets/d/${MASTER_ID}/export?format=csv&gid=0`;
+const sheetUrl = (tab) => `${VERCEL}/api/metabase?tab=${tab}`;
+const masterUrl = () => `${VERCEL}/api/metabase?master=1`;
 
 const MONTHS = ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026','Jul 2026','Aug 2026','Sep 2026'];
 const QUARTERS = ["Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
@@ -450,10 +431,7 @@ async function loadAll() {
       const rows=await fetchCSV(sheetUrl('hospital_opd'));
       rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.hospOPD[k]=r.total_billed_amount||0});
     }),
-    safe('hospital_ipd', async()=>{
-      const rows=await fetchCSV(sheetUrl('hospital_ipd'));
-      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.hospIPD[k]=r.total_net_billed_amount||0});
-    }),
+    // hospital_ipd tab not yet created in sheet
   ]);
 
   setStep('Loading internalisation...');
