@@ -450,33 +450,35 @@ async function loadAll(){
   const safe=async(n,fn)=>{try{await fn()}catch(e){errs.push(n);console.error(n,e)}};
   const ft=async(tab)=>parseCSV(await fetchAS('tab='+tab));
 
-  setStep('Earned premium...');
-  await safe('earned_premium',async()=>{
-    const rows=await ft('earned_premium');
-    rows.forEach(r=>{const m=r.month;if(!m)return;D.earnedExclM[m]=r.earned_excl_gst||0;D.earnedInclM[m]=r.earned_incl_gst||0;});
-    Object.entries(QM).forEach(([q,ms])=>{D.earnedExclQ[q]=ms.reduce((s,m)=>s+v(D.earnedExclM,m),0);D.earnedInclQ[q]=ms.reduce((s,m)=>s+v(D.earnedInclM,m),0);});
-  });
+  // Render what we have immediately so page isn't blank
+  renderAll();
 
-  setStep('Claims...');
-  await safe('ri_cl_combined',async()=>{(await ft('ri_cl_combined')).forEach(r=>{const k=toMK(r.month);if(k)D.riCL[k]=r});});
-  await safe('cashless',async()=>{(await ft('cashless')).forEach(r=>{const k=toMK(r.month);if(k)D.cashless[k]=r});});
-  await safe('ri_incl_tally',async()=>{(await ft('ri_incl_tally')).forEach(r=>{const k=toMK(r.month);if(k)D.riIncl[k]=r});});
-  await safe('ri_excl_tally',async()=>{(await ft('ri_excl_tally')).forEach(r=>{const k=toMK(r.month);if(k)D.riExcl[k]=r});});
+  setStep('Loading data...');
 
-  setStep('Financials...');
-  await safe('approved_monthly',async()=>{(await ft('approved_monthly')).forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.approvedM[k]=r['Sum of approved_amount']||0});});
-  await safe('os_monthly',async()=>{(await ft('os_monthly')).forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.osM[k]=r['Sum of requested_amount']||0});});
-  await safe('network_comm_monthly',async()=>{(await ft('network_comm_monthly')).forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.netCommM[k]=r['Sum of approved_amount']||0});});
-  await safe('approved_quarterly',async()=>{(await ft('approved_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.approvedQ[k]=r['Sum of approved_amount']||0});});
-  await safe('os_quarterly',async()=>{(await ft('os_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Sum of requested_amount']||0});});
-  await safe('network_comm_quarterly',async()=>{(await ft('network_comm_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.netCommQ[k]=r['Sum of approved_amount']||0});});
-  await safe('hospital_opd',async()=>{(await ft('hospital_opd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospOPD[k]=r.total_billed_amount||0});});
-  await safe('hospital_ipd',async()=>{(await ft('hospital_ipd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospIPD[k]=r.total_net_billed_amount||0});});
+  // Run all fetches in parallel — Apps Script handles each independently
+  await Promise.all([
+    safe('earned_premium',async()=>{
+      const rows=await ft('earned_premium');
+      rows.forEach(r=>{const m=r.month;if(!m)return;D.earnedExclM[m]=r.earned_excl_gst||0;D.earnedInclM[m]=r.earned_incl_gst||0;});
+      Object.entries(QM).forEach(([q,ms])=>{D.earnedExclQ[q]=ms.reduce((s,m)=>s+v(D.earnedExclM,m),0);D.earnedInclQ[q]=ms.reduce((s,m)=>s+v(D.earnedInclM,m),0);});
+      setStep('Earned premium ✓');renderSummary();renderLR();
+    }),
+    safe('ri_cl_combined',async()=>{(await ft('ri_cl_combined')).forEach(r=>{const k=toMK(r.month);if(k)D.riCL[k]=r});}),
+    safe('cashless',async()=>{(await ft('cashless')).forEach(r=>{const k=toMK(r.month);if(k)D.cashless[k]=r});}),
+    safe('ri_incl_tally',async()=>{(await ft('ri_incl_tally')).forEach(r=>{const k=toMK(r.month);if(k)D.riIncl[k]=r});}),
+    safe('ri_excl_tally',async()=>{(await ft('ri_excl_tally')).forEach(r=>{const k=toMK(r.month);if(k)D.riExcl[k]=r});}),
+    safe('approved_monthly',async()=>{(await ft('approved_monthly')).forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.approvedM[k]=r['Sum of approved_amount']||0});}),
+    safe('os_monthly',async()=>{(await ft('os_monthly')).forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.osM[k]=r['Sum of requested_amount']||0});}),
+    safe('network_comm_monthly',async()=>{(await ft('network_comm_monthly')).forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.netCommM[k]=r['Sum of approved_amount']||0});}),
+    safe('approved_quarterly',async()=>{(await ft('approved_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.approvedQ[k]=r['Sum of approved_amount']||0});}),
+    safe('os_quarterly',async()=>{(await ft('os_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Sum of requested_amount']||0});}),
+    safe('network_comm_quarterly',async()=>{(await ft('network_comm_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.netCommQ[k]=r['Sum of approved_amount']||0});}),
+    safe('hospital_opd',async()=>{(await ft('hospital_opd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospOPD[k]=r.total_billed_amount||0});}),
+    safe('hospital_ipd',async()=>{(await ft('hospital_ipd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospIPD[k]=r.total_net_billed_amount||0});}),
+    safe('internalisation',async()=>{D.internalisation=await ft('internalisation');}),
+  ]);
 
-  setStep('Internalisation...');
-  await safe('internalisation',async()=>{D.internalisation=await ft('internalisation');});
-
-  if(errs.length)({style:{display:'block'},textContent:'Failed: '+errs.join(', ')}=document.getElementById('errBanner'));
+  if(errs.length){const b=document.getElementById('errBanner');b.textContent='Failed: '+errs.join(', ');b.style.display='block';}
   document.getElementById('lastUpdated').textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   renderAll();
   document.getElementById('overlay').classList.add('hidden');
