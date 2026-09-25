@@ -4,404 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Even B2B Metrics</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
 <style>
 :root {
-  --bg:#0A0F1E;
-  --surface:#111827;
-  --surface2:#1a2236;
-  --border:#1f2d45;
-  --accent:#3B82F6;
-  --accent2:#10B981;
-  --danger:#EF4444;
-  --text:#F1F5F9;
-  --text2:#94A3B8;
-  --text3:#64748B;
-  --mono:'DM Mono',monospace;
-  --sans:'Inter',sans-serif;
+  --bg:#0A0F1E;--surface:#111827;--surface2:#1a2236;--border:#1f2d45;
+  --accent:#3B82F6;--accent2:#10B981;--danger:#EF4444;
+  --text:#F1F5F9;--text2:#94A3B8;--text3:#64748B;
+  --mono:'DM Mono',monospace;--sans:'Inter',sans-serif;
 }
-
-* {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-body {
-  font-family:var(--sans);
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  font-size:13px;
-}
-
-.header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:14px 24px;
-  border-bottom:1px solid var(--border);
-  background:var(--surface);
-  position:sticky;
-  top:0;
-  z-index:100;
-}
-
-.logo {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.logo-mark {
-  width:30px;
-  height:30px;
-  background:var(--accent);
-  border-radius:7px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:13px;
-  color:white;
-}
-
-.logo-text {
-  font-size:14px;
-  font-weight:600;
-}
-
-.logo-sub {
-  font-size:10px;
-  color:var(--text3);
-  margin-top:1px;
-}
-
-.header-right {
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.last-updated {
-  font-size:11px;
-  color:var(--text3);
-  font-family:var(--mono);
-}
-
-.btn {
-  background:var(--surface2);
-  border:1px solid var(--border);
-  color:var(--text2);
-  padding:5px 12px;
-  border-radius:6px;
-  font-size:12px;
-  cursor:pointer;
-  font-family:var(--sans);
-  transition:all 0.15s;
-}
-
-.btn:hover {
-  background:var(--border);
-  color:var(--text);
-}
-
-.tabs {
-  display:flex;
-  gap:2px;
-  padding:0 24px;
-  border-bottom:1px solid var(--border);
-  background:var(--surface);
-}
-
-.tab {
-  padding:10px 16px;
-  font-size:13px;
-  font-weight:500;
-  color:var(--text3);
-  cursor:pointer;
-  border-bottom:2px solid transparent;
-  transition:all 0.15s;
-  white-space:nowrap;
-}
-
-.tab:hover {
-  color:var(--text2);
-}
-
-.tab.active {
-  color:var(--accent);
-  border-bottom-color:var(--accent);
-}
-
-.main {
-  padding:20px 24px;
-}
-
-.tab-content {
-  display:none;
-}
-
-.tab-content.active {
-  display:block;
-}
-
-.controls {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:16px;
-}
-
-.section-title {
-  font-size:15px;
-  font-weight:600;
-}
-
-.controls-right {
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.toggle-group {
-  display:flex;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:6px;
-  overflow:hidden;
-}
-
-.toggle-btn {
-  padding:5px 12px;
-  font-size:12px;
-  font-weight:500;
-  color:var(--text3);
-  cursor:pointer;
-  transition:all 0.15s;
-  border:none;
-  background:transparent;
-  font-family:var(--sans);
-}
-
-.toggle-btn.active {
-  background:var(--accent);
-  color:white;
-}
-
-.params {
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-bottom:16px;
-  padding:12px 16px;
-  background:var(--surface2);
-  border:1px solid var(--border);
-  border-radius:8px;
-  align-items:center;
-}
-
-.param-item {
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.param-label {
-  font-size:11px;
-  color:var(--text2);
-  white-space:nowrap;
-}
-
-.param-input {
-  background:var(--bg);
-  border:1px solid var(--border);
-  color:var(--text);
-  padding:4px 8px;
-  border-radius:4px;
-  font-family:var(--mono);
-  font-size:12px;
-  width:70px;
-  text-align:center;
-}
-
-.param-input:focus {
-  outline:none;
-  border-color:var(--accent);
-}
-
-.table-wrap {
-  overflow-x:auto;
-  border:1px solid var(--border);
-  border-radius:10px;
-  margin-bottom:20px;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
-}
-
-thead tr {
-  background:var(--surface2);
-}
-
-thead th {
-  padding:9px 12px;
-  text-align:right;
-  font-weight:500;
-  color:var(--text3);
-  font-size:11px;
-  white-space:nowrap;
-  border-bottom:1px solid var(--border);
-}
-
-thead th:first-child {
-  text-align:left;
-}
-
-tbody tr {
-  border-bottom:1px solid var(--border);
-  transition:background 0.1s;
-}
-
-tbody tr:last-child {
-  border-bottom:none;
-}
-
-tbody tr:hover {
-  background:rgba(59,130,246,0.03);
-}
-
-tbody td {
-  padding:8px 12px;
-  text-align:right;
-  color:var(--text);
-  font-family:var(--mono);
-  font-size:12px;
-  white-space:nowrap;
-}
-
-tbody td:first-child {
-  text-align:left;
-  font-family:var(--sans);
-  font-weight:500;
-  color:var(--text2);
-}
-
-.editable-input {
-  background:transparent;
-  border:none;
-  color:var(--text);
-  font-family:var(--mono);
-  font-size:12px;
-  text-align:right;
-  width:100%;
-  padding:0;
-  min-width:60px;
-}
-
-.editable-input:focus {
-  outline:none;
-  background:rgba(59,130,246,0.1);
-  border-radius:3px;
-  padding:1px 4px;
-}
-
-.pos {
-  color:#34d399;
-}
-
-.neg {
-  color:#f87171;
-}
-
-.section-divider {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin:20px 0 14px;
-}
-
-.section-divider-title {
-  font-size:12px;
-  font-weight:600;
-  color:var(--text2);
-  white-space:nowrap;
-}
-
-.section-divider-line {
-  flex:1;
-  height:1px;
-  background:var(--border);
-}
-
-.manual-tag {
-  font-size:9px;
-  color:var(--text3);
-  font-family:var(--sans);
-  font-weight:400;
-  opacity:0.7;
-}
-
-.loading-overlay {
-  position:fixed;
-  inset:0;
-  background:rgba(10,15,30,0.9);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-  gap:16px;
-}
-
-.loading-overlay.hidden {
-  display:none;
-}
-
-.spinner {
-  width:36px;
-  height:36px;
-  border:3px solid var(--border);
-  border-top-color:var(--accent);
-  border-radius:50%;
-  animation:spin 0.7s linear infinite;
-}
-
-.loading-text {
-  font-size:13px;
-  color:var(--text2);
-}
-
-.loading-step {
-  font-size:11px;
-  color:var(--text3);
-  font-family:var(--mono);
-}
-
-@keyframes spin {
-  to {
-    transform:rotate(360deg);
-  }
-}
-
-.error-banner {
-  background:rgba(239,68,68,0.1);
-  border:1px solid rgba(239,68,68,0.3);
-  border-radius:6px;
-  padding:10px 14px;
-  font-size:12px;
-  color:#f87171;
-  margin-bottom:14px;
-  display:none;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:13px}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:30px;height:30px;background:var(--accent);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white}
+.logo-text{font-size:14px;font-weight:600}
+.logo-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.header-right{display:flex;align-items:center;gap:10px}
+.last-updated{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--sans);transition:all 0.15s}
+.btn:hover{background:var(--border);color:var(--text)}
+.tabs{display:flex;gap:2px;padding:0 24px;border-bottom:1px solid var(--border);background:var(--surface)}
+.tab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap}
+.tab:hover{color:var(--text2)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.main{padding:20px 24px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{font-size:15px;font-weight:600}
+.controls-right{display:flex;align-items:center;gap:8px}
+.toggle-group{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.toggle-btn{padding:5px 12px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;transition:all 0.15s;border:none;background:transparent;font-family:var(--sans)}
+.toggle-btn.active{background:var(--accent);color:white}
+.params{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;align-items:center}
+.param-item{display:flex;align-items:center;gap:8px}
+.param-label{font-size:11px;color:var(--text2);white-space:nowrap}
+.param-input{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:4px 8px;border-radius:4px;font-family:var(--mono);font-size:12px;width:70px;text-align:center}
+.param-input:focus{outline:none;border-color:var(--accent)}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:10px;margin-bottom:20px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:var(--surface2)}
+thead th{padding:9px 12px;text-align:right;font-weight:500;color:var(--text3);font-size:11px;white-space:nowrap;border-bottom:1px solid var(--border)}
+thead th:first-child{text-align:left}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(59,130,246,0.03)}
+tbody td{padding:8px 12px;text-align:right;color:var(--text);font-family:var(--mono);font-size:12px;white-space:nowrap}
+tbody td:first-child{text-align:left;font-family:var(--sans);font-weight:500;color:var(--text2)}
+.editable-input{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:12px;text-align:right;width:100%;padding:0;min-width:60px}
+.editable-input:focus{outline:none;background:rgba(59,130,246,0.1);border-radius:3px;padding:1px 4px}
+.pos{color:#34d399}.neg{color:#f87171}
+.section-divider{display:flex;align-items:center;gap:12px;margin:20px 0 14px}
+.section-divider-title{font-size:12px;font-weight:600;color:var(--text2);white-space:nowrap}
+.section-divider-line{flex:1;height:1px;background:var(--border)}
+.manual-tag{font-size:9px;color:var(--text3);font-family:var(--sans);font-weight:400;opacity:0.7}
+.loading-overlay{position:fixed;inset:0;background:rgba(10,15,30,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+.loading-overlay.hidden{display:none}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+.loading-text{font-size:13px;color:var(--text2)}
+.loading-step{font-size:11px;color:var(--text3);font-family:var(--mono)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-banner{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:10px 14px;font-size:12px;color:#f87171;margin-bottom:14px;display:none}
 </style>
 </head>
-
 <body>
 
 <div class="loading-overlay" id="loadingOverlay">
@@ -418,7 +83,6 @@ tbody td:first-child {
       <div class="logo-sub">Founders Dashboard · Live</div>
     </div>
   </div>
-
   <div class="header-right">
     <span class="last-updated" id="lastUpdated">Loading...</span>
     <button class="btn" onclick="loadAll()">↻ Refresh</button>
@@ -433,2731 +97,507 @@ tbody td:first-child {
 </div>
 
 <div class="main">
-
 <div class="error-banner" id="errorBanner"></div>
 
 <!-- SUMMARY -->
 <div class="tab-content active" id="tab-summary">
-
   <div class="controls">
     <div class="section-title">Financial Summary</div>
-
     <div class="controls-right">
       <div class="toggle-group">
-        <button class="toggle-btn active" onclick="setSummaryView('monthly',this)">
-          Monthly
-        </button>
-
-        <button class="toggle-btn" onclick="setSummaryView('quarterly',this)">
-          Quarterly
-        </button>
+        <button class="toggle-btn active" onclick="setSummaryView('monthly',this)">Monthly</button>
+        <button class="toggle-btn" onclick="setSummaryView('quarterly',this)">Quarterly</button>
       </div>
     </div>
   </div>
-
   <div class="params">
-    <div class="param-item">
-      <span class="param-label">Network Commission %</span>
-      <input
-        class="param-input"
-        id="networkPct"
-        value="12.5"
-        type="number"
-        step="0.1"
-        onchange="renderAll()"
-      >
-      <span class="param-label">%</span>
-    </div>
-
-    <div class="param-item">
-      <span class="param-label">IPD Revenue Split</span>
-      <input
-        class="param-input"
-        id="ipdSplit"
-        value="50"
-        type="number"
-        step="1"
-        onchange="renderAll()"
-      >
-      <span class="param-label">%</span>
-    </div>
+    <div class="param-item"><span class="param-label">Network Commission %</span><input class="param-input" id="networkPct" value="12.5" type="number" step="0.1" onchange="renderAll()"><span class="param-label">%</span></div>
+    <div class="param-item"><span class="param-label">IPD Revenue Split</span><input class="param-input" id="ipdSplit" value="50" type="number" step="1" onchange="renderAll()"><span class="param-label">%</span></div>
   </div>
-
   <div id="summary-monthly">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>GWP</th>
-            <th>GWP (incl GST)</th>
-            <th>Underwriting Profit</th>
-            <th>Servicing Fees <span class="manual-tag">✎</span></th>
-            <th>Network Commission</th>
-            <th>Hospital OPD</th>
-            <th>Hospital IPD</th>
-            <th>Cost Base <span class="manual-tag">✎</span></th>
-            <th>Net P&L</th>
-          </tr>
-        </thead>
-        <tbody id="body-summary-monthly"></tbody>
-      </table>
-    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Period</th><th>GWP</th><th>GWP (incl GST)</th><th>Underwriting Profit</th><th>Servicing Fees <span class="manual-tag">✎</span></th><th>Network Commission</th><th>Hospital OPD</th><th>Hospital IPD</th><th>Cost Base <span class="manual-tag">✎</span></th><th>Net P&L</th></tr></thead>
+      <tbody id="body-summary-monthly"></tbody>
+    </table></div>
   </div>
-
   <div id="summary-quarterly" style="display:none">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>GWP</th>
-            <th>GWP (incl GST)</th>
-            <th>Underwriting Profit</th>
-            <th>Servicing Fees <span class="manual-tag">✎</span></th>
-            <th>Network Commission</th>
-            <th>Hospital OPD</th>
-            <th>Hospital IPD</th>
-            <th>Cost Base <span class="manual-tag">✎</span></th>
-            <th>Net P&L</th>
-          </tr>
-        </thead>
-        <tbody id="body-summary-quarterly"></tbody>
-      </table>
-    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Period</th><th>GWP</th><th>GWP (incl GST)</th><th>Underwriting Profit</th><th>Servicing Fees <span class="manual-tag">✎</span></th><th>Network Commission</th><th>Hospital OPD</th><th>Hospital IPD</th><th>Cost Base <span class="manual-tag">✎</span></th><th>Net P&L</th></tr></thead>
+      <tbody id="body-summary-quarterly"></tbody>
+    </table></div>
   </div>
-
 </div>
-
 
 <!-- LOSS RATIOS -->
 <div class="tab-content" id="tab-lossratios">
-
   <div class="controls">
     <div class="section-title">Loss Ratios</div>
-
     <div class="controls-right">
       <div class="toggle-group">
-        <button class="toggle-btn active" onclick="setLRView('monthly',this)">
-          Monthly
-        </button>
-
-        <button class="toggle-btn" onclick="setLRView('quarterly',this)">
-          Quarterly
-        </button>
+        <button class="toggle-btn active" onclick="setLRView('monthly',this)">Monthly</button>
+        <button class="toggle-btn" onclick="setLRView('quarterly',this)">Quarterly</button>
       </div>
     </div>
   </div>
-
   <div class="params">
-    <div class="param-item">
-      <span class="param-label">ME + Brokerage Factor</span>
-
-      <input
-        class="param-input"
-        id="meFactor"
-        value="0.94"
-        type="number"
-        step="0.01"
-        onchange="renderAll()"
-      >
-
-      <span
-        class="param-label"
-        style="font-size:10px;color:var(--text3)"
-      >
-        (Earned Prem incl GST × factor)
-      </span>
-    </div>
+    <div class="param-item"><span class="param-label">ME + Brokerage Factor</span><input class="param-input" id="meFactor" value="0.94" type="number" step="0.01" onchange="renderAll()"><span class="param-label" style="font-size:10px;color:var(--text3)">(Earned Prem incl GST × factor)</span></div>
   </div>
-
   <div id="lr-monthly">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>Earned Prem (excl GST)</th>
-            <th>Earned Prem (incl GST)</th>
-            <th>Earned Prem (net)</th>
-            <th>Approved Claims</th>
-            <th>O/S Claims</th>
-            <th>Total Claims</th>
-            <th>IBNR % <span class="manual-tag">✎</span></th>
-            <th>Even Hosp Incurred</th>
-            <th>Hosp Limit Ded. <span class="manual-tag">✎</span></th>
-            <th>Loss Ratio</th>
-            <th>UW Profit</th>
-          </tr>
-        </thead>
-
-        <tbody id="body-lr-monthly"></tbody>
-      </table>
-    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Period</th><th>Earned Prem (excl GST)</th><th>Earned Prem (incl GST)</th><th>Earned Prem (net)</th><th>Approved Claims</th><th>O/S Claims</th><th>Total Claims</th><th>IBNR % <span class="manual-tag">✎</span></th><th>Even Hosp Incurred</th><th>Hosp Limit Ded. <span class="manual-tag">✎</span></th><th>Loss Ratio</th><th>UW Profit</th></tr></thead>
+      <tbody id="body-lr-monthly"></tbody>
+    </table></div>
   </div>
-
   <div id="lr-quarterly" style="display:none">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>Earned Prem (excl GST)</th>
-            <th>Earned Prem (incl GST)</th>
-            <th>Earned Prem (net)</th>
-            <th>Approved Claims</th>
-            <th>O/S Claims</th>
-            <th>Total Claims</th>
-            <th>IBNR % <span class="manual-tag">✎</span></th>
-            <th>Even Hosp Incurred</th>
-            <th>Hosp Limit Ded. <span class="manual-tag">✎</span></th>
-            <th>Loss Ratio</th>
-            <th>UW Profit</th>
-          </tr>
-        </thead>
-
-        <tbody id="body-lr-quarterly"></tbody>
-      </table>
-    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Period</th><th>Earned Prem (excl GST)</th><th>Earned Prem (incl GST)</th><th>Earned Prem (net)</th><th>Approved Claims</th><th>O/S Claims</th><th>Total Claims</th><th>IBNR % <span class="manual-tag">✎</span></th><th>Even Hosp Incurred</th><th>Hosp Limit Ded. <span class="manual-tag">✎</span></th><th>Loss Ratio</th><th>UW Profit</th></tr></thead>
+      <tbody id="body-lr-quarterly"></tbody>
+    </table></div>
   </div>
-
 </div>
-
 
 <!-- OPERATIONAL METRICS -->
 <div class="tab-content" id="tab-claims">
-
-  <div class="controls">
-    <div class="section-title">Operational Metrics on Claims</div>
-  </div>
-
+  <div class="controls"><div class="section-title">Operational Metrics on Claims</div></div>
+  <div class="section-divider"><div class="section-divider-title">Post Sales Team</div><div class="section-divider-line"></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Period</th><th>Chats + Tickets <span class="manual-tag">✎</span></th><th>First Response <span class="manual-tag">✎</span></th><th>Avg Response <span class="manual-tag">✎</span></th><th>CSAT <span class="manual-tag">✎</span></th><th>Base Cost <span class="manual-tag">✎</span></th><th>Cost / Chat</th></tr></thead>
+    <tbody id="body-postsales"></tbody>
+  </table></div>
+  <div class="section-divider"><div class="section-divider-title">Claims Team — Cashless + Reimbursements</div><div class="section-divider-line"></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Period</th><th>Claims Actioned</th><th>Requested ₹</th><th>Approved ₹</th><th>Base Cost <span class="manual-tag">✎</span></th><th>Cost / Claim</th></tr></thead>
+    <tbody id="body-claims-combined"></tbody>
+  </table></div>
   <div class="section-divider">
-    <div class="section-divider-title">Post Sales Team</div>
+    <div class="section-divider-title">Claims Team — Reimbursements</div>
     <div class="section-divider-line"></div>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Period</th>
-          <th>Chats + Tickets <span class="manual-tag">✎</span></th>
-          <th>First Response <span class="manual-tag">✎</span></th>
-          <th>Avg Response <span class="manual-tag">✎</span></th>
-          <th>CSAT <span class="manual-tag">✎</span></th>
-          <th>Base Cost <span class="manual-tag">✎</span></th>
-          <th>Cost / Chat</th>
-        </tr>
-      </thead>
-
-      <tbody id="body-postsales"></tbody>
-    </table>
-  </div>
-
-  <div class="section-divider">
-    <div class="section-divider-title">
-      Claims Team — Cashless + Reimbursements
-    </div>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Period</th>
-          <th>Claims Actioned</th>
-          <th>Requested ₹</th>
-          <th>Approved ₹</th>
-          <th>Base Cost <span class="manual-tag">✎</span></th>
-          <th>Cost / Claim</th>
-        </tr>
-      </thead>
-
-      <tbody id="body-claims-combined"></tbody>
-    </table>
-  </div>
-
-  <div class="section-divider">
-    <div class="section-divider-title">
-      Claims Team — Reimbursements
-    </div>
-
-    <div class="section-divider-line"></div>
-
     <div class="toggle-group">
-      <button
-        class="toggle-btn active"
-        onclick="setRIView('incl',this)"
-      >
-        Incl. Tally
-      </button>
-
-      <button
-        class="toggle-btn"
-        onclick="setRIView('excl',this)"
-      >
-        Excl. Tally
-      </button>
+      <button class="toggle-btn active" onclick="setRIView('incl',this)">Incl. Tally</button>
+      <button class="toggle-btn" onclick="setRIView('excl',this)">Excl. Tally</button>
     </div>
   </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Period</th>
-          <th>Claims Actioned</th>
-          <th>Requested ₹</th>
-          <th>Approved ₹</th>
-          <th>Rejected ₹</th>
-          <th>Claims Paid</th>
-          <th>Queried</th>
-          <th>Rejected #</th>
-          <th>TAT <span class="manual-tag">✎</span></th>
-          <th>Approval %</th>
-          <th>Rejected Amt %</th>
-          <th>Rejected # %</th>
-        </tr>
-      </thead>
-
-      <tbody id="body-ri"></tbody>
-    </table>
-  </div>
-
-  <div class="section-divider">
-    <div class="section-divider-title">
-      Claims Team — Cashless
-    </div>
-
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Period</th>
-          <th>Claims Actioned</th>
-          <th>Requested ₹</th>
-          <th>Approved ₹</th>
-        </tr>
-      </thead>
-
-      <tbody id="body-cashless"></tbody>
-    </table>
-  </div>
-
+  <div class="table-wrap"><table>
+    <thead><tr><th>Period</th><th>Claims Actioned</th><th>Requested ₹</th><th>Approved ₹</th><th>Rejected ₹</th><th>Claims Paid</th><th>Queried</th><th>Rejected #</th><th>TAT <span class="manual-tag">✎</span></th><th>Approval %</th><th>Rejected Amt %</th><th>Rejected # %</th></tr></thead>
+    <tbody id="body-ri"></tbody>
+  </table></div>
+  <div class="section-divider"><div class="section-divider-title">Claims Team — Cashless</div><div class="section-divider-line"></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Period</th><th>Claims Actioned</th><th>Requested ₹</th><th>Approved ₹</th></tr></thead>
+    <tbody id="body-cashless"></tbody>
+  </table></div>
 </div>
-
 
 <!-- INTERNALISATION -->
 <div class="tab-content" id="tab-internalisation">
-
-  <div class="controls">
-    <div class="section-title">Internalisation</div>
-  </div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Period</th>
-          <th>Total Lives</th>
-          <th>Downloaded</th>
-          <th>BLR Lives</th>
-          <th>10km Hospital Lives</th>
-          <th>Volume (CL+RI)</th>
-          <th>Amount (CL+RI)</th>
-          <th>Volume (TC)</th>
-          <th>Amount (TC)</th>
-          <th>Even TC</th>
-          <th>Even TC Amount</th>
-          <th>Non EHRC OPD</th>
-          <th>Non EHRC OPD Amount</th>
-        </tr>
-      </thead>
-
-      <tbody id="body-internalisation"></tbody>
-    </table>
-  </div>
-
+  <div class="controls"><div class="section-title">Internalisation</div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Period</th><th>Total Lives</th><th>Downloaded</th><th>BLR Lives</th><th>10km Hospital Lives</th><th>Volume (CL+RI)</th><th>Amount (CL+RI)</th><th>Volume (TC)</th><th>Amount (TC)</th><th>Even TC</th><th>Even TC Amount</th><th>Non EHRC OPD</th><th>Non EHRC OPD Amount</th></tr></thead>
+    <tbody id="body-internalisation"></tbody>
+  </table></div>
 </div>
 
 </div>
-
 
 <script>
-
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
+const VERCEL = 'https://even-b2b-metrics.vercel.app';
 
-const APPS_SCRIPT_URL =
-  'https://script.google.com/a/macros/even.in/s/AKfycbyavB34D873t5rCtudHoja93bwpi8XfD_IXVjsQPAPHPNOLBgcIbPIbouqJJiF-yQNqfw/exec';
+const sheetUrl = (tab) => `${VERCEL}/api/metabase?tab=${tab}`;
+const masterUrl = () => `${VERCEL}/api/metabase?master=1`;
 
-const sheetUrl = (tab) =>
-  `${APPS_SCRIPT_URL}?tab=${encodeURIComponent(tab)}`;
-
-const masterUrl = () =>
-  `${APPS_SCRIPT_URL}?master=1`;
-
-const MONTHS = [
-  'Jan 2026',
-  'Feb 2026',
-  'Mar 2026',
-  'Apr 2026',
-  'May 2026',
-  'Jun 2026',
-  'Jul 2026',
-  'Aug 2026',
-  'Sep 2026'
-];
-
-const QUARTERS = [
-  "Q1'25",
-  "Q2'25",
-  "Q3'25",
-  "Q4'25",
-  "Q1'26",
-  "Q2'26",
-  "Q3'26"
-];
-
+const MONTHS = ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026','Jul 2026','Aug 2026','Sep 2026'];
+const QUARTERS = ["Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
 
 // ══════════════════════════════════════════════
 // DATA STORE
 // ══════════════════════════════════════════════
-
 const D = {
-  gwpM:{},
-  gwpInclM:{},
-  gwpQ:{},
-  gwpInclQ:{},
-
-  earnedExclM:{},
-  earnedInclM:{},
-  earnedExclQ:{},
-  earnedInclQ:{},
-
-  approvedM:{},
-  osM:{},
-  netCommM:{},
-
-  approvedQ:{},
-  osQ:{},
-  netCommQ:{},
-
-  hospOPD:{},
-  hospIPD:{},
-
-  riCL:{},
-  cashless:{},
-  riIncl:{},
-  riExcl:{},
-
-  internalisation:[]
+  gwpM:{}, gwpInclM:{}, gwpQ:{}, gwpInclQ:{},
+  earnedExclM:{}, earnedInclM:{}, earnedExclQ:{}, earnedInclQ:{},
+  approvedM:{}, osM:{}, netCommM:{},
+  approvedQ:{}, osQ:{}, netCommQ:{},
+  hospOPD:{}, hospIPD:{},
+  riCL:{}, cashless:{}, riIncl:{}, riExcl:{},
+  internalisation:[],
 };
-
 
 // ══════════════════════════════════════════════
 // MANUAL STATE
 // ══════════════════════════════════════════════
-
 const M = {
-
-  servicingFees:{
-    'Jan 2026':130000,
-    'Feb 2026':130000,
-    'Mar 2026':130000,
-    'Apr 2026':160000,
-    'May 2026':160000,
-    'Jun 2026':160000,
-    'Jul 2026':160000,
-    'Aug 2026':160000,
-    'Sep 2026':160000
-  },
-
-  costBase:{
-    'Jan 2026':2113674,
-    'Feb 2026':2230166,
-    'Mar 2026':2319472,
-    'Apr 2026':2637532,
-    'May 2026':3143645,
-    'Jun 2026':3505219,
-    'Jul 2026':3935594,
-    'Aug 2026':3935594,
-    'Sep 2026':3990917
-  },
-
-  costBaseQ:{
-    "Q1'25":0,
-    "Q2'25":0,
-    "Q3'25":0,
-    "Q4'25":0,
-    "Q1'26":6663313,
-    "Q2'26":9286396,
-    "Q3'26":7871189
-  },
-
-  ibnr:{
-    'Jan 2026':0,
-    'Feb 2026':0.70,
-    'Mar 2026':1.00,
-    'Apr 2026':1.50,
-    'May 2026':2.50,
-    'Jun 2026':3.00,
-    'Jul 2026':5.00,
-    'Aug 2026':15.00,
-    'Sep 2026':15.00
-  },
-
-  ibnrQ:{
-    "Q1'25":0,
-    "Q2'25":0,
-    "Q3'25":0,
-    "Q4'25":0,
-    "Q1'26":1.50,
-    "Q2'26":7.00,
-    "Q3'26":7.00
-  },
-
-  hospLimitDed:{
-    'Jan 2026':0,
-    'Feb 2026':0,
-    'Mar 2026':0,
-    'Apr 2026':0,
-    'May 2026':0,
-    'Jun 2026':0,
-    'Jul 2026':312403,
-    'Aug 2026':216281,
-    'Sep 2026':0
-  },
-
-  hospLimitDedQ:{
-    "Q1'25":0,
-    "Q2'25":0,
-    "Q3'25":0,
-    "Q4'25":0,
-    "Q1'26":0,
-    "Q2'26":0,
-    "Q3'26":528684
-  },
-
-  chats:{
-    'Jan 2026':6142,
-    'Feb 2026':7078,
-    'Mar 2026':7284,
-    'Apr 2026':7364,
-    'May 2026':11448,
-    'Jun 2026':21583,
-    'Jul 2026':14934,
-    'Aug 2026':19070,
-    'Sep 2026':19070
-  },
-
-  firstResponse:{
-    'Jan 2026':'27s',
-    'Feb 2026':'20s',
-    'Mar 2026':'31s',
-    'Apr 2026':'29s',
-    'May 2026':'34s',
-    'Jun 2026':'42s',
-    'Jul 2026':'28s',
-    'Aug 2026':'26s',
-    'Sep 2026':'26s'
-  },
-
-  avgResponse:{
-    'Jan 2026':'38s',
-    'Feb 2026':'44s',
-    'Mar 2026':'51s',
-    'Apr 2026':'59s',
-    'May 2026':'1m31s',
-    'Jun 2026':'1m39s',
-    'Jul 2026':'1m12s',
-    'Aug 2026':'1m5s',
-    'Sep 2026':'1m5s'
-  },
-
-  csat:{
-    'Jan 2026':4.57,
-    'Feb 2026':4.58,
-    'Mar 2026':4.53,
-    'Apr 2026':4.47,
-    'May 2026':4.35,
-    'Jun 2026':4.08,
-    'Jul 2026':4.37,
-    'Aug 2026':4.36,
-    'Sep 2026':4.36
-  },
-
-  postSalesCost:{
-    'Jan 2026':221833,
-    'Feb 2026':221833,
-    'Mar 2026':246833,
-    'Apr 2026':419833,
-    'May 2026':516916,
-    'Jun 2026':675475,
-    'Jul 2026':714417,
-    'Aug 2026':714417,
-    'Sep 2026':714417
-  },
-
-  claimsBaseCost:{
-    'Jan 2026':33375,
-    'Feb 2026':66750,
-    'Mar 2026':66750,
-    'Apr 2026':164750,
-    'May 2026':202250,
-    'Jun 2026':300750,
-    'Jul 2026':404094,
-    'Aug 2026':390000,
-    'Sep 2026':390000
-  },
-
-  tat:{
-    'Jan 2026':'2.06d',
-    'Feb 2026':'2.16d',
-    'Mar 2026':'2.93d',
-    'Apr 2026':'4.6d',
-    'May 2026':'7.85d',
-    'Jun 2026':'6.45d',
-    'Jul 2026':'3.5d',
-    'Aug 2026':'2.9d',
-    'Sep 2026':'—'
-  }
+  servicingFees:{'Jan 2026':130000,'Feb 2026':130000,'Mar 2026':130000,'Apr 2026':160000,'May 2026':160000,'Jun 2026':160000,'Jul 2026':160000,'Aug 2026':160000,'Sep 2026':160000},
+  costBase:{'Jan 2026':2113674,'Feb 2026':2230166,'Mar 2026':2319472,'Apr 2026':2637532,'May 2026':3143645,'Jun 2026':3505219,'Jul 2026':3935594,'Aug 2026':3935594,'Sep 2026':3990917},
+  costBaseQ:{"Q1'25":0,"Q2'25":0,"Q3'25":0,"Q4'25":0,"Q1'26":6663313,"Q2'26":9286396,"Q3'26":7871189},
+  ibnr:{'Jan 2026':0,'Feb 2026':0.70,'Mar 2026':1.00,'Apr 2026':1.50,'May 2026':2.50,'Jun 2026':3.00,'Jul 2026':5.00,'Aug 2026':15.00,'Sep 2026':15.00},
+  ibnrQ:{"Q1'25":0,"Q2'25":0,"Q3'25":0,"Q4'25":0,"Q1'26":1.50,"Q2'26":7.00,"Q3'26":7.00},
+  hospLimitDed:{'Jan 2026':0,'Feb 2026':0,'Mar 2026':0,'Apr 2026':0,'May 2026':0,'Jun 2026':0,'Jul 2026':312403,'Aug 2026':216281,'Sep 2026':0},
+  hospLimitDedQ:{"Q1'25":0,"Q2'25":0,"Q3'25":0,"Q4'25":0,"Q1'26":0,"Q2'26":0,"Q3'26":528684},
+  chats:{'Jan 2026':6142,'Feb 2026':7078,'Mar 2026':7284,'Apr 2026':7364,'May 2026':11448,'Jun 2026':21583,'Jul 2026':14934,'Aug 2026':19070,'Sep 2026':19070},
+  firstResponse:{'Jan 2026':'27s','Feb 2026':'20s','Mar 2026':'31s','Apr 2026':'29s','May 2026':'34s','Jun 2026':'42s','Jul 2026':'28s','Aug 2026':'26s','Sep 2026':'26s'},
+  avgResponse:{'Jan 2026':'38s','Feb 2026':'44s','Mar 2026':'51s','Apr 2026':'59s','May 2026':'1m31s','Jun 2026':'1m39s','Jul 2026':'1m12s','Aug 2026':'1m5s','Sep 2026':'1m5s'},
+  csat:{'Jan 2026':4.57,'Feb 2026':4.58,'Mar 2026':4.53,'Apr 2026':4.47,'May 2026':4.35,'Jun 2026':4.08,'Jul 2026':4.37,'Aug 2026':4.36,'Sep 2026':4.36},
+  postSalesCost:{'Jan 2026':221833,'Feb 2026':221833,'Mar 2026':246833,'Apr 2026':419833,'May 2026':516916,'Jun 2026':675475,'Jul 2026':714417,'Aug 2026':714417,'Sep 2026':714417},
+  claimsBaseCost:{'Jan 2026':33375,'Feb 2026':66750,'Mar 2026':66750,'Apr 2026':164750,'May 2026':202250,'Jun 2026':300750,'Jul 2026':404094,'Aug 2026':390000,'Sep 2026':390000},
+  tat:{'Jan 2026':'2.06d','Feb 2026':'2.16d','Mar 2026':'2.93d','Apr 2026':'4.6d','May 2026':'7.85d','Jun 2026':'6.45d','Jul 2026':'3.5d','Aug 2026':'2.9d','Sep 2026':'—'},
 };
 
-let summaryView = 'monthly';
-let lrView = 'monthly';
-let riView = 'incl';
-
+let summaryView='monthly', lrView='monthly', riView='incl';
 
 // ══════════════════════════════════════════════
 // UTILS
 // ══════════════════════════════════════════════
-
-const fmt = (n, dec = 0) => {
-  if (!n && n !== 0) return '—';
-  if (n === 0) return '—';
-
-  return '₹' + Number(n).toLocaleString('en-IN', {
-    maximumFractionDigits:dec
-  });
-};
-
-const fmtN = (n) => {
-  if (!n && n !== 0) return '—';
-
-  return Number(n).toLocaleString('en-IN');
-};
-
-const fmtP = (n, dec = 2) => {
-  if (n === null || n === undefined || isNaN(n)) {
-    return '—';
-  }
-
-  return Number(n).toFixed(dec) + '%';
-};
-
-const pC = (n) =>
-  n > 0 ? 'pos' :
-  n < 0 ? 'neg' :
-  '';
-
-const v = (obj, k) =>
-  obj?.[k] ?? 0;
-
+const fmt=(n,dec=0)=>{if(!n&&n!==0)return'—';if(n===0)return'—';return'₹'+Number(n).toLocaleString('en-IN',{maximumFractionDigits:dec})};
+const fmtN=(n)=>{if(!n&&n!==0)return'—';return Number(n).toLocaleString('en-IN')};
+const fmtP=(n,dec=2)=>{if(n===null||n===undefined||isNaN(n))return'—';return Number(n).toFixed(dec)+'%'};
+const pC=(n)=>n>0?'pos':n<0?'neg':'';
+const v=(obj,k)=>obj?.[k]??0;
 
 function toMonthKey(dateStr) {
-
   if (!dateStr) return null;
-
-  const d = new Date(
-    String(dateStr).replace('+05:30','')
-  );
-
+  const d = new Date(dateStr.replace('+05:30',''));
   if (isNaN(d)) return null;
-
   return `${d.toLocaleString('en-US',{month:'short'})} ${d.getFullYear()}`;
 }
 
-
 function toQuarterKey(dateStr) {
-
   if (!dateStr) return null;
-
-  const d = new Date(
-    String(dateStr).replace('+05:30','')
-  );
-
+  const d = new Date(dateStr.replace('+05:30',''));
   if (isNaN(d)) return null;
-
-  const y = d.getFullYear();
-  const q = Math.floor(d.getMonth() / 3) + 1;
-
+  const y = d.getFullYear(); const q = Math.floor(d.getMonth()/3)+1;
   return `Q${q}'${String(y).slice(2)}`;
 }
-
 
 // ══════════════════════════════════════════════
 // CSV PARSER
 // ══════════════════════════════════════════════
-
 function parseCSV(text) {
-
-  const cleanText = String(text || '').trim();
-
-  if (!cleanText) return [];
-
-  const lines = cleanText.split(/\r?\n/);
-
+  const lines = text.trim().split('\n');
   if (lines.length < 2) return [];
-
-  const parseCSVLine = (line) => {
-
-    const values = [];
-    let current = '';
-    let insideQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-
-      const char = line[i];
-
-      if (char === '"') {
-
-        if (insideQuotes && line[i + 1] === '"') {
-          current += '"';
-          i++;
-        } else {
-          insideQuotes = !insideQuotes;
-        }
-
-      } else if (char === ',' && !insideQuotes) {
-
-        values.push(current);
-        current = '';
-
-      } else {
-
-        current += char;
-      }
-    }
-
-    values.push(current);
-
-    return values;
-  };
-
-
-  const headers = parseCSVLine(lines[0]).map(h =>
-    String(h || '').trim()
-  );
-
-
-  return lines
-    .slice(1)
-    .map(line => {
-
-      const vals = parseCSVLine(line);
-      const row = {};
-
-      headers.forEach((h, i) => {
-
-        let value = vals[i] ?? '';
-
-        value = String(value)
-          .replace(/^"|"$/g,'')
-          .trim();
-
-        if (value === '') {
-          row[h] = '';
-        } else if (!isNaN(value)) {
-          row[h] = Number(value);
-        } else {
-          row[h] = value;
-        }
-      });
-
-      return row;
-
-    })
-    .filter(row =>
-      Object.values(row).some(
-        value => value !== '' && value !== null && value !== undefined
-      )
-    );
+  const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim());
+  return lines.slice(1).map(line => {
+    const vals = line.match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g) || [];
+    const row = {};
+    headers.forEach((h,i) => {
+      let v = (vals[i]||'').replace(/^"|"$/g,'').trim();
+      row[h] = isNaN(v)||v==='' ? v : Number(v);
+    });
+    return row;
+  }).filter(r => Object.values(r).some(v => v !== '' && v !== null));
 }
 
-
-// ══════════════════════════════════════════════
-// FETCH CSV FROM APPS SCRIPT
-// ══════════════════════════════════════════════
-
-// Limit concurrent Apps Script requests so multiple large Sheets do not
-// overwhelm the Apps Script web app at the same time.
-const APPS_SCRIPT_MAX_CONCURRENT = 2;
-let appsScriptActive = 0;
-const appsScriptQueue = [];
-
-function fetchCSV(url) {
-  return new Promise((resolve, reject) => {
-    appsScriptQueue.push({ url, resolve, reject });
-    pumpAppsScriptQueue();
-  });
+async function fetchCSV(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`Failed: ${url}`);
+  return parseCSV(await r.text());
 }
 
-function pumpAppsScriptQueue() {
-  while (appsScriptActive < APPS_SCRIPT_MAX_CONCURRENT && appsScriptQueue.length > 0) {
-    const job = appsScriptQueue.shift();
-    appsScriptActive++;
-    fetchCSVOnce(job.url)
-      .then(job.resolve)
-      .catch(job.reject)
-      .finally(() => {
-        appsScriptActive--;
-        pumpAppsScriptQueue();
-      });
-  }
-}
-
-function fetchCSVOnce(url, attempt = 0) {
-  return new Promise((resolve, reject) => {
-    const callback = '__appsScriptCb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-    const script = document.createElement('script');
-    const cleanup = () => {
-      delete window[callback];
-      script.remove();
-    };
-
-    const retry = (message) => {
-      cleanup();
-      if (attempt < 2) {
-        setTimeout(() => {
-          fetchCSVOnce(url, attempt + 1).then(resolve).catch(reject);
-        }, 1000 * (attempt + 1));
-      } else {
-        reject(new Error(message));
-      }
-    };
-
-    const timer = setTimeout(() => retry('Timed out loading Apps Script'), 45000);
-
-    window[callback] = (payload) => {
-      clearTimeout(timer);
-      cleanup();
-      if (payload && payload.error) {
-        reject(new Error(payload.error));
-        return;
-      }
-      try {
-        resolve(parseCSV(String(payload || '')));
-      } catch (e) {
-        reject(e);
-      }
-    };
-
-    script.onerror = () => {
-      clearTimeout(timer);
-      retry('Apps Script request failed');
-    };
-
-    const separator = url.includes('?') ? '&' : '?';
-    script.src = url + separator + 'callback=' + encodeURIComponent(callback) + '&_ts=' + Date.now();
-    document.head.appendChild(script);
-  });
-}
-
-
 // ══════════════════════════════════════════════
-// PARSE MASTER LIST
-// GWP + EARNED PREMIUM
+// PARSE MASTER LIST FOR GWP + EARNED PREMIUM
 // ══════════════════════════════════════════════
-
 function parseMasterList(rows) {
-
-  const OPD = [
-    'even opd',
-    'hcu'
-  ];
-
-
-  const gwpM = {};
-  const gwpIM = {};
-  const gwpQ = {};
-  const gwpIQ = {};
-
-  const epExclM = {};
-  const epInclM = {};
-  const epExclQ = {};
-  const epInclQ = {};
-
-
-  // ────────────────────────────────────────────
-  // MONTH RANGES
-  // ────────────────────────────────────────────
+  const OPD = ['even opd','hcu','even hcu','hcu on utilisation'];
+  const gwpM={},gwpIM={},gwpQ={},gwpIQ={};
+  const epExclM={},epInclM={},epExclQ={},epInclQ={};
 
   const monthRanges = {
-
-    'Jan 2026': [
-      new Date(2026,0,1),
-      new Date(2026,0,31)
-    ],
-
-    'Feb 2026': [
-      new Date(2026,1,1),
-      new Date(2026,1,28)
-    ],
-
-    'Mar 2026': [
-      new Date(2026,2,1),
-      new Date(2026,2,31)
-    ],
-
-    'Apr 2026': [
-      new Date(2026,3,1),
-      new Date(2026,3,30)
-    ],
-
-    'May 2026': [
-      new Date(2026,4,1),
-      new Date(2026,4,31)
-    ],
-
-    'Jun 2026': [
-      new Date(2026,5,1),
-      new Date(2026,5,30)
-    ],
-
-    'Jul 2026': [
-      new Date(2026,6,1),
-      new Date(2026,6,31)
-    ],
-
-    'Aug 2026': [
-      new Date(2026,7,1),
-      new Date(2026,7,31)
-    ],
-
-    'Sep 2026': [
-      new Date(2026,8,1),
-      new Date(2026,8,30)
-    ]
-
+    'Jan 2026':[new Date('2026-01-01'),new Date('2026-01-31')],
+    'Feb 2026':[new Date('2026-02-01'),new Date('2026-02-28')],
+    'Mar 2026':[new Date('2026-03-01'),new Date('2026-03-31')],
+    'Apr 2026':[new Date('2026-04-01'),new Date('2026-04-30')],
+    'May 2026':[new Date('2026-05-01'),new Date('2026-05-31')],
+    'Jun 2026':[new Date('2026-06-01'),new Date('2026-06-30')],
+    'Jul 2026':[new Date('2026-07-01'),new Date('2026-07-31')],
+    'Aug 2026':[new Date('2026-08-01'),new Date('2026-08-31')],
+    'Sep 2026':[new Date('2026-09-01'),new Date('2026-09-30')],
   };
-
-
-  // ────────────────────────────────────────────
-  // QUARTER RANGES
-  // ────────────────────────────────────────────
-
   const quarterRanges = {
-
-    "Q1'25": [
-      new Date(2025,0,1),
-      new Date(2025,2,31)
-    ],
-
-    "Q2'25": [
-      new Date(2025,3,1),
-      new Date(2025,5,30)
-    ],
-
-    "Q3'25": [
-      new Date(2025,6,1),
-      new Date(2025,8,30)
-    ],
-
-    "Q4'25": [
-      new Date(2025,9,1),
-      new Date(2025,11,31)
-    ],
-
-    "Q1'26": [
-      new Date(2026,0,1),
-      new Date(2026,2,31)
-    ],
-
-    "Q2'26": [
-      new Date(2026,3,1),
-      new Date(2026,5,30)
-    ],
-
-    "Q3'26": [
-      new Date(2026,6,1),
-      new Date(2026,8,30)
-    ]
-
+    "Q1'25":[new Date('2025-01-01'),new Date('2025-03-31')],
+    "Q2'25":[new Date('2025-04-01'),new Date('2025-06-30')],
+    "Q3'25":[new Date('2025-07-01'),new Date('2025-09-30')],
+    "Q4'25":[new Date('2025-10-01'),new Date('2025-12-31')],
+    "Q1'26":[new Date('2026-01-01'),new Date('2026-03-31')],
+    "Q2'26":[new Date('2026-04-01'),new Date('2026-06-30')],
+    "Q3'26":[new Date('2026-07-01'),new Date('2026-09-30')],
   };
 
-
-  // ────────────────────────────────────────────
-  // HELPERS
-  // ────────────────────────────────────────────
-
-  const daysOverlap = (
-    policyStart,
-    policyEnd,
-    periodStart,
-    periodEnd
-  ) => {
-
-    const overlapStart = Math.max(
-      policyStart.getTime(),
-      periodStart.getTime()
-    );
-
-    const overlapEnd = Math.min(
-      policyEnd.getTime(),
-      periodEnd.getTime()
-    );
-
-    if (overlapEnd < overlapStart) {
-      return 0;
-    }
-
-    return Math.floor(
-      (overlapEnd - overlapStart) / 86400000
-    ) + 1;
-  };
-
-
-  const parseAmt = (value) => {
-
-    if (
-      value === null ||
-      value === undefined
-    ) {
-      return 0;
-    }
-
-    const cleaned = String(value)
-      .replace(/₹/g,'')
-      .replace(/,/g,'')
-      .replace(/\s/g,'')
-      .trim();
-
-    if (
-      !cleaned ||
-      cleaned === '-'
-    ) {
-      return 0;
-    }
-
-    const n = parseFloat(cleaned);
-
-    return isNaN(n) ? 0 : n;
-  };
-
-
-  const parseDate = (value) => {
-
-    if (!value) return null;
-
-    const s = String(value).trim();
-
-    if (
-      !s ||
-      s === '-'
-    ) {
-      return null;
-    }
-
-
-    // DD/MM/YYYY
-    const match = s.match(
-      /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
-    );
-
-
-    if (match) {
-
-      const day = Number(match[1]);
-      const month = Number(match[2]) - 1;
-      const year = Number(match[3]);
-
-      const d = new Date(
-        year,
-        month,
-        day
-      );
-
-
-      // Validate date
-      if (
-        d.getFullYear() !== year ||
-        d.getMonth() !== month ||
-        d.getDate() !== day
-      ) {
-        return null;
-      }
-
-      return d;
-    }
-
-
-    // Fallback
-    const d = new Date(s);
-
-    if (isNaN(d.getTime())) {
-      return null;
-    }
-
-    return d;
-  };
-
-
-  // ────────────────────────────────────────────
-  // PROCESS MASTER LIST
-  // ────────────────────────────────────────────
+  const daysOverlap=(ps,pe,ms,me)=>Math.max(0,(Math.min(pe,me)-Math.max(ps,ms))/86400000+1);
+  const parseAmt=(s)=>parseFloat(String(s||'').replace(/[₹,\s\-]/g,''))||0;
 
   rows.forEach(row => {
+    const pType = String(row['Policy type']||row['policy type']||'').toLowerCase();
+    if (!OPD.some(t=>pType.includes(t))) return;
 
-    const pType = String(
-      row['Policy type'] ||
-      row['policy type'] ||
-      ''
-    )
-      .trim()
-      .toLowerCase();
+    const rm = String(row['Renewal Month']||row['renewal month']||'').trim().replace('-',' ');
+    const q = String(row['Quarter']||row['quarter']||'').trim();
+    const ip = parseAmt(row['Inception Premium']||row['inception premium']);
+    const ipGST = parseAmt(row['Inception Premium (inc GST)']||row['inception premium (inc gst)']);
+    if (!ip && !ipGST) return;
 
-
-    // Only Even OPD / HCU policies.
-    // Tally policies are excluded from Earned Premium and GWP.
-    const orgName = String(
-      row['Org Name'] ||
-      row['org name'] ||
-      ''
-    ).trim().toLowerCase();
-
-    if (
-      !OPD.some(
-        type => pType.includes(type)
-      ) ||
-      orgName.includes('tally')
-    ) {
-      return;
-    }
-
-
-    // ─────────────────────────────────────────
-    // PREMIUM
-    // ─────────────────────────────────────────
-
-    const ip = parseAmt(
-      row['Inception Premium'] ||
-      row['inception premium']
-    );
-
-
-    const ipGST = parseAmt(
-      row['Inception Premium (inc GST)'] ||
-      row['inception premium (inc gst)']
-    );
-
-
-    // Nothing to add if both premiums are missing
-    if (!ip && !ipGST) {
-      return;
-    }
-
-
-    // ─────────────────────────────────────────
-    // GWP
-    //
-    // Renewal Month is one year AFTER
-    // the GWP month.
-    //
-    // Jan-2027 renewal
-    //        ↓
-    // Jan-2026 GWP
-    // ─────────────────────────────────────────
-
-    const renewalMonth = String(
-      row['Renewal Month'] ||
-      row['renewal month'] ||
-      ''
-    ).trim();
-
-
-    const q = String(
-      row['Quarter'] ||
-      row['quarter'] ||
-      ''
-    ).trim();
-
-
-    if (renewalMonth) {
-
-      const match = renewalMonth.match(
-        /^([A-Za-z]{3})-(\d{4})$/
-      );
-
-
-      if (match) {
-
-        const monthName = match[1];
-        const renewalYear = Number(match[2]);
-
-        const validMonths = [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec'
-        ];
-
-
-        if (
-          validMonths.includes(monthName) &&
-          renewalYear > 0
-        ) {
-
-          const gwpYear =
-            renewalYear - 1;
-
-          const gwpMonth =
-            `${monthName} ${gwpYear}`;
-
-
-          gwpM[gwpMonth] =
-            (gwpM[gwpMonth] || 0) + ip;
-
-
-          gwpIM[gwpMonth] =
-            (gwpIM[gwpMonth] || 0) + ipGST;
-        }
+    // GWP — books one year before renewal month (e.g. renewal Jan-2027 → GWP Jan 2026)
+    if (rm) {
+      const parts = rm.split(' ');
+      if (parts.length === 2) {
+        const gwpKey = parts[0] + ' ' + (parseInt(parts[1]) - 1);
+        gwpM[gwpKey] = (gwpM[gwpKey]||0) + ip;
+        gwpIM[gwpKey] = (gwpIM[gwpKey]||0) + ipGST;
       }
     }
+    if (q) { gwpQ[q]=(gwpQ[q]||0)+ip; gwpIQ[q]=(gwpIQ[q]||0)+ipGST; }
 
+    // Earned Premium
+    const startD=new Date(String(row['Start Date']||row['start date']||'').replace(/(\d+)\/(\d+)\/(\d+)/,'$3-$2-$1'));
+    const endD=new Date(String(row['End Date']||row['end date']||'').replace(/(\d+)\/(\d+)\/(\d+)/,'$3-$2-$1'));
+    if (isNaN(startD)||isNaN(endD)) return;
+    const totalDays=(endD-startD)/86400000+1;
+    if (totalDays<=0) return;
+    const pdExcl=ip/totalDays, pdIncl=ipGST/totalDays;
 
-    // ─────────────────────────────────────────
-    // QUARTERLY GWP
-    // Uses Master List Quarter directly.
-    // ─────────────────────────────────────────
-
-    if (q) {
-
-      gwpQ[q] =
-        (gwpQ[q] || 0) + ip;
-
-      gwpIQ[q] =
-        (gwpIQ[q] || 0) + ipGST;
+    for (const [m,[ms,me]] of Object.entries(monthRanges)) {
+      const d=daysOverlap(startD,endD,ms,me);
+      epExclM[m]=(epExclM[m]||0)+pdExcl*d;
+      epInclM[m]=(epInclM[m]||0)+pdIncl*d;
     }
-
-
-    // ─────────────────────────────────────────
-    // EARNED PREMIUM
-    //
-    // Earned Premium is historical and is based
-    // ONLY on the policy's actual Start Date and
-    // End Date. It is independent of GWP / Renewal
-    // Month / Quarter.
-    //
-    // For each period:
-    //   premium × active days in period / total
-    //   policy days
-    //
-    // Dates are inclusive. For example:
-    //   Syrma: 28-Jan-2026 to 27-Jan-2027
-    //   Jan 2026 earned = ₹404,600 × 4 / 365.
-    // ─────────────────────────────────────────
-
-    const startD = parseDate(
-      row['Start Date'] ||
-      row['start date']
-    );
-
-
-    const endD = parseDate(
-      row['End Date'] ||
-      row['end date']
-    );
-
-
-    // A policy cannot contribute to Earned
-    // Premium unless both historical policy
-    // dates are valid.
-    if (
-      !startD ||
-      !endD ||
-      endD < startD
-    ) {
-      return;
+    for (const [q2,[qs,qe]] of Object.entries(quarterRanges)) {
+      const d=daysOverlap(startD,endD,qs,qe);
+      epExclQ[q2]=(epExclQ[q2]||0)+pdExcl*d;
+      epInclQ[q2]=(epInclQ[q2]||0)+pdIncl*d;
     }
-
-
-    const totalDays =
-      Math.floor(
-        (
-          endD.getTime() -
-          startD.getTime()
-        ) / 86400000
-      ) + 1;
-
-
-    if (totalDays <= 0) {
-      return;
-    }
-
-
-    const dailyPremiumExcl =
-      ip / totalDays;
-
-
-    const dailyPremiumIncl =
-      ipGST / totalDays;
-
-
-    // Historical monthly earning:
-    // include every qualifying policy that was
-    // active for at least one day in the month.
-    Object.entries(monthRanges).forEach(
-      ([month, [monthStart, monthEnd]]) => {
-
-        const overlapDays =
-          daysOverlap(
-            startD,
-            endD,
-            monthStart,
-            monthEnd
-          );
-
-
-        if (overlapDays <= 0) {
-          return;
-        }
-
-
-        epExclM[month] =
-          (epExclM[month] || 0) +
-          dailyPremiumExcl * overlapDays;
-
-
-        epInclM[month] =
-          (epInclM[month] || 0) +
-          dailyPremiumIncl * overlapDays;
-      }
-    );
-
-
-    // Historical quarterly earning follows the
-    // same Start Date / End Date day-proration.
-    Object.entries(quarterRanges).forEach(
-      ([quarter, [quarterStart, quarterEnd]]) => {
-
-        const overlapDays =
-          daysOverlap(
-            startD,
-            endD,
-            quarterStart,
-            quarterEnd
-          );
-
-
-        if (overlapDays <= 0) {
-          return;
-        }
-
-
-        epExclQ[quarter] =
-          (epExclQ[quarter] || 0) +
-          dailyPremiumExcl * overlapDays;
-
-
-        epInclQ[quarter] =
-          (epInclQ[quarter] || 0) +
-          dailyPremiumIncl * overlapDays;
-      }
-    );
-
   });
 
-
-  // ────────────────────────────────────────────
-  // TALLY EARNED PREMIUM ADJUSTMENT
-  //
-  // Tally has been excluded from the Master List
-  // calculation above. Add the fixed Tally earned
-  // premium adjustment back separately:
-  //   Monthly: ₹5,00,000 to both excl. GST and incl. GST
-  //   Quarterly: ₹15,00,000 to both, except Q1'25
-  // ────────────────────────────────────────────
-
-  Object.keys(monthRanges).forEach(month => {
-    epExclM[month] =
-      (epExclM[month] || 0) + 500000;
-
-    epInclM[month] =
-      (epInclM[month] || 0) + 500000;
-  });
-
-  Object.keys(quarterRanges).forEach(quarter => {
-    if (quarter === "Q1'25") {
-      return;
-    }
-
-    epExclQ[quarter] =
-      (epExclQ[quarter] || 0) + 1500000;
-
-    epInclQ[quarter] =
-      (epInclQ[quarter] || 0) + 1500000;
-  });
-
-
-  // ────────────────────────────────────────────
-  // SAVE INTO DATA STORE
-  // ────────────────────────────────────────────
-
-  Object.assign(D, {
-
-    gwpM,
-
-    gwpInclM:gwpIM,
-
-    gwpQ,
-
-    gwpInclQ:gwpIQ,
-
-    earnedExclM:epExclM,
-
-    earnedInclM:epInclM,
-
-    earnedExclQ:epExclQ,
-
-    earnedInclQ:epInclQ
-
-  });
+  Object.assign(D,{gwpM,gwpInclM:gwpIM,gwpQ,gwpInclQ:gwpIQ,earnedExclM:epExclM,earnedInclM:epInclM,earnedExclQ:epExclQ,earnedInclQ:epInclQ});
 }
-
-
 
 // ══════════════════════════════════════════════
 // LOAD ALL DATA
 // ══════════════════════════════════════════════
-
-function setStep(s) {
-  document.getElementById('loadingStep').textContent = s;
-}
-
+function setStep(s){document.getElementById('loadingStep').textContent=s}
 
 async function loadAll() {
+  document.getElementById('loadingOverlay').classList.remove('hidden');
+  document.getElementById('errorBanner').style.display='none';
+  const errors=[];
 
-  document
-    .getElementById('loadingOverlay')
-    .classList
-    .remove('hidden');
+  const safe=async(name,fn)=>{try{await fn()}catch(e){errors.push(name+': '+e.message);console.error(name,e)}};
 
-
-  document
-    .getElementById('errorBanner')
-    .style
-    .display = 'none';
-
-
-  const errors = [];
-
-
-  const safe = async (name, fn) => {
-
-    try {
-
-      await fn();
-
-    } catch (e) {
-
-      errors.push(
-        name + ': ' + e.message
-      );
-
-      console.error(name, e);
-    }
-  };
-
-
-  // ────────────────────────────────────────────
-  // MASTER LIST
-  // ────────────────────────────────────────────
-
-  setStep(
-    'Loading Master List (GWP & Earned Premium)...'
-  );
-
-
-  await safe(
-    'Master List',
-    async () => {
-
-      const rows =
-        await fetchCSV(masterUrl());
-
-      parseMasterList(rows);
-    }
-  );
-
-
-  // ────────────────────────────────────────────
-  // CLAIMS DATA
-  // ────────────────────────────────────────────
+  setStep('Loading Master List (GWP & Earned Premium)...');
+  await safe('Master List', async()=>{
+    const rows=await fetchCSV(masterUrl());
+    parseMasterList(rows);
+  });
 
   setStep('Loading claims data...');
-
-
   await Promise.all([
-
-    safe(
-      'ri_cl_combined',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('ri_cl_combined')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(r.month);
-
-          if (k) {
-            D.riCL[k] = r;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'cashless',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('cashless')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(r.month);
-
-          if (k) {
-            D.cashless[k] = r;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'ri_incl_tally',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('ri_incl_tally')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(r.month);
-
-          if (k) {
-            D.riIncl[k] = r;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'ri_excl_tally',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('ri_excl_tally')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(r.month);
-
-          if (k) {
-            D.riExcl[k] = r;
-          }
-        });
-      }
-    )
-
+    safe('ri_cl_combined', async()=>{
+      const rows=await fetchCSV(sheetUrl('ri_cl_combined'));
+      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.riCL[k]=r});
+    }),
+    safe('cashless', async()=>{
+      const rows=await fetchCSV(sheetUrl('cashless'));
+      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.cashless[k]=r});
+    }),
+    safe('ri_incl_tally', async()=>{
+      const rows=await fetchCSV(sheetUrl('ri_incl_tally'));
+      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.riIncl[k]=r});
+    }),
+    safe('ri_excl_tally', async()=>{
+      const rows=await fetchCSV(sheetUrl('ri_excl_tally'));
+      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.riExcl[k]=r});
+    }),
   ]);
-
-
-  // ────────────────────────────────────────────
-  // LOSS RATIO DATA
-  // ────────────────────────────────────────────
 
   setStep('Loading loss ratio data...');
-
-
   await Promise.all([
-
-    safe(
-      'approved_monthly',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('approved_monthly')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(
-              r['visit_time: Month']
-            );
-
-
-          if (k) {
-
-            D.approvedM[k] =
-              r['Sum of approved_amount'] || 0;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'os_monthly',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('os_monthly')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(
-              r['visit_time: Month']
-            );
-
-
-          if (k) {
-
-            D.osM[k] =
-              r['Sum of requested_amount'] || 0;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'network_comm_monthly',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('network_comm_monthly')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(
-              r['visit_time: Month']
-            );
-
-
-          if (k) {
-
-            D.netCommM[k] =
-              r['Sum of approved_amount'] || 0;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'approved_quarterly',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('approved_quarterly')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toQuarterKey(
-              r['visit_time: Quarter']
-            );
-
-
-          if (k) {
-
-            D.approvedQ[k] =
-              r['Sum of approved_amount'] || 0;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'os_quarterly',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('os_quarterly')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toQuarterKey(
-              r['visit_time: Quarter']
-            );
-
-
-          if (k) {
-
-            D.osQ[k] =
-              r['Sum of requested_amount'] || 0;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'network_comm_quarterly',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('network_comm_quarterly')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toQuarterKey(
-              r['visit_time: Quarter']
-            );
-
-
-          if (k) {
-
-            D.netCommQ[k] =
-              r['Sum of approved_amount'] || 0;
-          }
-        });
-      }
-    ),
-
-
-    safe(
-      'hospital_opd',
-      async () => {
-
-        const rows =
-          await fetchCSV(
-            sheetUrl('hospital_opd')
-          );
-
-
-        rows.forEach(r => {
-
-          const k =
-            toMonthKey(r.month);
-
-
-          if (k) {
-
-            D.hospOPD[k] =
-              r.total_billed_amount || 0;
-          }
-        });
-      }
-    )
-
+    safe('approved_monthly', async()=>{
+      const rows=await fetchCSV(sheetUrl('approved_monthly'));
+      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.approvedM[k]=r['Sum of approved_amount']||0});
+    }),
+    safe('os_monthly', async()=>{
+      const rows=await fetchCSV(sheetUrl('os_monthly'));
+      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.osM[k]=r['Distinct values of claim_id']||0});
+    }),
+    safe('network_comm_monthly', async()=>{
+      const rows=await fetchCSV(sheetUrl('network_comm_monthly'));
+      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.netCommM[k]=r['Sum of approved_amount']||0});
+    }),
+    safe('approved_quarterly', async()=>{
+      const rows=await fetchCSV(sheetUrl('approved_quarterly'));
+      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.approvedQ[k]=r['Sum of approved_amount']||0});
+    }),
+    safe('os_quarterly', async()=>{
+      const rows=await fetchCSV(sheetUrl('os_quarterly'));
+      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Distinct values of claim_id']||0});
+    }),
+    safe('network_comm_quarterly', async()=>{
+      const rows=await fetchCSV(sheetUrl('network_comm_quarterly'));
+      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.netCommQ[k]=r['Sum of approved_amount']||0});
+    }),
+    safe('hospital_opd', async()=>{
+      const rows=await fetchCSV(sheetUrl('hospital_opd'));
+      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.hospOPD[k]=r.total_billed_amount||0});
+    }),
+    // hospital_ipd tab not yet created in sheet
   ]);
 
-
-  // ────────────────────────────────────────────
-  // INTERNALISATION
-  // ────────────────────────────────────────────
-
   setStep('Loading internalisation...');
+  await safe('internalisation', async()=>{
+    const rows=await fetchCSV(sheetUrl('internalisation'));
+    D.internalisation=rows;
+  });
 
-
-  await safe(
-    'internalisation',
-    async () => {
-
-      const rows =
-        await fetchCSV(
-          sheetUrl('internalisation')
-        );
-
-
-      D.internalisation = rows;
-    }
-  );
-
-
-  // ────────────────────────────────────────────
-  // ERROR MESSAGE
-  // ────────────────────────────────────────────
-
-  if (errors.length > 0) {
-
-    const b =
-      document.getElementById(
-        'errorBanner'
-      );
-
-
-    b.textContent =
-      'Some data failed: ' +
-      errors.join(' | ');
-
-
-    b.style.display = 'block';
+  if(errors.length>0){
+    const b=document.getElementById('errorBanner');
+    b.textContent='Some data failed: '+errors.join(' | ');
+    b.style.display='block';
   }
 
-
-  document.getElementById(
-    'lastUpdated'
-  ).textContent =
-    'Updated ' +
-    new Date().toLocaleTimeString('en-IN');
-
-
+  document.getElementById('lastUpdated').textContent='Updated '+new Date().toLocaleTimeString('en-IN');
   setStep('Done');
-
-
   renderAll();
-
-
-  document
-    .getElementById('loadingOverlay')
-    .classList
-    .add('hidden');
+  document.getElementById('loadingOverlay').classList.add('hidden');
 }
-
 
 // ══════════════════════════════════════════════
 // TAB SWITCHING
 // ══════════════════════════════════════════════
-
-function switchTab(name) {
-
-  document
-    .querySelectorAll('.tab')
-    .forEach((t, i) => {
-
-      t.classList.toggle(
-        'active',
-        ['summary','lossratios','claims','internalisation'][i] === name
-      );
-
-    });
-
-
-  document
-    .querySelectorAll('.tab-content')
-    .forEach(c =>
-      c.classList.remove('active')
-    );
-
-
-  document
-    .getElementById('tab-' + name)
-    .classList
-    .add('active');
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['summary','lossratios','claims','internalisation'][i]===name));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
 }
-
-
-function setSummaryView(v, btn) {
-
-  summaryView = v;
-
-  btn.parentElement
-    .querySelectorAll('.toggle-btn')
-    .forEach(b =>
-      b.classList.remove('active')
-    );
-
-  btn.classList.add('active');
-
-
-  document.getElementById(
-    'summary-monthly'
-  ).style.display =
-    v === 'monthly'
-      ? 'block'
-      : 'none';
-
-
-  document.getElementById(
-    'summary-quarterly'
-  ).style.display =
-    v === 'quarterly'
-      ? 'block'
-      : 'none';
-}
-
-
-function setLRView(v, btn) {
-
-  lrView = v;
-
-  btn.parentElement
-    .querySelectorAll('.toggle-btn')
-    .forEach(b =>
-      b.classList.remove('active')
-    );
-
-  btn.classList.add('active');
-
-
-  document.getElementById(
-    'lr-monthly'
-  ).style.display =
-    v === 'monthly'
-      ? 'block'
-      : 'none';
-
-
-  document.getElementById(
-    'lr-quarterly'
-  ).style.display =
-    v === 'quarterly'
-      ? 'block'
-      : 'none';
-}
-
-
-function setRIView(v, btn) {
-
-  riView = v;
-
-  btn.parentElement
-    .querySelectorAll('.toggle-btn')
-    .forEach(b =>
-      b.classList.remove('active')
-    );
-
-  btn.classList.add('active');
-
-  renderRI();
-}
-
+function setSummaryView(v,btn){summaryView=v;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('summary-monthly').style.display=v==='monthly'?'block':'none';document.getElementById('summary-quarterly').style.display=v==='quarterly'?'block':'none';}
+function setLRView(v,btn){lrView=v;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('lr-monthly').style.display=v==='monthly'?'block':'none';document.getElementById('lr-quarterly').style.display=v==='quarterly'?'block':'none';}
+function setRIView(v,btn){riView=v;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRI();}
 
 // ══════════════════════════════════════════════
-// RENDER ALL
+// RENDER
 // ══════════════════════════════════════════════
+function renderAll(){renderSummary();renderLR();renderOps();renderInternalisation();}
 
-function renderAll() {
+function renderSummary(){
+  const netPct=parseFloat(document.getElementById('networkPct').value)/100;
+  const ipdPct=parseFloat(document.getElementById('ipdSplit').value)/100;
+  const me=parseFloat(document.getElementById('meFactor').value)||0.94;
 
-  renderSummary();
-  renderLR();
-  renderOps();
-  renderInternalisation();
-
-}
-
-
-// ══════════════════════════════════════════════
-// SUMMARY
-// ══════════════════════════════════════════════
-
-function renderSummary() {
-
-  const netPct =
-    parseFloat(
-      document.getElementById('networkPct').value
-    ) / 100;
-
-
-  const ipdPct =
-    parseFloat(
-      document.getElementById('ipdSplit').value
-    ) / 100;
-
-
-  const me =
-    parseFloat(
-      document.getElementById('meFactor').value
-    ) || 0.94;
-
-
-  document.getElementById(
-    'body-summary-monthly'
-  ).innerHTML = MONTHS.map(m => {
-
-    const gwp =
-      v(D.gwpM, m);
-
-
-    const gwpI =
-      v(D.gwpInclM, m);
-
-
-    const epNet =
-      v(D.earnedInclM, m) * me;
-
-
-    const approved =
-      v(D.approvedM, m);
-
-
-    const os =
-      v(D.osM, m);
-
-
-    const ibnr =
-      v(M.ibnr, m) / 100;
-
-
-    const hospInc =
-      v(D.hospOPD, m);
-
-
-    const hospLim =
-      v(M.hospLimitDed, m);
-
-
-    const lr =
-      epNet > 0
-        ? (
-            (
-              (approved + os) *
-              (1 + ibnr)
-            ) +
-            hospInc -
-            hospLim
-          ) / epNet
-        : 0;
-
-
-    const uw =
-      (1 - lr) *
-      v(D.earnedExclM, m);
-
-
-    const sf =
-      v(M.servicingFees, m);
-
-
-    const nc =
-      v(D.netCommM, m) *
-      (netPct / 0.125);
-
-
-    const opd =
-      v(D.hospOPD, m);
-
-
-    const ipd =
-      v(D.hospIPD, m);
-
-
-    const cb =
-      v(M.costBase, m);
-
-
-    const pnl =
-      uw +
-      sf +
-      nc +
-      opd +
-      (ipd * ipdPct) -
-      cb;
-
-
-    return `
-      <tr>
-        <td>${m}</td>
-
-        <td>${fmt(gwp)}</td>
-
-        <td>${fmt(gwpI)}</td>
-
-        <td class="${pC(uw)}">
-          ${fmt(uw)}
-        </td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${sf}"
-            style="min-width:90px"
-            onchange="M.servicingFees['${m}']=Number(this.value);renderAll()"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>${fmt(nc)}</td>
-
-        <td>${fmt(opd)}</td>
-
-        <td>${fmt(ipd)}</td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${cb}"
-            style="min-width:90px"
-            onchange="M.costBase['${m}']=Number(this.value);renderAll()"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td class="${pC(pnl)}">
-          ${fmt(pnl)}
-        </td>
-      </tr>
-    `;
-
+  document.getElementById('body-summary-monthly').innerHTML=MONTHS.map(m=>{
+    const gwp=v(D.gwpM,m),gwpI=v(D.gwpInclM,m);
+    const epNet=v(D.earnedInclM,m)*me;
+    const approved=v(D.approvedM,m),os=v(D.osM,m);
+    const ibnr=v(M.ibnr,m)/100;
+    const hospInc=v(D.hospOPD,m),hospLim=v(M.hospLimitDed,m);
+    const lr=epNet>0?((approved+os)*(1+ibnr)+hospInc-hospLim)/epNet:0;
+    const uw=(1-lr)*v(D.earnedExclM,m);
+    const sf=v(M.servicingFees,m);
+    const nc=v(D.netCommM,m)*(netPct/0.125);
+    const opd=v(D.hospOPD,m),ipd=v(D.hospIPD,m);
+    const cb=v(M.costBase,m);
+    const pnl=uw+sf+nc+opd+(ipd*ipdPct)-cb;
+    return`<tr><td>${m}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
+    <td><input class="editable-input" value="${sf}" style="min-width:90px" onchange="M.servicingFees['${m}']=Number(this.value);renderAll()" onclick="this.select()"></td>
+    <td>${fmt(nc)}</td><td>${fmt(opd)}</td><td>${fmt(ipd)}</td>
+    <td><input class="editable-input" value="${cb}" style="min-width:90px" onchange="M.costBase['${m}']=Number(this.value);renderAll()" onclick="this.select()"></td>
+    <td class="${pC(pnl)}">${fmt(pnl)}</td></tr>`;
   }).join('');
 
-
-  document.getElementById(
-    'body-summary-quarterly'
-  ).innerHTML = QUARTERS.map(q => {
-
-    const gwp =
-      v(D.gwpQ, q);
-
-
-    const gwpI =
-      v(D.gwpInclQ, q);
-
-
-    const epNet =
-      v(D.earnedInclQ, q) * me;
-
-
-    const approved =
-      v(D.approvedQ, q);
-
-
-    const os =
-      v(D.osQ, q);
-
-
-    const ibnr =
-      v(M.ibnrQ, q) / 100;
-
-
-    const hospLim =
-      v(M.hospLimitDedQ, q);
-
-
-    const lr =
-      epNet > 0
-        ? (
-            (approved + os) *
-            (1 + ibnr) -
-            hospLim
-          ) / epNet
-        : 0;
-
-
-    const uw =
-      (1 - lr) *
-      v(D.earnedExclQ, q);
-
-
-    const sf =
-      v(M.servicingFees, q) || 0;
-
-
-    const nc =
-      v(D.netCommQ, q) *
-      (netPct / 0.125);
-
-
-    const cb =
-      v(M.costBaseQ, q);
-
-
-    const pnl =
-      uw +
-      sf +
-      nc -
-      cb;
-
-
-    return `
-      <tr>
-
-        <td>${q}</td>
-
-        <td>${fmt(gwp)}</td>
-
-        <td>${fmt(gwpI)}</td>
-
-        <td class="${pC(uw)}">
-          ${fmt(uw)}
-        </td>
-
-        <td>${fmt(sf)}</td>
-
-        <td>${fmt(nc)}</td>
-
-        <td>—</td>
-
-        <td>—</td>
-
-        <td>${fmt(cb)}</td>
-
-        <td class="${pC(pnl)}">
-          ${fmt(pnl)}
-        </td>
-
-      </tr>
-    `;
-
+  document.getElementById('body-summary-quarterly').innerHTML=QUARTERS.map(q=>{
+    const gwp=v(D.gwpQ,q),gwpI=v(D.gwpInclQ,q);
+    const epNet=v(D.earnedInclQ,q)*me;
+    const approved=v(D.approvedQ,q),os=v(D.osQ,q);
+    const ibnr=v(M.ibnrQ,q)/100;
+    const hospLim=v(M.hospLimitDedQ,q);
+    const lr=epNet>0?((approved+os)*(1+ibnr)-hospLim)/epNet:0;
+    const uw=(1-lr)*v(D.earnedExclQ,q);
+    const sf=v(M.servicingFees,q)||0;
+    const nc=v(D.netCommQ,q)*(netPct/0.125);
+    const cb=v(M.costBaseQ,q);
+    const pnl=uw+sf+nc-cb;
+    return`<tr><td>${q}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
+    <td>${fmt(sf)}</td><td>${fmt(nc)}</td><td>—</td><td>—</td><td>${fmt(cb)}</td><td class="${pC(pnl)}">${fmt(pnl)}</td></tr>`;
   }).join('');
 }
 
-
-// ══════════════════════════════════════════════
-// LOSS RATIOS
-// ══════════════════════════════════════════════
-
-function renderLR() {
-
-  const me =
-    parseFloat(
-      document.getElementById('meFactor').value
-    ) || 0.94;
-
-
-  const row = (
-    period,
-    epExcl,
-    epIncl,
-    approved,
-    os,
-    ibnr,
-    hospInc,
-    hospLim,
-    editable,
-    ibnrField,
-    limField
-  ) => {
-
-    const epNet =
-      epIncl * me;
-
-
-    const total =
-      approved + os;
-
-
-    const lr =
-      epNet > 0
-        ? (
-            total *
-            (1 + ibnr / 100) +
-            hospInc -
-            hospLim
-          ) / epNet * 100
-        : 0;
-
-
-    const uw =
-      (1 - lr / 100) *
-      epExcl;
-
-
-    const lrC =
-      lr > 100
-        ? 'neg'
-        : lr > 85
-          ? ''
-          : 'pos';
-
-
-    return `
-      <tr>
-
-        <td>${period}</td>
-
-        <td>${fmt(epExcl)}</td>
-
-        <td>${fmt(epIncl)}</td>
-
-        <td>${fmt(epNet)}</td>
-
-        <td>${fmt(approved)}</td>
-
-        <td>${fmt(os)}</td>
-
-        <td>${fmt(total)}</td>
-
-        <td>
-          ${
-            editable
-              ? `
-                <input
-                  class="editable-input"
-                  value="${ibnr}"
-                  style="min-width:50px"
-                  onchange="${ibnrField}['${period}']=Number(this.value);renderAll()"
-                  onclick="this.select()"
-                >%
-              `
-              : fmtP(ibnr)
-          }
-        </td>
-
-        <td>${fmt(hospInc)}</td>
-
-        <td>
-          ${
-            editable
-              ? `
-                <input
-                  class="editable-input"
-                  value="${hospLim}"
-                  style="min-width:80px"
-                  onchange="${limField}['${period}']=Number(this.value);renderAll()"
-                  onclick="this.select()"
-                >
-              `
-              : fmt(hospLim)
-          }
-        </td>
-
-        <td class="${lrC}">
-          ${fmtP(lr)}
-        </td>
-
-        <td class="${pC(uw)}">
-          ${fmt(uw)}
-        </td>
-
-      </tr>
-    `;
+function renderLR(){
+  const me=parseFloat(document.getElementById('meFactor').value)||0.94;
+  const row=(period,epExcl,epIncl,approved,os,ibnr,hospInc,hospLim,editable,ibnrField,limField)=>{
+    const epNet=epIncl*me,total=approved+os;
+    const lr=epNet>0?(total*(1+ibnr/100)+hospInc-hospLim)/epNet*100:0;
+    const uw=(1-lr/100)*epExcl;
+    const lrC=lr>100?'neg':lr>85?'':'pos';
+    return`<tr><td>${period}</td><td>${fmt(epExcl)}</td><td>${fmt(epIncl)}</td><td>${fmt(epNet)}</td>
+    <td>${fmt(approved)}</td><td>${fmt(os)}</td><td>${fmt(total)}</td>
+    <td>${editable?`<input class="editable-input" value="${ibnr}" style="min-width:50px" onchange="${ibnrField}['${period}']=Number(this.value);renderAll()" onclick="this.select()">%`:fmtP(ibnr)}</td>
+    <td>${fmt(hospInc)}</td>
+    <td>${editable?`<input class="editable-input" value="${hospLim}" style="min-width:80px" onchange="${limField}['${period}']=Number(this.value);renderAll()" onclick="this.select()">`:fmt(hospLim)}</td>
+    <td class="${lrC}">${fmtP(lr)}</td><td class="${pC(uw)}">${fmt(uw)}</td></tr>`;
   };
-
-
-  document.getElementById(
-    'body-lr-monthly'
-  ).innerHTML = MONTHS.map(m =>
-
-    row(
-      m,
-      v(D.earnedExclM,m),
-      v(D.earnedInclM,m),
-      v(D.approvedM,m),
-      v(D.osM,m),
-      v(M.ibnr,m),
-      v(D.hospOPD,m),
-      v(M.hospLimitDed,m),
-      true,
-      'M.ibnr',
-      'M.hospLimitDed'
-    )
-
-  ).join('');
-
-
-  document.getElementById(
-    'body-lr-quarterly'
-  ).innerHTML = QUARTERS.map(q =>
-
-    row(
-      q,
-      v(D.earnedExclQ,q),
-      v(D.earnedInclQ,q),
-      v(D.approvedQ,q),
-      v(D.osQ,q),
-      v(M.ibnrQ,q),
-      0,
-      v(M.hospLimitDedQ,q),
-      false,
-      '',
-      ''
-    )
-
-  ).join('');
+  document.getElementById('body-lr-monthly').innerHTML=MONTHS.map(m=>row(m,v(D.earnedExclM,m),v(D.earnedInclM,m),v(D.approvedM,m),v(D.osM,m),v(M.ibnr,m),v(D.hospOPD,m),v(M.hospLimitDed,m),true,'M.ibnr','M.hospLimitDed')).join('');
+  document.getElementById('body-lr-quarterly').innerHTML=QUARTERS.map(q=>row(q,v(D.earnedExclQ,q),v(D.earnedInclQ,q),v(D.approvedQ,q),v(D.osQ,q),v(M.ibnrQ,q),0,v(M.hospLimitDedQ,q),false,'','')).join('');
 }
 
-
-// ══════════════════════════════════════════════
-// OPERATIONAL METRICS
-// ══════════════════════════════════════════════
-
-function renderOps() {
-
-  // ────────────────────────────────────────────
-  // POST SALES
-  // ────────────────────────────────────────────
-
-  document.getElementById(
-    'body-postsales'
-  ).innerHTML = MONTHS.map(m => {
-
-    const chats =
-      M.chats[m] || 0;
-
-
-    const cost =
-      M.postSalesCost[m] || 0;
-
-
-    return `
-      <tr>
-
-        <td>${m}</td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${fmtN(chats)}"
-            style="min-width:70px"
-            onchange="M.chats['${m}']=Number(this.value.replace(/,/g,''));renderOps()"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${M.firstResponse[m] || '—'}"
-            style="min-width:50px"
-            onchange="M.firstResponse['${m}']=this.value"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${M.avgResponse[m] || '—'}"
-            style="min-width:60px"
-            onchange="M.avgResponse['${m}']=this.value"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${M.csat[m] || '—'}"
-            style="min-width:50px"
-            onchange="M.csat['${m}']=Number(this.value);renderOps()"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${cost}"
-            style="min-width:90px"
-            onchange="M.postSalesCost['${m}']=Number(this.value);renderOps()"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>
-          ${fmt(chats > 0 ? cost / chats : 0)}
-        </td>
-
-      </tr>
-    `;
-
+function renderOps(){
+  document.getElementById('body-postsales').innerHTML=MONTHS.map(m=>{
+    const chats=M.chats[m]||0,cost=M.postSalesCost[m]||0;
+    return`<tr><td>${m}</td>
+    <td><input class="editable-input" value="${fmtN(chats)}" style="min-width:70px" onchange="M.chats['${m}']=Number(this.value.replace(/,/g,''));renderOps()" onclick="this.select()"></td>
+    <td><input class="editable-input" value="${M.firstResponse[m]||'—'}" style="min-width:50px" onchange="M.firstResponse['${m}']=this.value" onclick="this.select()"></td>
+    <td><input class="editable-input" value="${M.avgResponse[m]||'—'}" style="min-width:60px" onchange="M.avgResponse['${m}']=this.value" onclick="this.select()"></td>
+    <td><input class="editable-input" value="${M.csat[m]||'—'}" style="min-width:50px" onchange="M.csat['${m}']=Number(this.value);renderOps()" onclick="this.select()"></td>
+    <td><input class="editable-input" value="${cost}" style="min-width:90px" onchange="M.postSalesCost['${m}']=Number(this.value);renderOps()" onclick="this.select()"></td>
+    <td>${fmt(chats>0?cost/chats:0)}</td></tr>`;
   }).join('');
 
-
-  // ────────────────────────────────────────────
-  // COMBINED CLAIMS
-  // ────────────────────────────────────────────
-
-  document.getElementById(
-    'body-claims-combined'
-  ).innerHTML = MONTHS.map(m => {
-
-    const r =
-      D.riCL[m] || {};
-
-
-    const act =
-      r.total_actioned || 0;
-
-
-    const req =
-      r.requested_amount || 0;
-
-
-    const app =
-      r.approved_amount || 0;
-
-
-    const cost =
-      M.claimsBaseCost[m] || 0;
-
-
-    return `
-      <tr>
-
-        <td>${m}</td>
-
-        <td>${fmtN(act)}</td>
-
-        <td>${fmt(req)}</td>
-
-        <td>${fmt(app)}</td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${cost}"
-            style="min-width:90px"
-            onchange="M.claimsBaseCost['${m}']=Number(this.value);renderOps()"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>
-          ${fmt(act > 0 ? cost / act : 0)}
-        </td>
-
-      </tr>
-    `;
-
+  document.getElementById('body-claims-combined').innerHTML=MONTHS.map(m=>{
+    const r=D.riCL[m]||{};
+    const act=r.total_actioned||0,req=r.requested_amount||0,app=r.approved_amount||0;
+    const cost=M.claimsBaseCost[m]||0;
+    return`<tr><td>${m}</td><td>${fmtN(act)}</td><td>${fmt(req)}</td><td>${fmt(app)}</td>
+    <td><input class="editable-input" value="${cost}" style="min-width:90px" onchange="M.claimsBaseCost['${m}']=Number(this.value);renderOps()" onclick="this.select()"></td>
+    <td>${fmt(act>0?cost/act:0)}</td></tr>`;
   }).join('');
-
 
   renderRI();
 
-
-  // ────────────────────────────────────────────
-  // CASHLESS
-  // ────────────────────────────────────────────
-
-  document.getElementById(
-    'body-cashless'
-  ).innerHTML = MONTHS.map(m => {
-
-    const r =
-      D.cashless[m] || {};
-
-
-    return `
-      <tr>
-
-        <td>${m}</td>
-
-        <td>${fmtN(r.cashless_actioned || 0)}</td>
-
-        <td>${fmt(r.requested_amount || 0)}</td>
-
-        <td>${fmt(r.approved_amount || 0)}</td>
-
-      </tr>
-    `;
-
+  document.getElementById('body-cashless').innerHTML=MONTHS.map(m=>{
+    const r=D.cashless[m]||{};
+    return`<tr><td>${m}</td><td>${fmtN(r.cashless_actioned||0)}</td><td>${fmt(r.requested_amount||0)}</td><td>${fmt(r.approved_amount||0)}</td></tr>`;
   }).join('');
 }
 
-
-// ══════════════════════════════════════════════
-// REIMBURSEMENTS
-// ══════════════════════════════════════════════
-
-function renderRI() {
-
-  const src =
-    riView === 'incl'
-      ? D.riIncl
-      : D.riExcl;
-
-
-  document.getElementById(
-    'body-ri'
-  ).innerHTML = MONTHS.map(m => {
-
-    const r =
-      src[m] || {};
-
-
-    const act =
-      r.ri_actioned || 0;
-
-
-    const req =
-      r.requested_amount || 0;
-
-
-    const app =
-      r.approved_amount || 0;
-
-
-    const rej =
-      r.rejected_amount || 0;
-
-
-    const paid =
-      r.claims_paid || 0;
-
-
-    const queried =
-      r.claims_queried || 0;
-
-
-    const rejN =
-      r.claims_rejected || 0;
-
-
-    const appP =
-      req > 0
-        ? app / req * 100
-        : 0;
-
-
-    const rejA =
-      req > 0
-        ? rej / req * 100
-        : 0;
-
-
-    const rejN2 =
-      act > 0
-        ? rejN / act * 100
-        : 0;
-
-
-    return `
-      <tr>
-
-        <td>${m}</td>
-
-        <td>${fmtN(act)}</td>
-
-        <td>${fmt(req)}</td>
-
-        <td>${fmt(app)}</td>
-
-        <td>${fmt(rej)}</td>
-
-        <td>${fmtN(paid)}</td>
-
-        <td>${fmtN(queried)}</td>
-
-        <td>${fmtN(rejN)}</td>
-
-        <td>
-          <input
-            class="editable-input"
-            value="${M.tat[m] || '—'}"
-            style="min-width:50px"
-            onchange="M.tat['${m}']=this.value"
-            onclick="this.select()"
-          >
-        </td>
-
-        <td>${fmtP(appP)}</td>
-
-        <td>${fmtP(rejA)}</td>
-
-        <td>${fmtP(rejN2)}</td>
-
-      </tr>
-    `;
-
+function renderRI(){
+  const src=riView==='incl'?D.riIncl:D.riExcl;
+  document.getElementById('body-ri').innerHTML=MONTHS.map(m=>{
+    const r=src[m]||{};
+    const act=r.ri_actioned||0,req=r.requested_amount||0,app=r.approved_amount||0;
+    const rej=r.rejected_amount||0,paid=r.claims_paid||0,queried=r.claims_queried||0,rejN=r.claims_rejected||0;
+    const appP=req>0?app/req*100:0,rejA=req>0?rej/req*100:0,rejN2=act>0?rejN/act*100:0;
+    return`<tr><td>${m}</td><td>${fmtN(act)}</td><td>${fmt(req)}</td><td>${fmt(app)}</td>
+    <td>${fmt(rej)}</td><td>${fmtN(paid)}</td><td>${fmtN(queried)}</td><td>${fmtN(rejN)}</td>
+    <td><input class="editable-input" value="${M.tat[m]||'—'}" style="min-width:50px" onchange="M.tat['${m}']=this.value" onclick="this.select()"></td>
+    <td>${fmtP(appP)}</td><td>${fmtP(rejA)}</td><td>${fmtP(rejN2)}</td></tr>`;
   }).join('');
 }
 
-
-// ══════════════════════════════════════════════
-// INTERNALISATION
-// ══════════════════════════════════════════════
-
-function renderInternalisation() {
-
-  document.getElementById(
-    'body-internalisation'
-  ).innerHTML = D.internalisation.map(r => {
-
-    return `
-      <tr>
-
-        <td>${r['Data as of'] || '—'}</td>
-
-        <td>${fmtN(r['Total lives'])}</td>
-
-        <td>${fmtN(r['Downloaded'])}</td>
-
-        <td>${fmtN(r['BLR lives'])}</td>
-
-        <td>${fmtN(r['10km hospital lives'])}</td>
-
-        <td>${fmtN(r['Volume (CL+RI)'])}</td>
-
-        <td>${fmt(r['Amount (CL+RI)'])}</td>
-
-        <td>${fmtN(r['Volume (TC)'])}</td>
-
-        <td>${fmt(r['Amount (TC)'])}</td>
-
-        <td>${fmtN(r['Even TC'])}</td>
-
-        <td>${fmt(r['Even TC Amount'])}</td>
-
-        <td>${fmtN(r['Non EHRC OPD'])}</td>
-
-        <td>${fmt(r['Non EHRC OPD Amount'])}</td>
-
-      </tr>
-    `;
-
-  }).join('');
+function renderInternalisation(){
+  document.getElementById('body-internalisation').innerHTML=D.internalisation.map(r=>`<tr>
+    <td>${r['Data as of']||'—'}</td>
+    <td>${fmtN(r['Total lives'])}</td>
+    <td>${fmtN(r['Downloaded'])}</td>
+    <td>${fmtN(r['BLR lives'])}</td>
+    <td>${fmtN(r['10km hospital lives'])}</td>
+    <td>${fmtN(r['Volume (CL+RI)'])}</td>
+    <td>${fmt(r['Amount (CL+RI)'])}</td>
+    <td>${fmtN(r['Volume (TC)'])}</td>
+    <td>${fmt(r['Amount (TC)'])}</td>
+    <td>${fmtN(r['Even TC'])}</td>
+    <td>${fmt(r['Even TC Amount'])}</td>
+    <td>${fmtN(r['Non EHRC OPD'])}</td>
+    <td>${fmt(r['Non EHRC OPD Amount'])}</td>
+  </tr>`).join('');
 }
-
-
-// ══════════════════════════════════════════════
-// INITIAL LOAD
-// ══════════════════════════════════════════════
 
 loadAll();
-
 </script>
-
 </body>
 </html>
