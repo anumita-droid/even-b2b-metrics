@@ -299,14 +299,30 @@ tbody tr.total-row td:first-child{color:var(--text2)}
   <div class="ph"><div class="ph-title">HR Summary</div></div>
   <div class="sub-tabs">
     <div class="sub-tab active" onclick="goSub('hr','cost',this)">MoM Cost Base</div>
+    <div class="sub-tab" onclick="goSub('hr','pod',this)">Cost by POD</div>
     <div class="sub-tab" onclick="goSub('hr','headcount',this)">Headcount</div>
     <div class="sub-tab" onclick="goSub('hr','perhead',this)">Cost Per Head</div>
+    <div class="sub-tab" onclick="goSub('hr','perchat',this)">Cost Per Chat</div>
+    <div class="sub-tab" onclick="goSub('hr','perclaim',this)">Cost Per Claim</div>
+    <div class="sub-tab" onclick="goSub('hr','profitability',this)">Profitability</div>
   </div>
   <div class="sub-pane active" id="hr-cost">
     <div class="tw"><table>
       <thead><tr><th>Month</th><th>Cost Base<span class="eh">✎</span></th><th>MoM Change</th><th>Delta %</th><th>Notes<span class="eh">✎</span></th></tr></thead>
       <tbody id="b-hrcost"></tbody>
     </table></div>
+  </div>
+  <div class="sub-pane" id="hr-pod">
+    <div class="sdiv"><div class="sdiv-t">B2B Central</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table><thead><tr><th>Month</th><th>POD Spend</th><th>MoM Change</th><th>Delta %</th></tr></thead><tbody id="b-hr-central"></tbody></table></div>
+    <div class="sdiv"><div class="sdiv-t">B2B Revenue</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table><thead><tr><th>Month</th><th>POD Spend</th><th>MoM Change</th><th>Delta %</th></tr></thead><tbody id="b-hr-revenue"></tbody></table></div>
+    <div class="sdiv"><div class="sdiv-t">B2B Claims</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table><thead><tr><th>Month</th><th>POD Spend</th><th>MoM Change</th><th>Delta %</th></tr></thead><tbody id="b-hr-claims"></tbody></table></div>
+    <div class="sdiv"><div class="sdiv-t">B2B Post Sales</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table><thead><tr><th>Month</th><th>POD Spend</th><th>MoM Change</th><th>Delta %</th></tr></thead><tbody id="b-hr-postsales"></tbody></table></div>
+    <div class="sdiv"><div class="sdiv-t">Key Takeaways (Jan → Jul increase)</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table><thead><tr><th>Team</th><th>Jan Spend</th><th>Jul Spend</th><th>Increase</th><th>% Change</th></tr></thead><tbody id="b-hr-takeaways"></tbody></table></div>
   </div>
   <div class="sub-pane" id="hr-headcount">
     <div class="tw"><table>
@@ -318,6 +334,24 @@ tbody tr.total-row td:first-child{color:var(--text2)}
     <div class="tw"><table>
       <thead><tr><th>Period</th><th>Total Cost</th><th>Headcount</th><th>Per Head</th></tr></thead>
       <tbody id="b-hrph"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="hr-perchat">
+    <div class="tw"><table>
+      <thead><tr><th>Month</th><th>Chats Resolved</th><th>Cost Base</th><th>Cost / Chat</th></tr></thead>
+      <tbody id="b-hr-perchat"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="hr-perclaim">
+    <div class="tw"><table>
+      <thead><tr><th>Month</th><th>Reimbursement</th><th>Cashless</th><th>Total Claims</th><th>Cost / Claim</th></tr></thead>
+      <tbody id="b-hr-perclaim"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="hr-profitability">
+    <div class="tw"><table>
+      <thead><tr><th>Month</th><th>Net Profit</th><th>Head Count</th><th>Cost Base</th><th>Net Profit / Cost Base</th><th>Net Profit / Head Count</th></tr></thead>
+      <tbody id="b-hr-profit"></tbody>
     </table></div>
   </div>
 </div>
@@ -470,6 +504,13 @@ const M={
     'Sep 2026':{tc:0,ipd:0,opd:0,nonEhrc:0,total:'—'},
   },
   hrHeadcount:{'Sales':{'Jan 2026':4,'Apr 2026':5,'Jul 2026':6,'Sep 2026':6},'Claims':{'Jan 2026':6,'Apr 2026':9,'Jul 2026':14,'Sep 2026':14},'Post Sales':{'Jan 2026':8,'Apr 2026':12,'Jul 2026':17,'Sep 2026':17},'Tech':{'Jan 2026':10,'Apr 2026':11,'Jul 2026':12,'Sep 2026':12},'Ops/Finance':{'Jan 2026':4,'Apr 2026':5,'Jul 2026':5,'Sep 2026':5},'Leadership':{'Jan 2026':4,'Apr 2026':4,'Jul 2026':4,'Sep 2026':4}},
+  podCentral:{'Jan 2026':1236723,'Feb 2026':1320917,'Mar 2026':1324143,'Apr 2026':1420917,'May 2026':1598336,'Jun 2026':1695917,'Jul 2026':1963500,'Aug 2026':1963500,'Sep 2026':0},
+  podRevenue:{'Jan 2026':491666,'Feb 2026':491666,'Mar 2026':552005,'Apr 2026':630116,'May 2026':793956,'Jun 2026':832666,'Jul 2026':849333,'Aug 2026':849333,'Sep 2026':0},
+  podClaims:{'Jan 2026':84452,'Feb 2026':116750,'Mar 2026':116750,'Apr 2026':168066,'May 2026':219524,'Jun 2026':301161,'Jul 2026':408344,'Aug 2026':463667,'Sep 2026':0},
+  podPostSales:{'Jan 2026':300833,'Feb 2026':300833,'Mar 2026':326575,'Apr 2026':418433,'May 2026':531828,'Jun 2026':675475,'Jul 2026':714417,'Aug 2026':714417,'Sep 2026':0},
+  hrPerChat:{'Jan 2026':{chats:6142,cost:300833},'Feb 2026':{chats:7078,cost:300833},'Mar 2026':{chats:7284,cost:326575},'Apr 2026':{chats:7364,cost:418433},'May 2026':{chats:11448,cost:531828},'Jun 2026':{chats:21583,cost:675475},'Jul 2026':{chats:14934,cost:714417},'Aug 2026':{chats:19070,cost:714417},'Sep 2026':{chats:0,cost:0}},
+  hrPerClaim:{'Jan 2026':{ri:6171,cl:336,cost:300833},'Feb 2026':{ri:5600,cl:294,cost:300833},'Mar 2026':{ri:6805,cl:406,cost:326575},'Apr 2026':{ri:5836,cl:418,cost:418433},'May 2026':{ri:8071,cl:505,cost:531828},'Jun 2026':{ri:16302,cl:609,cost:675475},'Jul 2026':{ri:21623,cl:2055,cost:714417},'Aug 2026':{ri:20354,cl:1661,cost:714417},'Sep 2026':{ri:0,cl:0,cost:0}},
+  profitability:{'Jan 2026':{netProfit:52561,headCount:18,costBase:2113674,profitCostPct:3,profitHeadCount:3475},'Feb 2026':{netProfit:-747741,headCount:18,costBase:2230166,profitCostPct:-34,profitHeadCount:-41541},'Mar 2026':{netProfit:-215285,headCount:22,costBase:2319472,profitCostPct:-9,profitHeadCount:-9786},'Apr 2026':{netProfit:1572535,headCount:26,costBase:2637532,profitCostPct:60,profitHeadCount:60482},'May 2026':{netProfit:-862446,headCount:35,costBase:3143645,profitCostPct:-27,profitHeadCount:-24641},'Jun 2026':{netProfit:-4359173,headCount:38,costBase:3505219,profitCostPct:-124,profitHeadCount:-114715},'Jul 2026':{netProfit:-3918608,headCount:40,costBase:3935594,profitCostPct:-100,profitHeadCount:-97965},'Aug 2026':{netProfit:-3632359,headCount:40,costBase:3935594,profitCostPct:-92,profitHeadCount:-90809},'Sep 2026':{netProfit:0,headCount:0,costBase:0,profitCostPct:0,profitHeadCount:0}},
   newBiz:{
     'Jan 2026':{policies:10,premium:2951424},'Feb 2026':{policies:9,premium:3120787},
     'Mar 2026':{policies:29,premium:33258090},'Apr 2026':{policies:15,premium:61765918},
@@ -856,13 +897,12 @@ function renderInternalisation(){
   // Bookings — static from sheet
   const bkWeeks=['7 Aug\'26','14 Aug\'26','21 Aug\'26','28 Aug\'26','4 Sep\'26','11 Sep\'26','18 Sep\'26','Grand Total'];
   const bk1={booked:[79,17,3,0,0,0,0,99],completed:[75,17,3,0,0,0,0,95],booked2:[0,73,37,12,0,0,0,122],completed2:[0,69,36,12,0,0,0,117],booked3:[0,0,100,41,14,22,0,155],completed3:[0,0,95,38,13,13,0,146],booked4:[0,0,0,156,37,33,0,215],completed4:[0,0,0,150,33,22,0,183],booked5:[0,0,0,163,46,4,0,213],completed5:[0,0,0,130,0,0,0,130],gtB:[79,90,140,209,214,68,4,804],gtC:[75,86,134,200,176,0,0,671]};
-  const t1=document.getElementById('t-bookings1');
-  t1.querySelector('thead').innerHTML=`<tr><th>Created Week</th>${bkWeeks.slice(0,-1).map(w=>`<th colspan="2">${w}</th>`).join('')}<th colspan="2">Grand Total</th></tr><tr><th></th>${bkWeeks.map(()=>'<th>Booked</th><th>Completed</th>').join('')}</tr>`;
-  t1.querySelector('tbody').innerHTML=`<tr><td>7 Aug'26</td><td>${bk1.booked[0]}</td><td>${bk1.completed[0]}</td>${Array(6).fill('<td>—</td><td>—</td>').join('')}<td>${bk1.gtB[0]}</td><td>${bk1.gtC[0]}</td></tr>`;
+  renderBookings();
 }
 
 // ── HR ──
 function renderHR(){
+  // MoM Cost Base
   let prev=0;
   document.getElementById('b-hrcost').innerHTML=MONTHS.map(m=>{
     const cost=M.costBase[m]||0,delta=prev>0?cost-prev:null,pct=prev>0?(cost-prev)/prev*100:null;
@@ -873,17 +913,102 @@ function renderHR(){
     <td class="${pct>0?'neg':pct<0?'pos':''}">${pct!==null?fmtP(pct,1):'—'}</td>
     <td><input class="ef" value="${M.costNotes[m]||''}" readonly style="min-width:180px;text-align:left" onchange="M.costNotes['${m}']=this.value" onclick="this.select()"></td></tr>`;
   }).join('');
+
+  // POD tables
+  const podFn=(key)=>{
+    let p=0;
+    return MONTHS.map(m=>{
+      const spend=M[key][m]||0,delta=p>0?spend-p:null,pct=p>0?(spend-p)/p*100:null;
+      p=spend;
+      return`<tr><td>${m}</td><td>${fmt(spend)}</td>
+      <td class="${delta>0?'neg':delta<0?'pos':''}">${delta!==null?(delta>0?'+':'')+fmt(delta):'—'}</td>
+      <td class="${pct>0?'neg':pct<0?'pos':''}">${pct!==null?fmtP(pct,1):'—'}</td></tr>`;
+    }).join('');
+  };
+  document.getElementById('b-hr-central').innerHTML=podFn('podCentral');
+  document.getElementById('b-hr-revenue').innerHTML=podFn('podRevenue');
+  document.getElementById('b-hr-claims').innerHTML=podFn('podClaims');
+  document.getElementById('b-hr-postsales').innerHTML=podFn('podPostSales');
+
+  // Key Takeaways
+  const pods=[
+    {name:'B2B Central',key:'podCentral',jan:1236723,jul:1963500,inc:726777,pct:58.8},
+    {name:'B2B Revenue',key:'podRevenue',jan:491666,jul:849333,inc:357667,pct:72.7},
+    {name:'B2B Claims',key:'podClaims',jan:84452,jul:408344,inc:323892,pct:383.5},
+    {name:'B2B Post Sales',key:'podPostSales',jan:300833,jul:714417,inc:413584,pct:137.5},
+  ];
+  document.getElementById('b-hr-takeaways').innerHTML=pods.map(p=>
+    `<tr><td style="font-weight:600">${p.name}</td><td>${fmt(p.jan)}</td><td>${fmt(p.jul)}</td><td class="neg">+${fmt(p.inc)}</td><td class="neg">+${p.pct}%</td></tr>`
+  ).join('');
+
+  // Headcount
   const qCols=['Jan 2026','Apr 2026','Jul 2026','Sep 2026'];
   const teams=Object.entries(M.hrHeadcount);
   document.getElementById('b-hrhc').innerHTML=teams.map(([team,d])=>
     `<tr><td>${team}</td>${qCols.map(q=>`<td>${ef(d[q]||0,`M.hrHeadcount['${team}']['${q}']=Number(this.value);renderHR()`,'min-width:36px;text-align:right')}</td>`).join('')}</tr>`
   ).join('')+`<tr class="total-row"><td>Total</td>${qCols.map(q=>`<td>${fmtN(teams.reduce((s,[,d])=>s+(d[q]||0),0))}</td>`).join('')}</tr>`;
+
+  // Cost Per Head
   document.getElementById('b-hrph').innerHTML=MONTHS.map(m=>{
     const cost=M.costBase[m]||0;
     const qRef=['Jan 2026','Apr 2026','Jul 2026'];
     let h=36;for(let i=qRef.length-1;i>=0;i--){if(m>=qRef[i]){h=teams.reduce((s,[,d])=>s+(d[qRef[i]]||0),0);break;}}
     return`<tr><td>${m}</td><td>${fmt(cost)}</td><td>${fmtN(h)}</td><td>${fmt(h>0?cost/h:0)}</td></tr>`;
   }).join('');
+
+  // Cost Per Chat
+  document.getElementById('b-hr-perchat').innerHTML=MONTHS.map(m=>{
+    const d=M.hrPerChat[m]||{},c=d.chats||0,cost=d.cost||0;
+    return`<tr><td>${m}</td><td>${fmtN(c)||'—'}</td><td>${fmt(cost)}</td><td>${c>0?fmt(cost/c):'—'}</td></tr>`;
+  }).join('');
+
+  // Cost Per Claim
+  document.getElementById('b-hr-perclaim').innerHTML=MONTHS.map(m=>{
+    const d=M.hrPerClaim[m]||{},ri=d.ri||0,cl=d.cl||0,cost=d.cost||0,tot=ri+cl;
+    return`<tr><td>${m}</td><td>${fmtN(ri)||'—'}</td><td>${fmtN(cl)||'—'}</td><td>${fmtN(tot)||'—'}</td><td>${tot>0?fmt(cost/tot):'—'}</td></tr>`;
+  }).join('');
+
+  // Profitability
+  document.getElementById('b-hr-profit').innerHTML=MONTHS.map(m=>{
+    const d=M.profitability[m]||{};
+    return`<tr><td>${m}</td>
+    <td class="${(d.netProfit||0)>0?'pos':'neg'}">${fmt(d.netProfit||0)}</td>
+    <td>${fmtN(d.headCount||0)}</td>
+    <td>${fmt(d.costBase||0)}</td>
+    <td class="${(d.profitCostPct||0)>0?'pos':'neg'}">${d.profitCostPct||0}%</td>
+    <td class="${(d.profitHeadCount||0)>0?'pos':'neg'}">${fmtN(d.profitHeadCount||0)}</td></tr>`;
+  }).join('');
+}
+
+// Fix bookings table — full data from sheet
+function renderBookings(){
+  const weeks=["7 Aug'26","14 Aug'26","21 Aug'26","28 Aug'26","4 Sep'26","11 Sep'26","18 Sep'26"];
+  // Unique Service # rows: [created week][booked week] = {b,c}
+  const svc=[
+    {week:"7 Aug'26", data:[{b:79,c:75},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0}], gtB:99, gtC:95},
+    {week:"14 Aug'26",data:[{b:0,c:0},{b:73,c:69},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0}], gtB:122,gtC:117},
+    {week:"21 Aug'26",data:[{b:0,c:0},{b:0,c:0},{b:100,c:95},{b:41,c:38},{b:14,c:13},{b:22,c:13},{b:0,c:0}],gtB:155,gtC:146},
+    {week:"28 Aug'26",data:[{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:156,c:150},{b:37,c:33},{b:33,c:22},{b:0,c:0}],gtB:215,gtC:183},
+    {week:"4 Sep'26", data:[{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:163,c:130},{b:46,c:0},{b:4,c:0},{b:0,c:0}],gtB:213,gtC:130},
+    {week:"Grand Total",data:[{b:79,c:75},{b:90,c:86},{b:140,c:134},{b:209,c:200},{b:214,c:176},{b:68,c:0},{b:4,c:0}],gtB:804,gtC:671},
+  ];
+  // Unique Visitors rows
+  const vis=[
+    {week:"7 Aug'26", data:[{b:50,c:49},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0}],gtB:63,gtC:62},
+    {week:"14 Aug'26",data:[{b:0,c:0},{b:43,c:43},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:0,c:0}],gtB:59,gtC:58},
+    {week:"21 Aug'26",data:[{b:0,c:0},{b:0,c:0},{b:65,c:63},{b:26,c:25},{b:2,c:1},{b:0,c:0},{b:0,c:0}],gtB:93,gtC:89},
+    {week:"28 Aug'26",data:[{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:72,c:72},{b:26,c:23},{b:13,c:0},{b:0,c:0}],gtB:111,gtC:95},
+    {week:"4 Sep'26", data:[{b:0,c:0},{b:0,c:0},{b:0,c:0},{b:72,c:63},{b:20,c:0},{b:1,c:0},{b:0,c:0}],gtB:93,gtC:63},
+    {week:"Grand Total",data:[{b:50,c:49},{b:53,c:53},{b:83,c:80},{b:99,c:98},{b:100,c:87},{b:33,c:0},{b:1,c:0}],gtB:419,gtC:367},
+  ];
+  const thead=`<tr><th>Created Week</th>${weeks.map(w=>`<th colspan="2">${w}</th>`).join('')}<th colspan="2">Grand Total</th></tr><tr><th></th>${[...weeks,'GT'].map(()=>'<th>Booked</th><th>Completed</th>').join('')}</tr>`;
+  const tbody=(rows)=>rows.map(r=>`<tr><td style="font-weight:${r.week==='Grand Total'?'700':'400'}">${r.week}</td>${r.data.map(d=>`<td>${d.b||'—'}</td><td>${d.c||'—'}</td>`).join('')}<td><strong>${r.gtB}</strong></td><td><strong>${r.gtC}</strong></td></tr>`).join('');
+  const t1=document.getElementById('t-bookings1');
+  t1.querySelector('thead').innerHTML=thead;
+  t1.querySelector('tbody').innerHTML=tbody(svc);
+  const t2=document.getElementById('t-bookings2');
+  t2.querySelector('thead').innerHTML=thead;
+  t2.querySelector('tbody').innerHTML=tbody(vis);
 }
 
 // ── PIPELINE ──
