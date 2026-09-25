@@ -361,6 +361,10 @@ function parseMasterList(rows) {
     const pType = String(row['Policy type']||row['policy type']||'').toLowerCase().trim();
     if (!INCLUDE.some(t=>pType.includes(t))) return;
 
+    // Exclude Tally — handled as flat adjustment below
+    const orgName = String(row['Org Name']||row['org name']||'').toLowerCase().trim();
+    if (orgName.includes('tally')) return;
+
     const ip    = parseAmt(row['Inception Premium']||row['inception premium']);
     const ipGST = parseAmt(row['Inception Premium (inc GST)']||row['inception premium (inc gst)']);
     if (!ip && !ipGST) return;
@@ -393,6 +397,17 @@ function parseMasterList(rows) {
       const d=overlap(startD,endD,qs,qe);
       if(d>0){epExclQ[q2]=(epExclQ[q2]||0)+pdExcl*d;epInclQ[q2]=(epInclQ[q2]||0)+pdIncl*d;}
     }
+  });
+
+  // Tally: excluded from proration, added as flat ₹5L/month
+  Object.keys(monthRanges).forEach(m => {
+    epExclM[m] = (epExclM[m]||0) + 500000;
+    epInclM[m] = (epInclM[m]||0) + 500000;
+  });
+  Object.keys(quarterRanges).forEach(q => {
+    if (q === "Q1'25") return;
+    epExclQ[q] = (epExclQ[q]||0) + 1500000;
+    epInclQ[q] = (epInclQ[q]||0) + 1500000;
   });
 
   Object.assign(D,{gwpM,gwpInclM:gwpIM,gwpQ,gwpInclQ:gwpIQ,earnedExclM:epExclM,earnedInclM:epInclM,earnedExclQ:epExclQ,earnedInclQ:epInclQ});
