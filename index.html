@@ -914,13 +914,14 @@ function renderHR(){
     <td><input class="ef" value="${M.costNotes[m]||''}" readonly style="min-width:180px;text-align:left" onchange="M.costNotes['${m}']=this.value" onclick="this.select()"></td></tr>`;
   }).join('');
 
-  // POD tables
+  // POD tables — editable spend column
   const podFn=(key)=>{
     let p=0;
     return MONTHS.map(m=>{
       const spend=M[key][m]||0,delta=p>0?spend-p:null,pct=p>0?(spend-p)/p*100:null;
       p=spend;
-      return`<tr><td>${m}</td><td>${fmt(spend)}</td>
+      return`<tr><td>${m}</td>
+      <td>${ef(spend,`M['${key}']['${m}']=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:90px')}</td>
       <td class="${delta>0?'neg':delta<0?'pos':''}">${delta!==null?(delta>0?'+':'')+fmt(delta):'—'}</td>
       <td class="${pct>0?'neg':pct<0?'pos':''}">${pct!==null?fmtP(pct,1):'—'}</td></tr>`;
     }).join('');
@@ -930,25 +931,21 @@ function renderHR(){
   document.getElementById('b-hr-claims').innerHTML=podFn('podClaims');
   document.getElementById('b-hr-postsales').innerHTML=podFn('podPostSales');
 
-  // Key Takeaways
-  const pods=[
-    {name:'B2B Central',key:'podCentral',jan:1236723,jul:1963500,inc:726777,pct:58.8},
-    {name:'B2B Revenue',key:'podRevenue',jan:491666,jul:849333,inc:357667,pct:72.7},
-    {name:'B2B Claims',key:'podClaims',jan:84452,jul:408344,inc:323892,pct:383.5},
-    {name:'B2B Post Sales',key:'podPostSales',jan:300833,jul:714417,inc:413584,pct:137.5},
-  ];
-  document.getElementById('b-hr-takeaways').innerHTML=pods.map(p=>
-    `<tr><td style="font-weight:600">${p.name}</td><td>${fmt(p.jan)}</td><td>${fmt(p.jul)}</td><td class="neg">+${fmt(p.inc)}</td><td class="neg">+${p.pct}%</td></tr>`
-  ).join('');
+  // Key Takeaways — auto-computed from POD data
+  const podKeys=[{name:'B2B Central',key:'podCentral'},{name:'B2B Revenue',key:'podRevenue'},{name:'B2B Claims',key:'podClaims'},{name:'B2B Post Sales',key:'podPostSales'}];
+  document.getElementById('b-hr-takeaways').innerHTML=podKeys.map(p=>{
+    const jan=M[p.key]['Jan 2026']||0,jul=M[p.key]['Jul 2026']||0,inc=jul-jan,pct=jan>0?(inc/jan)*100:0;
+    return`<tr><td style="font-weight:600">${p.name}</td><td>${fmt(jan)}</td><td>${fmt(jul)}</td><td class="neg">${inc>0?'+':''}${fmt(inc)}</td><td class="neg">${inc>0?'+':''}${fmtP(pct,1)}</td></tr>`;
+  }).join('');
 
-  // Headcount
+  // Headcount — all cells editable
   const qCols=['Jan 2026','Apr 2026','Jul 2026','Sep 2026'];
   const teams=Object.entries(M.hrHeadcount);
   document.getElementById('b-hrhc').innerHTML=teams.map(([team,d])=>
     `<tr><td>${team}</td>${qCols.map(q=>`<td>${ef(d[q]||0,`M.hrHeadcount['${team}']['${q}']=Number(this.value);renderHR()`,'min-width:36px;text-align:right')}</td>`).join('')}</tr>`
   ).join('')+`<tr class="total-row"><td>Total</td>${qCols.map(q=>`<td>${fmtN(teams.reduce((s,[,d])=>s+(d[q]||0),0))}</td>`).join('')}</tr>`;
 
-  // Cost Per Head
+  // Cost Per Head — auto-computed
   document.getElementById('b-hrph').innerHTML=MONTHS.map(m=>{
     const cost=M.costBase[m]||0;
     const qRef=['Jan 2026','Apr 2026','Jul 2026'];
@@ -956,27 +953,36 @@ function renderHR(){
     return`<tr><td>${m}</td><td>${fmt(cost)}</td><td>${fmtN(h)}</td><td>${fmt(h>0?cost/h:0)}</td></tr>`;
   }).join('');
 
-  // Cost Per Chat
+  // Cost Per Chat — chats and cost editable, cost/chat auto
   document.getElementById('b-hr-perchat').innerHTML=MONTHS.map(m=>{
     const d=M.hrPerChat[m]||{},c=d.chats||0,cost=d.cost||0;
-    return`<tr><td>${m}</td><td>${fmtN(c)||'—'}</td><td>${fmt(cost)}</td><td>${c>0?fmt(cost/c):'—'}</td></tr>`;
+    return`<tr><td>${m}</td>
+    <td>${ef(c,`M.hrPerChat['${m}'].chats=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:70px')}</td>
+    <td>${ef(cost,`M.hrPerChat['${m}'].cost=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:90px')}</td>
+    <td>${c>0?fmt(cost/c):'—'}</td></tr>`;
   }).join('');
 
-  // Cost Per Claim
+  // Cost Per Claim — all inputs editable, cost/claim auto
   document.getElementById('b-hr-perclaim').innerHTML=MONTHS.map(m=>{
     const d=M.hrPerClaim[m]||{},ri=d.ri||0,cl=d.cl||0,cost=d.cost||0,tot=ri+cl;
-    return`<tr><td>${m}</td><td>${fmtN(ri)||'—'}</td><td>${fmtN(cl)||'—'}</td><td>${fmtN(tot)||'—'}</td><td>${tot>0?fmt(cost/tot):'—'}</td></tr>`;
+    return`<tr><td>${m}</td>
+    <td>${ef(ri,`M.hrPerClaim['${m}'].ri=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:70px')}</td>
+    <td>${ef(cl,`M.hrPerClaim['${m}'].cl=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:70px')}</td>
+    <td>${fmtN(tot)||'—'}</td>
+    <td>${ef(cost,`M.hrPerClaim['${m}'].cost=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:90px')}</td></tr>`;
   }).join('');
 
-  // Profitability
+  // Profitability — all editable
   document.getElementById('b-hr-profit').innerHTML=MONTHS.map(m=>{
     const d=M.profitability[m]||{};
+    const np=d.netProfit||0,hc=d.headCount||0,cb=d.costBase||0;
+    const pcp=cb>0?np/cb*100:0,pph=hc>0?np/hc:0;
     return`<tr><td>${m}</td>
-    <td class="${(d.netProfit||0)>0?'pos':'neg'}">${fmt(d.netProfit||0)}</td>
-    <td>${fmtN(d.headCount||0)}</td>
-    <td>${fmt(d.costBase||0)}</td>
-    <td class="${(d.profitCostPct||0)>0?'pos':'neg'}">${d.profitCostPct||0}%</td>
-    <td class="${(d.profitHeadCount||0)>0?'pos':'neg'}">${fmtN(d.profitHeadCount||0)}</td></tr>`;
+    <td class="${np>0?'pos':'neg'}">${ef(np,`M.profitability['${m}'].netProfit=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:90px')}</td>
+    <td>${ef(hc,`M.profitability['${m}'].headCount=Number(this.value);renderHR()`,'min-width:40px')}</td>
+    <td>${ef(cb,`M.profitability['${m}'].costBase=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:90px')}</td>
+    <td class="${pcp>0?'pos':'neg'}">${fmtP(pcp,1)}</td>
+    <td class="${pph>0?'pos':'neg'}">${fmtN(Math.round(pph))}</td></tr>`;
   }).join('');
 }
 
@@ -1043,12 +1049,19 @@ function renderPipeline(){
     <td class="${(d.acctRet||0)>=80?'pos':(d.acctRet||0)>0?'warn':'neg'}">${d.due>0?fmtP(d.acctRet,2):'—'}</td>
     <td class="${(d.revRet||0)>=100?'pos':(d.revRet||0)>0?'warn':'neg'}">${d.gwpDue>0?(d.revRet||0)+'%':'—'}</td></tr>`;
   }).join('');
-  document.getElementById('b-marquee').innerHTML=M.marquee.map(r=>`<tr><td>${r.month}</td><td style="text-align:left;font-family:var(--sans)">${r.brands}</td></tr>`).join('');
-  document.getElementById('b-churned').innerHTML=M.churned.map(r=>`<tr>
-    <td>${r.month}</td><td style="text-align:left;font-family:var(--sans);font-weight:600">${r.account}</td>
-    <td>${fmt(r.premExcl)}</td><td>${fmt(r.premIncl)}</td>
-    <td style="text-align:left;font-family:var(--sans);color:var(--text2);max-width:300px;white-space:normal">${r.reason}</td>
-    <td class="${parseFloat(r.lr)>100?'neg':'warn'}">${r.lr}</td><td>${fmtN(r.total)}</td></tr>`).join('');
+  document.getElementById('b-marquee').innerHTML=M.marquee.map((r,i)=>`<tr>
+    <td><input class="ef" value="${r.month}" readonly style="min-width:80px;text-align:left" onchange="M.marquee[${i}].month=this.value;renderPipeline()" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.brands}" readonly style="min-width:300px;text-align:left" onchange="M.marquee[${i}].brands=this.value" onclick="this.select()"></td>
+  </tr>`).join('');
+  document.getElementById('b-churned').innerHTML=M.churned.map((r,i)=>`<tr>
+    <td><input class="ef" value="${r.month}" readonly style="min-width:70px;text-align:left" onchange="M.churned[${i}].month=this.value" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.account}" readonly style="min-width:100px;text-align:left;font-weight:600" onchange="M.churned[${i}].account=this.value" onclick="this.select()"></td>
+    <td>${ef(r.premExcl,`M.churned[${i}].premExcl=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:80px')}</td>
+    <td>${ef(r.premIncl,`M.churned[${i}].premIncl=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:80px')}</td>
+    <td><input class="ef" value="${r.reason}" readonly style="min-width:250px;text-align:left;color:var(--text2)" onchange="M.churned[${i}].reason=this.value" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.lr}" readonly style="min-width:60px" onchange="M.churned[${i}].lr=this.value" onclick="this.select()"></td>
+    <td>${ef(r.total,`M.churned[${i}].total=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:70px')}</td>
+  </tr>`).join('');
 }
 
 // ── RECEIVABLES ──
@@ -1062,24 +1075,32 @@ function renderReceivables(){
     <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Total Pending</div><div class="kpi-val neg">${fmt(allDue-allRec)}</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Collection %</div><div class="kpi-val neg">${fmtP(collPct,1)}</div></div>
   `;
-  document.getElementById('b-rec-digit').innerHTML=M.recDigit.map((r,i)=>
-    `<tr><td>${ef(r.particulars,`M.recDigit[${i}].particulars=this.value;renderReceivables()`,'min-width:220px;text-align:left')}</td>
+  document.getElementById('b-rec-digit').innerHTML=M.recDigit.map((r,i)=>{
+    const bal=r.due-r.received;
+    return`<tr><td>${ef(r.particulars,`M.recDigit[${i}].particulars=this.value;renderReceivables()`,'min-width:220px;text-align:left')}</td>
     <td>${ef(r.amount,`M.recDigit[${i}].amount=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
     <td>${ef(r.due,`M.recDigit[${i}].due=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
     <td>${ef(r.received,`M.recDigit[${i}].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
-    <td class="${r.balance>0?'neg':''}">${fmt(r.balance)}</td></tr>`
-  ).join('')+`<tr class="total-row"><td>Total</td><td>${fmt(M.recDigit.reduce((s,r)=>s+r.amount,0))}</td><td>${fmt(M.recDigit.reduce((s,r)=>s+r.due,0))}</td><td>${fmt(M.recDigit.reduce((s,r)=>s+r.received,0))}</td><td class="neg">${fmt(M.recDigit.reduce((s,r)=>s+r.balance,0))}</td></tr>`;
+    <td class="${bal>0?'neg':'pos'}">${fmt(bal)}</td></tr>`;
+  }).join('')+`<tr class="total-row"><td>Total</td>
+    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.amount,0))}</td>
+    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.due,0))}</td>
+    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.received,0))}</td>
+    <td class="neg">${fmt(M.recDigit.reduce((s,r)=>s+(r.due-r.received),0))}</td></tr>`;
 
   const monthlyT=(data,key)=>{
     const months=Object.keys(data);
-    return months.map(m=>{
+    const rows=months.map(m=>{
       const d=data[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=due-rec;
       return`<tr><td>${m}</td>
-      <td>${ef(bk,`M.${key}['${m}'].booked=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
-      <td>${fmt(due)}</td>
+      <td>${ef(bk,`M.${key}['${m}'].booked=Number(this.value.replace(/,/g,''));M.${key}['${m}'].due=M.${key}['${m}'].booked;renderReceivables()`,'min-width:90px')}</td>
+      <td>${ef(due,`M.${key}['${m}'].due=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
       <td>${ef(rec,`M.${key}['${m}'].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
       <td class="${pen>0?'neg':'pos'}">${fmt(pen)}</td></tr>`;
     }).join('');
+    const tDue=months.reduce((s,m)=>s+(data[m]?.due||0),0);
+    const tRec=months.reduce((s,m)=>s+(data[m]?.received||0),0);
+    return rows+`<tr class="total-row"><td>Total</td><td>—</td><td>${fmt(tDue)}</td><td>${fmt(tRec)}</td><td class="${tDue-tRec>0?'neg':'pos'}">${fmt(tDue-tRec)}</td></tr>`;
   };
   document.getElementById('b-rec-abhi').innerHTML=monthlyT(M.recABHI,'recABHI');
   document.getElementById('b-rec-zuno').innerHTML=monthlyT(M.recZuno,'recZuno');
