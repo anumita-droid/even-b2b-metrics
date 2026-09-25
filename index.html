@@ -9,143 +9,146 @@
 :root{
   --bg:#F4F6FA;--surface:#FFFFFF;--surface2:#F0F2F7;--surface3:#E8EBF2;
   --border:#DDE1EC;--border2:#C8CEDF;
-  --accent:#3B6FE8;--accent2:#0EA874;--danger:#E0342B;--warn:#D97706;--purple:#7C3AED;
+  --accent:#3B6FE8;--accent2:#0EA874;--danger:#E0342B;--warn:#D97706;
   --text:#0F172A;--text2:#4B5780;--text3:#8892AE;
   --mono:'DM Mono',monospace;--sans:'Inter',sans-serif;
   --r:10px;--shadow:0 1px 3px rgba(15,23,42,0.08),0 1px 2px rgba(15,23,42,0.06);
-  --shadow-md:0 4px 6px rgba(15,23,42,0.07),0 2px 4px rgba(15,23,42,0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:13px;display:flex;flex-direction:column}
 
-/* ── TOPBAR ── */
+/* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:52px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:200;box-shadow:var(--shadow);flex-shrink:0}
 .topbar-left{display:flex;align-items:center;gap:10px}
-.logo{width:28px;height:28px;background:linear-gradient(135deg,#3B6FE8 0%,#6366F1 100%);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:white;flex-shrink:0}
+.logo{width:28px;height:28px;background:linear-gradient(135deg,#3B6FE8,#6366F1);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:white;flex-shrink:0}
 .logo-text{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-0.3px}
 .divider{width:1px;height:16px;background:var(--border2)}
 .meta{font-size:11px;color:var(--text3);font-family:var(--mono)}
 .topbar-right{display:flex;align-items:center;gap:6px}
-.edit-pill{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.15s;border:1.5px solid var(--border2);background:var(--surface);color:var(--text3);user-select:none;letter-spacing:0.02em}
+.edit-pill{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;border:1.5px solid var(--border2);background:var(--surface);color:var(--text3);user-select:none}
 .edit-pill:hover{border-color:var(--accent);color:var(--accent)}
-.edit-pill.active{background:rgba(14,168,116,0.08);border-color:var(--accent2);color:var(--accent2)}
-.edit-dot{width:5px;height:5px;border-radius:50%;background:currentColor;transition:all 0.15s}
-.btn-sm{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all 0.15s;border:1.5px solid var(--border2);background:var(--surface);color:var(--text2);letter-spacing:0.02em}
+.edit-pill.active{background:rgba(14,168,116,.08);border-color:var(--accent2);color:var(--accent2)}
+.edit-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.btn-sm{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .15s;border:1.5px solid var(--border2);background:var(--surface);color:var(--text2)}
 .btn-sm:hover{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
 .btn-sm svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* ── EDIT BANNER ── */
-.edit-banner{display:none;align-items:center;justify-content:center;gap:8px;padding:7px;background:rgba(14,168,116,0.06);border-bottom:1px solid rgba(14,168,116,0.2);font-size:11px;color:var(--accent2);font-weight:600;flex-shrink:0}
+/* EDIT BANNER */
+.edit-banner{display:none;align-items:center;justify-content:center;gap:8px;padding:7px;background:rgba(14,168,116,.06);border-bottom:1px solid rgba(14,168,116,.2);font-size:11px;color:var(--accent2);font-weight:600;flex-shrink:0}
 .edit-mode-body .edit-banner{display:flex}
 
-/* ── NAV ── */
-.nav{display:flex;padding:0 24px;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto;flex-shrink:0;gap:0}
+/* NAV */
+.nav{display:flex;padding:0 24px;border-bottom:1px solid var(--border);background:var(--surface);overflow-x:auto;flex-shrink:0}
 .nav::-webkit-scrollbar{display:none}
-.nav-item{padding:12px 14px;font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;letter-spacing:0.02em}
+.nav-item{padding:12px 14px;font-size:12px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;letter-spacing:.02em}
 .nav-item:hover{color:var(--text2)}
 .nav-item.active{color:var(--accent);border-bottom-color:var(--accent)}
 
-/* ── MAIN ── */
+/* MAIN */
 .main{padding:20px 24px;flex:1}
 .tab-pane{display:none}.tab-pane.active{display:block}
 
-/* ── PAGE HEADER ── */
-.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.ph-title{font-size:17px;font-weight:700;letter-spacing:-0.4px;color:var(--text)}
-.ph-right{display:flex;align-items:center;gap:8px}
+/* PAGE HEADER */
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.ph-title{font-size:17px;font-weight:700;letter-spacing:-.4px}
+.ph-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
-/* ── TOGGLE ── */
+/* MONTH FILTER */
+.month-filter{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;font-size:11px;color:var(--text2)}
+.month-filter select{border:none;background:transparent;color:var(--text);font-family:var(--sans);font-size:11px;font-weight:600;outline:none;cursor:pointer}
+
+/* TOGGLE */
 .tgl{display:flex;background:var(--surface2);border:1.5px solid var(--border);border-radius:7px;overflow:hidden}
-.tgl-btn{padding:5px 14px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;border:none;background:transparent;font-family:var(--sans);letter-spacing:0.04em;text-transform:uppercase;transition:all 0.15s}
+.tgl-btn{padding:5px 14px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;border:none;background:transparent;font-family:var(--sans);letter-spacing:.04em;text-transform:uppercase;transition:all .15s}
 .tgl-btn.active{background:var(--accent);color:white}
 
-/* ── KPI ROW ── */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:18px}
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:18px}
 .kpi{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.kpi-accent{position:absolute;top:0;left:0;right:0;height:3px;border-radius:3px 3px 0 0}
-.kpi-label{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
-.kpi-val{font-size:19px;font-weight:700;letter-spacing:-0.5px;font-family:var(--mono);line-height:1}
+.kpi-accent{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.kpi-val{font-size:19px;font-weight:700;letter-spacing:-.5px;font-family:var(--mono);line-height:1}
 .kpi-val.pos{color:var(--accent2)}.kpi-val.neg{color:var(--danger)}.kpi-val.warn{color:var(--warn)}
 .kpi-sub{font-size:9px;color:var(--text3);margin-top:4px;font-family:var(--mono)}
 
-/* ── TABLE ── */
+/* SECTION DIVIDER */
+.sdiv{display:flex;align-items:center;gap:10px;margin:22px 0 12px}
+.sdiv-t{font-size:11px;font-weight:700;color:white;white-space:nowrap;text-transform:uppercase;letter-spacing:.1em;background:var(--accent);padding:4px 12px;border-radius:4px}
+.sdiv-l{flex:1;height:1.5px;background:var(--border)}
+.sdiv-r{display:flex;align-items:center;gap:8px}
+
+/* TABLE */
 .tw{overflow-x:auto;border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:20px;box-shadow:var(--shadow);background:var(--surface)}
 table{width:100%;border-collapse:collapse;font-size:12px}
 thead tr{background:var(--surface2)}
-thead th{padding:9px 12px;text-align:right;font-weight:700;color:var(--text3);font-size:9px;white-space:nowrap;border-bottom:1.5px solid var(--border);letter-spacing:0.08em;text-transform:uppercase}
+thead th{padding:9px 12px;text-align:right;font-weight:700;color:var(--text3);font-size:9px;white-space:nowrap;border-bottom:1.5px solid var(--border);letter-spacing:.08em;text-transform:uppercase}
 thead th:first-child{text-align:left}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
 tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(59,111,232,0.03)}
+tbody tr:hover{background:rgba(59,111,232,.03)}
 tbody td{padding:8px 12px;text-align:right;color:var(--text);font-family:var(--mono);font-size:12px;white-space:nowrap}
 tbody td:first-child{text-align:left;font-family:var(--sans);font-weight:500;color:var(--text);font-size:12px}
-tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface2);border-top:1.5px solid var(--border2)}
+tbody tr.total-row td{font-weight:700;background:var(--surface2);border-top:1.5px solid var(--border2)}
+tbody tr.total-row td:first-child{color:var(--text2)}
 .pos{color:var(--accent2)}.neg{color:var(--danger)}.warn{color:var(--warn)}
 
-/* ── EDITABLE ── */
+/* EDITABLE */
 .ef{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:12px;text-align:right;width:100%;padding:0;cursor:default;pointer-events:none}
-.edit-mode .ef{cursor:text;pointer-events:auto;border-bottom:1.5px dashed var(--border2);border-radius:0}
-.edit-mode .ef:focus{outline:none;border-bottom-color:var(--accent2);background:rgba(14,168,116,0.06);border-radius:3px 3px 0 0;padding:1px 4px}
-.eh{display:none;font-size:8px;color:var(--accent2);margin-left:3px;vertical-align:middle;font-family:var(--sans)}
+.edit-mode .ef{cursor:text;pointer-events:auto;border-bottom:1.5px dashed var(--border2)}
+.edit-mode .ef:focus{outline:none;border-bottom-color:var(--accent2);background:rgba(14,168,116,.06);border-radius:3px 3px 0 0;padding:1px 4px}
+.eh{display:none;font-size:8px;color:var(--accent2);margin-left:3px;font-family:var(--sans)}
 .edit-mode .eh{display:inline}
 
-/* ── PARAMS ── */
-.params{display:none;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:10px 16px;background:rgba(59,111,232,0.04);border:1.5px solid rgba(59,111,232,0.15);border-radius:var(--r);align-items:center}
+/* PARAMS */
+.params{display:none;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:10px 16px;background:rgba(59,111,232,.04);border:1.5px solid rgba(59,111,232,.15);border-radius:var(--r);align-items:center}
 .edit-mode .params{display:flex}
 .pl{font-size:11px;color:var(--text2);white-space:nowrap;font-weight:500}
 .pi{background:var(--surface);border:1.5px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-family:var(--mono);font-size:12px;width:70px;text-align:center}
 .pi:focus{outline:none;border-color:var(--accent)}
 
-/* ── SECTION DIVIDER ── */
-.sdiv{display:flex;align-items:center;gap:10px;margin:22px 0 12px}
-.sdiv-t{font-size:9px;font-weight:800;color:var(--text2);white-space:nowrap;text-transform:uppercase;letter-spacing:0.12em}
-.sdiv-l{flex:1;height:1.5px;background:var(--border)}
-.sdiv-r{display:flex;align-items:center;gap:8px}
-
-/* ── GRID ── */
+/* GRID */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
 @media(max-width:800px){.grid2{grid-template-columns:1fr}}
 .card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
-.card-hd{padding:10px 14px;border-bottom:1.5px solid var(--border);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);background:var(--surface2)}
+.card-hd{padding:10px 14px;border-bottom:1.5px solid var(--border);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);background:var(--surface2)}
 
-/* ── NOTE BOX ── */
-.note-box{background:rgba(245,158,11,0.06);border:1.5px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--text2)}
+/* SUB TABS */
+.sub-tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.sub-tab{padding:6px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;border:1.5px solid var(--border);background:var(--surface);color:var(--text3)}
+.sub-tab:hover{border-color:var(--accent);color:var(--accent)}
+.sub-tab.active{background:var(--accent);border-color:var(--accent);color:white}
+.sub-pane{display:none}.sub-pane.active{display:block}
+
+/* NOTE BOX */
+.note-box{background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px}
 .note-box textarea{width:100%;background:transparent;border:none;color:var(--text2);font-family:var(--sans);font-size:12px;resize:none;outline:none;cursor:default;pointer-events:none;min-height:36px}
 .edit-mode .note-box textarea{cursor:text;pointer-events:auto}
-.note-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--warn);margin-bottom:4px}
+.note-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--warn);margin-bottom:4px}
 
-/* ── INSURER BADGE ── */
-.ins-badge{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:12px;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
-.ins-digit{background:rgba(99,102,241,0.1);color:#4F46E5}
-.ins-abhi{background:rgba(14,168,116,0.1);color:#059669}
-.ins-zuno{background:rgba(59,111,232,0.1);color:#2563EB}
-.ins-magma{background:rgba(217,119,6,0.1);color:#B45309}
-.ins-paz{background:rgba(220,52,43,0.1);color:#DC2626}
-.ins-healthysure{background:rgba(124,58,237,0.1);color:#7C3AED}
-.ins-direct{background:rgba(15,23,42,0.06);color:#4B5780}
+/* INSURER BADGE */
+.ins-badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.ins-digit{background:rgba(99,102,241,.1);color:#4F46E5}
+.ins-abhi{background:rgba(14,168,116,.1);color:#059669}
+.ins-zuno{background:rgba(59,111,232,.1);color:#2563EB}
+.ins-direct{background:rgba(15,23,42,.06);color:#4B5780}
 
-/* ── LOADING ── */
-.overlay{position:fixed;inset:0;background:rgba(244,246,250,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:12px;backdrop-filter:blur(8px)}
+/* EMPTY STATE */
+.empty-state{padding:24px;text-align:center;color:var(--text3);font-size:12px;font-style:italic}
+
+/* LOADING */
+.overlay{position:fixed;inset:0;background:rgba(244,246,250,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:12px;backdrop-filter:blur(8px)}
 .overlay.hidden{display:none}
-.spin{width:30px;height:30px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.65s linear infinite}
+.spin{width:30px;height:30px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite}
 .ov-t{font-size:13px;color:var(--text2);font-weight:600}
 .ov-s{font-size:10px;color:var(--text3);font-family:var(--mono)}
 @keyframes spin{to{transform:rotate(360deg)}}
-.err{background:rgba(224,52,43,0.06);border:1.5px solid rgba(224,52,43,0.2);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--danger);margin-bottom:14px;display:none;font-weight:500}
-
-/* ── STAT CHIP ── */
-.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;font-family:var(--mono)}
-.chip-pos{background:rgba(14,168,116,0.1);color:var(--accent2)}
-.chip-neg{background:rgba(224,52,43,0.1);color:var(--danger)}
-.chip-warn{background:rgba(217,119,6,0.1);color:var(--warn)}
-.chip-neu{background:var(--surface2);color:var(--text3)}
+.err{background:rgba(224,52,43,.06);border:1.5px solid rgba(224,52,43,.2);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--danger);margin-bottom:14px;display:none;font-weight:500}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay"><div class="spin"></div><div class="ov-t">Even B2B</div><div class="ov-s" id="ovStep">Connecting...</div></div>
-<div class="edit-banner">✎ Edit mode is on — click any underlined field to update</div>
+<div class="edit-banner">✎ Edit mode — click any underlined field to update</div>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-left">
     <div class="logo">E</div>
@@ -154,18 +157,11 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
     <span class="meta" id="lastUpdated">—</span>
   </div>
   <div class="topbar-right">
-    <div class="edit-pill" id="editPill" onclick="toggleEdit()">
-      <div class="edit-dot"></div>
-      <span id="editLabel">Edit</span>
-    </div>
-    <button class="btn-sm" onclick="loadAll()">
-      <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-      Refresh
-    </button>
+    <div class="edit-pill" id="editPill" onclick="toggleEdit()"><div class="edit-dot"></div><span id="editLabel">Edit</span></div>
+    <button class="btn-sm" onclick="loadAll()"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Refresh</button>
   </div>
 </div>
 
-<!-- NAV -->
 <div class="nav">
   <div class="nav-item active" onclick="goTab('summary')">Summary</div>
   <div class="nav-item" onclick="goTab('lossratios')">Loss Ratios</div>
@@ -184,17 +180,15 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
   <div class="ph">
     <div class="ph-title">Financial Summary</div>
     <div class="ph-right">
-      <div class="tgl">
-        <button class="tgl-btn active" onclick="setSV('monthly',this)">Monthly</button>
-        <button class="tgl-btn" onclick="setSV('quarterly',this)">Quarterly</button>
-      </div>
+      <div class="month-filter">📅 <select id="mf-summary" onchange="renderSummary()"><option value="all">All Months</option></select></div>
+      <div class="tgl"><button class="tgl-btn active" onclick="setSV('monthly',this)">Monthly</button><button class="tgl-btn" onclick="setSV('quarterly',this)">Quarterly</button></div>
     </div>
   </div>
   <div class="kpis" id="kpi-summary"></div>
   <div class="params">
     <div style="display:flex;align-items:center;gap:6px"><span class="pl">ME + Brokerage</span><input class="pi" id="meFactor" value="0.94" type="number" step="0.01" onchange="renderAll()"></div>
     <div style="display:flex;align-items:center;gap:6px"><span class="pl">Network Comm %</span><input class="pi" id="networkPct" value="12.5" type="number" step="0.1" onchange="renderAll()"><span class="pl">%</span></div>
-    <div style="display:flex;align-items:center;gap:6px"><span class="pl">IPD Revenue Split</span><input class="pi" id="ipdSplit" value="50" type="number" step="1" onchange="renderAll()"><span class="pl">%</span></div>
+    <div style="display:flex;align-items:center;gap:6px"><span class="pl">IPD Split</span><input class="pi" id="ipdSplit" value="50" type="number" step="1" onchange="renderAll()"><span class="pl">%</span></div>
   </div>
   <div id="sv-monthly">
     <div class="tw"><table>
@@ -215,22 +209,20 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
   <div class="ph">
     <div class="ph-title">Loss Ratios</div>
     <div class="ph-right">
-      <div class="tgl">
-        <button class="tgl-btn active" onclick="setLRV('monthly',this)">Monthly</button>
-        <button class="tgl-btn" onclick="setLRV('quarterly',this)">Quarterly</button>
-      </div>
+      <div class="month-filter">📅 <select id="mf-lr" onchange="renderLR()"><option value="all">All Months</option></select></div>
+      <div class="tgl"><button class="tgl-btn active" onclick="setLRV('monthly',this)">Monthly</button><button class="tgl-btn" onclick="setLRV('quarterly',this)">Quarterly</button></div>
     </div>
   </div>
   <div class="kpis" id="kpi-lr"></div>
   <div id="lrv-monthly">
     <div class="tw"><table>
-      <thead><tr><th>Month</th><th>Earned (excl GST)</th><th>Earned (incl GST)</th><th>Earned (net ME)</th><th>Approved Claims</th><th>O/S Claims</th><th>Total Claims</th><th>IBNR %<span class="eh">✎</span></th><th>Hosp Incurred</th><th>Hosp Limit Ded<span class="eh">✎</span></th><th>Loss Ratio</th><th>UW Profit</th></tr></thead>
+      <thead><tr><th>Month</th><th>Earned (excl GST)</th><th>Earned (incl GST)</th><th>Earned (net ME)</th><th>Approved</th><th>O/S</th><th>Total Claims</th><th>IBNR %<span class="eh">✎</span></th><th>Hosp Incurred</th><th>Hosp Limit Ded<span class="eh">✎</span></th><th>Loss Ratio</th><th>UW Profit</th></tr></thead>
       <tbody id="b-lr-m"></tbody>
     </table></div>
   </div>
   <div id="lrv-quarterly" style="display:none">
     <div class="tw"><table>
-      <thead><tr><th>Quarter</th><th>Earned (excl GST)</th><th>Earned (incl GST)</th><th>Earned (net ME)</th><th>Approved Claims</th><th>O/S Claims</th><th>Total Claims</th><th>IBNR %</th><th>Hosp Incurred</th><th>Hosp Limit Ded</th><th>Loss Ratio</th><th>UW Profit</th></tr></thead>
+      <thead><tr><th>Quarter</th><th>Earned (excl GST)</th><th>Earned (incl GST)</th><th>Earned (net ME)</th><th>Approved</th><th>O/S</th><th>Total Claims</th><th>IBNR %</th><th>Hosp Incurred</th><th>Hosp Limit Ded</th><th>Loss Ratio</th><th>UW Profit</th></tr></thead>
       <tbody id="b-lr-q"></tbody>
     </table></div>
   </div>
@@ -238,7 +230,10 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
 
 <!-- ══ OPERATIONAL ══ -->
 <div class="tab-pane" id="pane-claims">
-  <div class="ph"><div class="ph-title">Operational Metrics on Claims</div></div>
+  <div class="ph">
+    <div class="ph-title">Operational Metrics on Claims</div>
+    <div class="ph-right"><div class="month-filter">📅 <select id="mf-ops" onchange="renderOps()"><option value="all">All Months</option></select></div></div>
+  </div>
   <div class="sdiv"><div class="sdiv-t">Post Sales Team</div><div class="sdiv-l"></div></div>
   <div class="tw"><table>
     <thead><tr><th>Period</th><th>Chats + Tickets<span class="eh">✎</span></th><th>First Response<span class="eh">✎</span></th><th>Avg Response<span class="eh">✎</span></th><th>CSAT<span class="eh">✎</span></th><th>Base Cost<span class="eh">✎</span></th><th>Cost / Chat</th></tr></thead>
@@ -249,15 +244,7 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
     <thead><tr><th>Period</th><th>Actioned</th><th>Requested ₹</th><th>Approved ₹</th><th>Base Cost<span class="eh">✎</span></th><th>Cost / Claim</th></tr></thead>
     <tbody id="b-clcomb"></tbody>
   </table></div>
-  <div class="sdiv">
-    <div class="sdiv-t">Claims — Reimbursements</div><div class="sdiv-l"></div>
-    <div class="sdiv-r">
-      <div class="tgl">
-        <button class="tgl-btn active" onclick="setRI('incl',this)">Incl. Tally</button>
-        <button class="tgl-btn" onclick="setRI('excl',this)">Excl. Tally</button>
-      </div>
-    </div>
-  </div>
+  <div class="sdiv"><div class="sdiv-t">Claims — Reimbursements</div><div class="sdiv-l"></div><div class="sdiv-r"><div class="tgl"><button class="tgl-btn active" onclick="setRI('incl',this)">Incl. Tally</button><button class="tgl-btn" onclick="setRI('excl',this)">Excl. Tally</button></div></div></div>
   <div class="tw"><table>
     <thead><tr><th>Period</th><th>Actioned</th><th>Requested ₹</th><th>Approved ₹</th><th>Rejected ₹</th><th>Paid #</th><th>Queried #</th><th>Rejected #</th><th>TAT<span class="eh">✎</span></th><th>Approval %</th><th>Rej Amt %</th><th>Rej # %</th></tr></thead>
     <tbody id="b-ri"></tbody>
@@ -271,133 +258,174 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
 
 <!-- ══ INTERNALISATION ══ -->
 <div class="tab-pane" id="pane-internalisation">
-  <div class="ph"><div class="ph-title">Internalisation</div></div>
-  <div class="sdiv"><div class="sdiv-t">Member Engagement</div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Total Lives</th><th>Downloaded</th><th>BLR Lives</th><th>10km Hosp Lives</th><th>% BLR in 10km</th><th>Any Engagement Vol</th><th>Engagement %</th><th>TC Volume</th><th>TC %</th></tr></thead>
-    <tbody id="b-int-eng"></tbody>
-  </table></div>
-  <div class="sdiv"><div class="sdiv-t">Claims Count</div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Even TC</th><th>IPD</th><th>OPD</th><th>Non EHRC OPD</th><th>Internalisation %</th></tr></thead>
-    <tbody id="b-int-claims"></tbody>
-  </table></div>
-  <div class="sdiv"><div class="sdiv-t">Claims Amount</div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Vol (CL+RI)</th><th>Amt (CL+RI)</th><th>Vol (TC)</th><th>Amt (TC)</th><th>Even TC</th><th>Even TC Amt</th><th>Non EHRC OPD</th><th>Non EHRC Amt</th></tr></thead>
-    <tbody id="b-int-amt"></tbody>
-  </table></div>
+  <div class="ph">
+    <div class="ph-title">Internalisation</div>
+    <div class="ph-right"><div class="month-filter">📅 <select id="mf-int" onchange="renderInternalisation()"><option value="all">All Months</option></select></div></div>
+  </div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="goSub('int','engagement',this)">Member Engagement</div>
+    <div class="sub-tab" onclick="goSub('int','claims-count',this)">Claims Count</div>
+    <div class="sub-tab" onclick="goSub('int','claims-amt',this)">Claims Amount</div>
+    <div class="sub-tab" onclick="goSub('int','bookings',this)">Hospital Bookings</div>
+  </div>
+  <div class="sub-pane active" id="int-engagement">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Total Lives</th><th>Downloaded</th><th>BLR Lives</th><th>10km Hosp Lives</th><th>% BLR in 10km</th><th>Any Engagement Vol</th><th>Engagement %</th><th>TC Volume</th><th>TC %</th></tr></thead>
+      <tbody id="b-int-eng"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="int-claims-count">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Even TC</th><th>IPD</th><th>OPD</th><th>Non EHRC OPD</th><th>Total</th><th>Internalisation %</th></tr></thead>
+      <tbody id="b-int-cc"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="int-claims-amt">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Vol (CL+RI)</th><th>Amt (CL+RI)</th><th>Vol (TC)</th><th>Amt (TC)</th><th>Even TC</th><th>Even TC Amt</th><th>Non EHRC OPD</th><th>Non EHRC Amt</th></tr></thead>
+      <tbody id="b-int-amt"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="int-bookings">
+    <div class="sdiv"><div class="sdiv-t">Unique Service # at Hospital</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table id="t-bookings1"><thead></thead><tbody></tbody></table></div>
+    <div class="sdiv"><div class="sdiv-t">Unique Visitors</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table id="t-bookings2"><thead></thead><tbody></tbody></table></div>
+  </div>
 </div>
 
 <!-- ══ HR ══ -->
 <div class="tab-pane" id="pane-hr">
   <div class="ph"><div class="ph-title">HR Summary</div></div>
-  <div class="sdiv"><div class="sdiv-t">MoM Cost Base</div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Month</th><th>Cost Base<span class="eh">✎</span></th><th>MoM Change</th><th>Delta %</th><th>Notes<span class="eh">✎</span></th></tr></thead>
-    <tbody id="b-hrcost"></tbody>
-  </table></div>
-  <div class="sdiv"><div class="sdiv-t">Team Headcount<span class="eh" style="margin-left:6px">✎</span></div><div class="sdiv-l"></div></div>
-  <div class="grid2">
-    <div class="card">
-      <div class="card-hd">Headcount by Team</div>
-      <div class="tw" style="border:none;border-radius:0;margin:0;box-shadow:none"><table>
-        <thead><tr><th>Team</th><th>Jan'26</th><th>Apr'26</th><th>Jul'26</th><th>Sep'26</th></tr></thead>
-        <tbody id="b-hrhc"></tbody>
-      </table></div>
-    </div>
-    <div class="card">
-      <div class="card-hd">Cost Per Head (Monthly)</div>
-      <div class="tw" style="border:none;border-radius:0;margin:0;box-shadow:none"><table>
-        <thead><tr><th>Period</th><th>Total Cost</th><th>Headcount</th><th>Per Head</th></tr></thead>
-        <tbody id="b-hrph"></tbody>
-      </table></div>
-    </div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="goSub('hr','cost',this)">MoM Cost Base</div>
+    <div class="sub-tab" onclick="goSub('hr','headcount',this)">Headcount</div>
+    <div class="sub-tab" onclick="goSub('hr','perhead',this)">Cost Per Head</div>
+  </div>
+  <div class="sub-pane active" id="hr-cost">
+    <div class="tw"><table>
+      <thead><tr><th>Month</th><th>Cost Base<span class="eh">✎</span></th><th>MoM Change</th><th>Delta %</th><th>Notes<span class="eh">✎</span></th></tr></thead>
+      <tbody id="b-hrcost"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="hr-headcount">
+    <div class="tw"><table>
+      <thead><tr><th>Team</th><th>Jan'26</th><th>Apr'26</th><th>Jul'26</th><th>Sep'26</th></tr></thead>
+      <tbody id="b-hrhc"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="hr-perhead">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Total Cost</th><th>Headcount</th><th>Per Head</th></tr></thead>
+      <tbody id="b-hrph"></tbody>
+    </table></div>
   </div>
 </div>
 
 <!-- ══ NEW BUSINESS ══ -->
 <div class="tab-pane" id="pane-pipeline">
-  <div class="ph"><div class="ph-title">New Business & Renewals</div></div>
-  <div class="kpis" id="kpi-pipeline"></div>
-  <div class="note-box" id="nb-notes-box">
-    <div class="note-label">📝 Notes</div>
-    <textarea id="nb-notes" rows="2" placeholder="Add notes about pipeline, upcoming deals, risks...">Mar'26 spike: Tally renewal (₹33.25Cr GWP) + several enterprise closures. Apr'26: Godrej (₹61.7Cr) dominates new business.</textarea>
+  <div class="ph">
+    <div class="ph-title">New Business & Renewals</div>
+    <div class="ph-right"><div class="month-filter">📅 <select id="mf-nb" onchange="renderPipeline()"><option value="all">All Months</option></select></div></div>
   </div>
-  <div class="sdiv"><div class="sdiv-t">New Business Closures</div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Renewal Month</th><th># New Policies<span class="eh">✎</span></th><th>New Business GWP<span class="eh">✎</span></th><th>Avg Deal Size</th></tr></thead>
-    <tbody id="b-newbiz"></tbody>
-  </table></div>
-  <div class="sdiv"><div class="sdiv-t">Renewals</div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Renewal Month</th><th># Up for Renewal<span class="eh">✎</span></th><th>GWP for Renewal<span class="eh">✎</span></th><th># Renewed<span class="eh">✎</span></th><th>Renewal GWP<span class="eh">✎</span></th><th>Account Retention</th><th>Revenue Retention</th></tr></thead>
-    <tbody id="b-ren"></tbody>
-  </table></div>
+  <div class="kpis" id="kpi-pipeline"></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="goSub('nb','new',this)">New Business</div>
+    <div class="sub-tab" onclick="goSub('nb','renewals',this)">Renewals</div>
+    <div class="sub-tab" onclick="goSub('nb','marquee',this)">Marquee Brands</div>
+    <div class="sub-tab" onclick="goSub('nb','churned',this)">Churned Accounts</div>
+  </div>
+  <div class="sub-pane active" id="nb-new">
+    <div class="note-box"><div class="note-label">📝 Notes</div><textarea id="nb-notes" rows="2">Mar'26 spike: Tally renewal (₹33.25Cr GWP) + several enterprise closures. Apr'26: Godrej (₹61.7Cr) dominates new business.</textarea></div>
+    <div class="tw"><table>
+      <thead><tr><th>Renewal Month</th><th># New Policies<span class="eh">✎</span></th><th>New Business GWP<span class="eh">✎</span></th><th>Avg Deal Size</th></tr></thead>
+      <tbody id="b-newbiz"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="nb-renewals">
+    <div class="tw"><table>
+      <thead><tr><th>Renewal Month</th><th># Up for Renewal<span class="eh">✎</span></th><th>GWP for Renewal<span class="eh">✎</span></th><th># Renewed<span class="eh">✎</span></th><th>Renewal GWP<span class="eh">✎</span></th><th>Account Retention</th><th>Revenue Retention</th></tr></thead>
+      <tbody id="b-ren"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="nb-marquee">
+    <div class="tw"><table>
+      <thead><tr><th>Renewal Month</th><th>Marquee Brands Added</th></tr></thead>
+      <tbody id="b-marquee"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="nb-churned">
+    <div class="tw"><table>
+      <thead><tr><th>Renewal Month</th><th>Account Lost</th><th>Premium (excl GST)</th><th>Premium (incl GST)</th><th>Reason for Loss</th><th>Loss Ratio</th><th>Total Amount</th></tr></thead>
+      <tbody id="b-churned"></tbody>
+    </table></div>
+  </div>
 </div>
 
 <!-- ══ RECEIVABLES ══ -->
 <div class="tab-pane" id="pane-receivables">
   <div class="ph"><div class="ph-title">Receivables</div></div>
   <div class="kpis" id="kpi-rec"></div>
-
-  <!-- DIGIT -->
-  <div class="sdiv"><div class="sdiv-t"><span class="ins-badge ins-digit">Digit</span></div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Particulars</th><th>Amount (incl GST)</th><th>Amount Due</th><th>Amount Received</th><th>Balance</th></tr></thead>
-    <tbody id="b-rec-digit"></tbody>
-  </table></div>
-
-  <!-- ABHI -->
-  <div class="sdiv"><div class="sdiv-t"><span class="ins-badge ins-abhi">ABHI</span></div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
-    <tbody id="b-rec-abhi"></tbody>
-  </table></div>
-
-  <!-- ZUNO -->
-  <div class="sdiv"><div class="sdiv-t"><span class="ins-badge ins-zuno">Zuno</span></div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
-    <tbody id="b-rec-zuno"></tbody>
-  </table></div>
-
-  <!-- MAGMA -->
-  <div class="sdiv"><div class="sdiv-t"><span class="ins-badge ins-magma">Magma</span></div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
-    <tbody id="b-rec-magma"></tbody>
-  </table></div>
-
-  <!-- PAZ -->
-  <div class="sdiv"><div class="sdiv-t"><span class="ins-badge ins-paz">Paz</span></div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
-    <tbody id="b-rec-paz"></tbody>
-  </table></div>
-
-  <!-- HEALTHYSURE -->
-  <div class="sdiv"><div class="sdiv-t"><span class="ins-badge ins-healthysure">Healthysure</span></div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
-    <tbody id="b-rec-healthysure"></tbody>
-  </table></div>
-
-  <!-- DIRECT -->
-  <div class="sdiv"><div class="sdiv-t"><span class="ins-badge ins-direct">Direct Accounts</span></div><div class="sdiv-l"></div></div>
-  <div class="tw"><table>
-    <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
-    <tbody id="b-rec-direct"></tbody>
-  </table></div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="goSub('rec','digit',this)"><span class="ins-badge ins-digit">Digit</span></div>
+    <div class="sub-tab" onclick="goSub('rec','abhi',this)"><span class="ins-badge ins-abhi">ABHI</span></div>
+    <div class="sub-tab" onclick="goSub('rec','zuno',this)"><span class="ins-badge ins-zuno">Zuno</span></div>
+    <div class="sub-tab" onclick="goSub('rec','magma',this)">Magma</div>
+    <div class="sub-tab" onclick="goSub('rec','paz',this)">Paz</div>
+    <div class="sub-tab" onclick="goSub('rec','healthysure',this)">Healthysure</div>
+    <div class="sub-tab" onclick="goSub('rec','direct',this)"><span class="ins-badge ins-direct">Direct</span></div>
+  </div>
+  <div class="sub-pane active" id="rec-digit">
+    <div class="tw"><table>
+      <thead><tr><th>Particulars</th><th>Amount (incl GST)</th><th>Amount Due</th><th>Amount Received</th><th>Balance</th></tr></thead>
+      <tbody id="b-rec-digit"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="rec-abhi">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <tbody id="b-rec-abhi"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="rec-zuno">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <tbody id="b-rec-zuno"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="rec-magma">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <tbody id="b-rec-magma"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="rec-paz">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <tbody id="b-rec-paz"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="rec-healthysure">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <tbody id="b-rec-healthysure"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="rec-direct">
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <tbody id="b-rec-direct"></tbody>
+    </table></div>
+  </div>
 </div>
 
-</div><!-- /main -->
+</div>
 
 <script>
 const AS='https://script.google.com/a/macros/even.in/s/AKfycbyavB34D873t5rCtudHoja93bwpi8XfD_IXVjsQPAPHPNOLBgcIbPIbouqJJiF-yQNqfw/exec';
 const MONTHS=['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026','Jul 2026','Aug 2026','Sep 2026'];
 const QUARTERS=["Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
-const QM={"Q1'26":['Jan 2026','Feb 2026','Mar 2026'],"Q2'26":['Apr 2026','May 2026','Jun 2026'],"Q3'26":['Jul 2026','Aug 2026','Sep 2026'],"Q1'25":[],"Q2'25":[],"Q3'25":[],"Q4'25":[]};
+const QM={"Q1'25":[],"Q2'25":[],"Q3'25":[],"Q4'25":[],"Q1'26":['Jan 2026','Feb 2026','Mar 2026'],"Q2'26":['Apr 2026','May 2026','Jun 2026'],"Q3'26":['Jul 2026','Aug 2026','Sep 2026']};
 
 const D={earnedExclM:{},earnedInclM:{},earnedExclQ:{},earnedInclQ:{},approvedM:{},osM:{},netCommM:{},approvedQ:{},osQ:{},netCommQ:{},hospOPD:{},hospIPD:{},riCL:{},cashless:{},riIncl:{},riExcl:{},internalisation:[]};
 
@@ -406,7 +434,7 @@ const M={
   sfQ:{"Q1'25":0,"Q2'25":0,"Q3'25":0,"Q4'25":0,"Q1'26":390000,"Q2'26":480000,"Q3'26":480000},
   costBase:{'Jan 2026':2113674,'Feb 2026':2230166,'Mar 2026':2319472,'Apr 2026':2637532,'May 2026':3143645,'Jun 2026':3505219,'Jul 2026':3935594,'Aug 2026':3935594,'Sep 2026':3990917},
   costBaseQ:{"Q1'25":0,"Q2'25":0,"Q3'25":0,"Q4'25":0,"Q1'26":6663313,"Q2'26":9286396,"Q3'26":7871189},
-  costNotes:{'Jan 2026':'','Feb 2026':'','Mar 2026':'','Apr 2026':'','May 2026':'spike: 9 new joiners','Jun 2026':'','Jul 2026':'','Aug 2026':'','Sep 2026':''},
+  costNotes:{'Jan 2026':'','Feb 2026':'','Mar 2026':'','Apr 2026':'','May 2026':'spike: 9 new joiners','Jun 2026':'11.5% MoM increase','Jul 2026':'12.3% MoM increase','Aug 2026':'','Sep 2026':'1.4% MoM increase'},
   ibnr:{'Jan 2026':0,'Feb 2026':0.70,'Mar 2026':1.00,'Apr 2026':1.50,'May 2026':2.50,'Jun 2026':3.00,'Jul 2026':5.00,'Aug 2026':15.00,'Sep 2026':15.00},
   ibnrQ:{"Q1'25":0,"Q2'25":0,"Q3'25":0,"Q4'25":0,"Q1'26":1.50,"Q2'26":7.00,"Q3'26":7.00},
   hospLimitDed:{'Jan 2026':0,'Feb 2026':0,'Mar 2026':0,'Apr 2026':0,'May 2026':0,'Jun 2026':0,'Jul 2026':312403,'Aug 2026':216281,'Sep 2026':0},
@@ -418,8 +446,30 @@ const M={
   postSalesCost:{'Jan 2026':221833,'Feb 2026':221833,'Mar 2026':246833,'Apr 2026':419833,'May 2026':516916,'Jun 2026':675475,'Jul 2026':714417,'Aug 2026':714417,'Sep 2026':714417},
   claimsBaseCost:{'Jan 2026':33375,'Feb 2026':66750,'Mar 2026':66750,'Apr 2026':164750,'May 2026':202250,'Jun 2026':300750,'Jul 2026':404094,'Aug 2026':390000,'Sep 2026':390000},
   tat:{'Jan 2026':'2.06d','Feb 2026':'2.16d','Mar 2026':'2.93d','Apr 2026':'4.6d','May 2026':'7.85d','Jun 2026':'6.45d','Jul 2026':'3.5d','Aug 2026':'2.9d','Sep 2026':'—'},
+  // Internalisation — hardcoded from working sheet (card 8717 doesn't return % cols)
+  intEng:{
+    'Jan 2026':{total:29633,downloaded:15351,blr:5813,tenKm:3845,blrPct:'66.1%',engVol:693,engPct:'18.0%',tcVol:386,tcPct:'10.0%'},
+    'Feb 2026':{total:35477,downloaded:18091,blr:6892,tenKm:4647,blrPct:'67.4%',engVol:713,engPct:'15.3%',tcVol:338,tcPct:'7.3%'},
+    'Mar 2026':{total:59329,downloaded:24384,blr:8810,tenKm:6185,blrPct:'70.2%',engVol:819,engPct:'13.2%',tcVol:438,tcPct:'7.1%'},
+    'Apr 2026':{total:79448,downloaded:33121,blr:12859,tenKm:8734,blrPct:'67.9%',engVol:1786,engPct:'20.4%',tcVol:503,tcPct:'5.8%'},
+    'May 2026':{total:148180,downloaded:65867,blr:15701,tenKm:10798,blrPct:'68.8%',engVol:2508,engPct:'23.2%',tcVol:677,tcPct:'6.3%'},
+    'Jun 2026':{total:156680,downloaded:69862,blr:17654,tenKm:12282,blrPct:'69.6%',engVol:2891,engPct:'23.5%',tcVol:811,tcPct:'6.6%'},
+    'Jul 2026':{total:184025,downloaded:74922,blr:18557,tenKm:12493,blrPct:'67.3%',engVol:3191,engPct:'25.5%',tcVol:853,tcPct:'6.8%'},
+    'Aug 2026':{total:184426,downloaded:74707,blr:18384,tenKm:12450,blrPct:'67.7%',engVol:2827,engPct:'22.7%',tcVol:852,tcPct:'6.8%'},
+    'Sep 2026':{total:0,downloaded:0,blr:0,tenKm:0,blrPct:'—',engVol:0,engPct:'—',tcVol:0,tcPct:'—'},
+  },
+  intCC:{
+    'Jan 2026':{tc:731,ipd:6,opd:152,nonEhrc:845,total:'15.25%'},
+    'Feb 2026':{tc:727,ipd:15,opd:151,nonEhrc:1009,total:'13.02%'},
+    'Mar 2026':{tc:796,ipd:2,opd:174,nonEhrc:1102,total:'13.64%'},
+    'Apr 2026':{tc:837,ipd:11,opd:174,nonEhrc:2718,total:'6.02%'},
+    'May 2026':{tc:1133,ipd:10,opd:193,nonEhrc:3556,total:'5.15%'},
+    'Jun 2026':{tc:1451,ipd:6,opd:270,nonEhrc:4163,total:'6.09%'},
+    'Jul 2026':{tc:1721,ipd:16,opd:307,nonEhrc:4785,total:'6.03%'},
+    'Aug 2026':{tc:1717,ipd:6,opd:506,nonEhrc:4300,total:'10.53%'},
+    'Sep 2026':{tc:0,ipd:0,opd:0,nonEhrc:0,total:'—'},
+  },
   hrHeadcount:{'Sales':{'Jan 2026':4,'Apr 2026':5,'Jul 2026':6,'Sep 2026':6},'Claims':{'Jan 2026':6,'Apr 2026':9,'Jul 2026':14,'Sep 2026':14},'Post Sales':{'Jan 2026':8,'Apr 2026':12,'Jul 2026':17,'Sep 2026':17},'Tech':{'Jan 2026':10,'Apr 2026':11,'Jul 2026':12,'Sep 2026':12},'Ops/Finance':{'Jan 2026':4,'Apr 2026':5,'Jul 2026':5,'Sep 2026':5},'Leadership':{'Jan 2026':4,'Apr 2026':4,'Jul 2026':4,'Sep 2026':4}},
-  // New Business — from working sheet (Renewal Month = next year, so Jan-2027 = Jan 2026 business)
   newBiz:{
     'Jan 2026':{policies:10,premium:2951424},'Feb 2026':{policies:9,premium:3120787},
     'Mar 2026':{policies:29,premium:33258090},'Apr 2026':{policies:15,premium:61765918},
@@ -437,40 +487,85 @@ const M={
     'Aug 2026':{due:0,gwpDue:0,renewed:0,gwpRenewed:0,acctRet:0,revRet:0},
     'Sep 2026':{due:0,gwpDue:0,renewed:0,gwpRenewed:0,acctRet:0,revRet:0},
   },
-  // Receivables — from working sheet
+  marquee:[
+    {month:'Jan 2027',brands:'Syrma SGS Technology'},
+    {month:'Feb 2027',brands:'White Gold Money; Zuper'},
+    {month:'Mar 2027',brands:'Endpoint Clinical; IIM Bangalore; Lear Corporation (India); PayU; IDfy; Eureka Forbes'},
+    {month:'Apr 2027',brands:'Conde Nast; Godrej Group; Mouri Tech'},
+    {month:'Jul 2027',brands:'TransPak; Fiat India; Fidelity National Financial (FNF) India'},
+  ],
+  churned:[
+    {month:'Aug-2026',account:'Indoin',premExcl:21900,premIncl:25842,reason:"Digit account — client didn't go ahead with Digit as OPD partner",lr:'125.92%',total:27577},
+    {month:'Aug-2026',account:'Qualesce India',premExcl:17400,premIncl:20532,reason:"Digit account — client didn't go ahead with Digit as OPD partner",lr:'93.02%',total:16185},
+    {month:'Aug-2026',account:'ICC',premExcl:266400,premIncl:314352,reason:'No budgets, employee size now below 10',lr:'155.31%',total:413740},
+    {month:'Aug-2026',account:'Sliq',premExcl:450000,premIncl:531000,reason:"Budget constraints, didn't take OPD at all",lr:'115.38%',total:519211},
+    {month:'Aug-2026',account:'Mercari',premExcl:1151500,premIncl:1358770,reason:'Lost by broker (Pazcare) to another provider',lr:'122.01%',total:1404911},
+    {month:'Aug-2026',account:'AB Hotels',premExcl:36000,premIncl:42480,reason:"Digit account — client didn't go ahead with Digit as OPD partner",lr:'5.56%',total:2000},
+    {month:'Aug-2026',account:'Stellar View',premExcl:4033,premIncl:4759,reason:'Still in discussion',lr:'0.00%',total:0},
+    {month:'Aug-2026',account:'Adagrad',premExcl:2071,premIncl:2444,reason:'Still in discussion',lr:'0.00%',total:0},
+  ],
   recDigit:[
-    {particulars:'Recon settlement until 30th Jun\'25',amount:28079051,due:28079051,received:0,balance:28079051},
-    {particulars:'All Accounts (July\'25 - Mar\'26)',amount:45271989,due:73351040,received:0,balance:73351040},
-    {particulars:'Tally - Apr\'26 - Mar\'27 1st Instalment',amount:19333429,due:92684469,received:0,balance:92684469},
+    {particulars:"Recon settlement until 30th Jun'25",amount:28079051,due:28079051,received:0,balance:28079051},
+    {particulars:"All Accounts (July'25 - Mar'26)",amount:45271989,due:73351040,received:0,balance:73351040},
+    {particulars:"Tally - Apr'26 - Mar'27 1st Instalment",amount:19333429,due:92684469,received:0,balance:92684469},
     {particulars:'Godrej',amount:54532402,due:147216871,received:0,balance:147216871},
   ],
   recABHI:{
-    'Jan 2026':{booked:3270554,due:3270554,received:0},'Feb 2026':{booked:0,due:3270554,received:0},
-    'Mar 2026':{booked:2450022,due:5720576,received:0},'Apr 2026':{booked:0,due:5720576,received:0},
-    'May 2026':{booked:0,due:5720576,received:0},'Jun 2026':{booked:0,due:5720576,received:0},
-    'Jul 2026':{booked:0,due:0,received:0},'Aug 2026':{booked:0,due:0,received:0},'Sep 2026':{booked:0,due:0,received:0},
+    'Jan 2026':{booked:3270554,due:3270554,received:0},
+    'Feb 2026':{booked:0,due:3270554,received:0},
+    'Mar 2026':{booked:2450022,due:5720576,received:0},
+    'Apr 2026':{booked:0,due:5720576,received:0},
+    'May 2026':{booked:0,due:5720576,received:0},
+    'Jun 2026':{booked:0,due:5720576,received:0},
   },
   recZuno:{
-    'Jan 2026':{booked:0,due:0,received:0},'Feb 2026':{booked:0,due:0,received:0},
-    'Mar 2026':{booked:5424632,due:5424632,received:0},'Apr 2026':{booked:0,due:5424632,received:0},
-    'May 2026':{booked:0,due:5424632,received:0},'Jun 2026':{booked:0,due:5424632,received:0},
-    'Jul 2026':{booked:0,due:0,received:0},'Aug 2026':{booked:0,due:0,received:0},'Sep 2026':{booked:0,due:0,received:0},
+    'Jan 2026':{booked:0,due:0,received:0},
+    'Feb 2026':{booked:0,due:0,received:0},
+    'Mar 2026':{booked:5424632,due:5424632,received:0},
+    'Apr 2026':{booked:0,due:5424632,received:0},
+    'May 2026':{booked:0,due:5424632,received:0},
+    'Jun 2026':{booked:0,due:5424632,received:0},
   },
-  recMagma:Object.fromEntries(MONTHS.map(m=>[m,{booked:0,due:0,received:0}])),
-  recPaz:Object.fromEntries(MONTHS.map(m=>[m,{booked:0,due:0,received:0}])),
-  recHealthysure:Object.fromEntries(MONTHS.map(m=>[m,{booked:0,due:0,received:0}])),
-  recDirect:{
-    'Jan 2026':{booked:1503952,due:1503952,received:1503952},'Feb 2026':{booked:6780375,due:6780375,received:6780375},
-    'Mar 2026':{booked:1595872,due:1595872,received:1595872},'Apr 2026':{booked:1886166,due:1886166,received:1886166},
+  recMagma:{
+    'Jan 2026':{booked:0,due:0,received:0},'Feb 2026':{booked:0,due:0,received:0},
+    'Mar 2026':{booked:0,due:0,received:0},'Apr 2026':{booked:0,due:0,received:0},
     'May 2026':{booked:0,due:0,received:0},'Jun 2026':{booked:0,due:0,received:0},
-    'Jul 2026':{booked:0,due:0,received:0},'Aug 2026':{booked:0,due:0,received:0},'Sep 2026':{booked:0,due:0,received:0},
+  },
+  recPaz:{
+    'Jan 2026':{booked:0,due:0,received:0},'Feb 2026':{booked:0,due:0,received:0},
+    'Mar 2026':{booked:0,due:0,received:0},'Apr 2026':{booked:0,due:0,received:0},
+    'May 2026':{booked:0,due:0,received:0},'Jun 2026':{booked:0,due:0,received:0},
+  },
+  recHealthysure:{
+    'Jan 2026':{booked:0,due:0,received:0},'Feb 2026':{booked:0,due:0,received:0},
+    'Mar 2026':{booked:0,due:0,received:0},'Apr 2026':{booked:0,due:0,received:0},
+    'May 2026':{booked:0,due:0,received:0},'Jun 2026':{booked:0,due:0,received:0},
+  },
+    'Jan 2026':{booked:1503952,due:1503952,received:1503952},
+    'Feb 2026':{booked:6780375,due:6780375,received:6780375},
+    'Mar 2026':{booked:1595872,due:1595872,received:1595872},
+    'Apr 2026':{booked:1886166,due:1886166,received:1886166},
+    'May 2026':{booked:0,due:0,received:0},
+    'Jun 2026':{booked:0,due:0,received:0},
   },
 };
 
-// ── MONTHS for ABHI/Zuno/etc arrays
 const REC_MONTHS=['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026'];
-
 let sv='monthly',lrv='monthly',riV='incl',editMode=false;
+
+// ── INIT MONTH FILTERS ──
+function initFilters(){
+  ['mf-summary','mf-lr','mf-ops','mf-int','mf-nb'].forEach(id=>{
+    const sel=document.getElementById(id);
+    if(!sel)return;
+    const cur=sel.value;
+    sel.innerHTML='<option value="all">All Months</option>'+MONTHS.map(m=>`<option value="${m}">${m}</option>`).join('');
+    sel.value=cur||'all';
+  });
+}
+
+function getMF(id){return document.getElementById(id)?.value||'all'}
+function filterMonths(mfId){const f=getMF(mfId);return f==='all'?MONTHS:MONTHS.filter(m=>m===f)}
 
 function toggleEdit(){
   editMode=!editMode;
@@ -478,13 +573,12 @@ function toggleEdit(){
   document.getElementById('editPill').classList.toggle('active',editMode);
   document.getElementById('editLabel').textContent=editMode?'Done':'Edit';
   document.querySelectorAll('.ef').forEach(el=>el.readOnly=!editMode);
-  const nb=document.getElementById('nb-notes');
-  if(nb) nb.readOnly=!editMode;
+  const nb=document.getElementById('nb-notes');if(nb)nb.readOnly=!editMode;
 }
 
 // ── UTILS ──
 const fmt=(n,dec=0)=>{if(!n&&n!==0||n===0)return'—';return'₹'+Number(n).toLocaleString('en-IN',{maximumFractionDigits:dec})};
-const fmtN=(n)=>{if(!n&&n!==0)return'—';if(n===0)return'0';return Number(n).toLocaleString('en-IN')};
+const fmtN=(n)=>{if(!n&&n!==0||n===0)return'—';return Number(n).toLocaleString('en-IN')};
 const fmtP=(n,dec=1)=>{if(n===null||n===undefined||isNaN(n))return'—';return Number(n).toFixed(dec)+'%'};
 const pC=(n)=>n>0?'pos':n<0?'neg':'';
 const v=(o,k)=>o?.[k]??0;
@@ -507,7 +601,6 @@ function fetchAS(params){
     document.head.appendChild(s);
   });
 }
-
 function parseCSV(text){
   const lines=String(text||'').trim().split(/\r?\n/);
   if(lines.length<2)return[];
@@ -516,6 +609,7 @@ function parseCSV(text){
   return lines.slice(1).map(line=>{const vals=pl(line);const row={};h.forEach((k,i)=>{let val=(vals[i]||'').replace(/^"|"$/g,'').trim();row[k]=(!isNaN(val)&&val!=='')?Number(val):val;});return row;}).filter(r=>Object.values(r).some(x=>x!==''&&x!==null));
 }
 
+// ── LOAD ──
 const setStep=s=>document.getElementById('ovStep').textContent=s;
 async function loadAll(){
   document.getElementById('overlay').classList.remove('hidden');
@@ -545,66 +639,78 @@ async function loadAll(){
     safe('hospital_ipd',async()=>{(await ft('hospital_ipd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospIPD[k]=r.total_net_billed_amount||0});}),
     safe('internalisation',async()=>{D.internalisation=await ft('internalisation');}),
   ]);
-  const realErrs=errs.filter(e=>e!=='hospital_ipd');
+  const realErrs=errs.filter(e=>!['hospital_ipd'].includes(e));
   if(realErrs.length){const b=document.getElementById('errBanner');b.textContent='Some data failed: '+realErrs.join(', ');b.style.display='block';}
   document.getElementById('lastUpdated').textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  initFilters();
   renderAll();
   document.getElementById('overlay').classList.add('hidden');
   document.querySelectorAll('.ef').forEach(el=>el.readOnly=true);
 }
 
+// ── TAB / SUB-TAB SWITCHING ──
 const TABS=['summary','lossratios','claims','internalisation','hr','pipeline','receivables'];
 function goTab(name){
   document.querySelectorAll('.nav-item').forEach((t,i)=>t.classList.toggle('active',TABS[i]===name));
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.getElementById('pane-'+name).classList.add('active');
 }
+function goSub(prefix,name,btn){
+  btn.closest('.tab-pane').querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  btn.closest('.tab-pane').querySelectorAll('.sub-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById(prefix+'-'+name).classList.add('active');
+}
 function setSV(w,btn){sv=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('sv-monthly').style.display=w==='monthly'?'block':'none';document.getElementById('sv-quarterly').style.display=w==='quarterly'?'block':'none';renderSummary();}
 function setLRV(w,btn){lrv=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('lrv-monthly').style.display=w==='monthly'?'block':'none';document.getElementById('lrv-quarterly').style.display=w==='quarterly'?'block':'none';renderLR();}
 function setRI(w,btn){riV=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRI();}
+
 function renderAll(){renderSummary();renderLR();renderOps();renderInternalisation();renderHR();renderPipeline();renderReceivables();}
+
+// ── SUMMARY ──
+function calcRow(m,me,np,ip){
+  const gwp=v(D.earnedExclM,m),gwpI=v(D.earnedInclM,m),epNet=gwpI*me;
+  const app=v(D.approvedM,m),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,hosp=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
+  const lr=epNet>0?((app+os)*(1+ibnr)+hosp-hl)/epNet:0;
+  const uw=(1-lr)*gwp,sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(np/0.125),opd=hosp,ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
+  const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
+  return{gwp,gwpI,uw,sf,nc,opd,ipd,cb,pnl,lr};
+}
 
 function renderSummary(){
   const me=parseFloat(document.getElementById('meFactor').value)||0.94;
   const np=parseFloat(document.getElementById('networkPct').value)/100;
   const ip=parseFloat(document.getElementById('ipdSplit').value)/100;
+  const filteredM=filterMonths('mf-summary');
+
+  // KPIs from latest month (not filtered)
   const latest=MONTHS[MONTHS.length-1];
-  const lEP=v(D.earnedExclM,latest),lEI=v(D.earnedInclM,latest),lNet=lEI*me;
-  const lApp=v(D.approvedM,latest),lOS=v(D.osM,latest),lIbnr=v(M.ibnr,latest)/100;
-  const lHosp=v(D.hospOPD,latest),lLim=v(M.hospLimitDed,latest);
-  const lLR=lNet>0?((lApp+lOS)*(1+lIbnr)+lHosp-lLim)/lNet*100:0;
-  const lUW=(1-lLR/100)*lEP;
-  const lNC=v(D.netCommM,latest)*(np/0.125);
-  const lPNL=lUW+v(M.servicingFees,latest)+lNC+lHosp-v(M.costBase,latest);
+  const r=calcRow(latest,me,np,ip);
   const ytdEP=MONTHS.reduce((s,m)=>s+v(D.earnedExclM,m),0);
-  const ytdPNL=MONTHS.reduce((s,m)=>{
-    const epI=v(D.earnedInclM,m)*me,app=v(D.approvedM,m),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,h=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
-    const lr=epI>0?((app+os)*(1+ibnr)+h-hl)/epI:0;
-    const uw=(1-lr)*v(D.earnedExclM,m);
-    return s+uw+v(M.servicingFees,m)+v(D.netCommM,m)*(np/0.125)+h-v(M.costBase,m);
-  },0);
+  const ytdPNL=MONTHS.reduce((s,m)=>s+calcRow(m,me,np,ip).pnl,0);
   document.getElementById('kpi-summary').innerHTML=`
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Earned Prem · ${latest}</div><div class="kpi-val">${fmt(lEP)}</div><div class="kpi-sub">excl GST</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:${lLR>100?'var(--danger)':lLR>85?'var(--warn)':'var(--accent2)'}"></div><div class="kpi-label">Loss Ratio · ${latest}</div><div class="kpi-val ${lLR>100?'neg':lLR>85?'warn':'pos'}">${fmtP(lLR,1)}</div><div class="kpi-sub">IBNR ${v(M.ibnr,latest)}%</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:${lUW>0?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">UW Profit · ${latest}</div><div class="kpi-val ${pC(lUW)}">${fmt(lUW)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:${lPNL>0?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Net P&L · ${latest}</div><div class="kpi-val ${pC(lPNL)}">${fmt(lPNL)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Earned Prem · ${latest}</div><div class="kpi-val">${fmt(r.gwp)}</div><div class="kpi-sub">excl GST</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:${r.lr*100>100?'var(--danger)':r.lr*100>85?'var(--warn)':'var(--accent2)'}"></div><div class="kpi-label">Loss Ratio · ${latest}</div><div class="kpi-val ${r.lr*100>100?'neg':r.lr*100>85?'warn':'pos'}">${fmtP(r.lr*100,1)}</div><div class="kpi-sub">IBNR ${v(M.ibnr,latest)}%</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:${r.uw>0?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">UW Profit · ${latest}</div><div class="kpi-val ${pC(r.uw)}">${fmt(r.uw)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:${r.pnl>0?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Net P&L · ${latest}</div><div class="kpi-val ${pC(r.pnl)}">${fmt(r.pnl)}</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">YTD Earned Prem</div><div class="kpi-val">${fmt(ytdEP)}</div><div class="kpi-sub">Jan–${latest}</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:${ytdPNL>0?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">YTD Net P&L</div><div class="kpi-val ${pC(ytdPNL)}">${fmt(ytdPNL)}</div></div>
   `;
-  let mT={gwp:0,gwpI:0,uw:0,sf:0,nc:0,opd:0,ipd:0,cb:0,pnl:0};
-  document.getElementById('b-sum-m').innerHTML=MONTHS.map(m=>{
-    const gwp=v(D.earnedExclM,m),gwpI=v(D.earnedInclM,m),epNet=gwpI*me;
-    const app=v(D.approvedM,m),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,hosp=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
-    const lr=epNet>0?((app+os)*(1+ibnr)+hosp-hl)/epNet:0;
-    const uw=(1-lr)*gwp,sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(np/0.125),opd=hosp,ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
-    const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
-    mT.gwp+=gwp;mT.gwpI+=gwpI;mT.uw+=uw;mT.sf+=sf;mT.nc+=nc;mT.opd+=opd;mT.ipd+=ipd;mT.cb+=cb;mT.pnl+=pnl;
-    return`<tr><td>${m}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
-    <td>${ef(sf,`M.servicingFees['${m}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
-    <td>${fmt(nc)}</td><td>${fmt(opd)}</td><td>${fmt(ipd)}</td>
-    <td>${ef(cb,`M.costBase['${m}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
-    <td class="${pC(pnl)}">${fmt(pnl)}</td></tr>`;
-  }).join('')+`<tr class="total-row"><td>Total</td><td>${fmt(mT.gwp)}</td><td>${fmt(mT.gwpI)}</td><td class="${pC(mT.uw)}">${fmt(mT.uw)}</td><td>${fmt(mT.sf)}</td><td>${fmt(mT.nc)}</td><td>${fmt(mT.opd)}</td><td>${fmt(mT.ipd)}</td><td>${fmt(mT.cb)}</td><td class="${pC(mT.pnl)}">${fmt(mT.pnl)}</td></tr>`;
+
+  // Monthly table
+  let T={gwp:0,gwpI:0,uw:0,sf:0,nc:0,opd:0,ipd:0,cb:0,pnl:0};
+  document.getElementById('b-sum-m').innerHTML=filteredM.map(m=>{
+    const d=calcRow(m,me,np,ip);
+    T.gwp+=d.gwp;T.gwpI+=d.gwpI;T.uw+=d.uw;T.sf+=d.sf;T.nc+=d.nc;T.opd+=d.opd;T.ipd+=d.ipd;T.cb+=d.cb;T.pnl+=d.pnl;
+    return`<tr><td>${m}</td><td>${fmt(d.gwp)}</td><td>${fmt(d.gwpI)}</td><td class="${pC(d.uw)}">${fmt(d.uw)}</td>
+    <td>${ef(d.sf,`M.servicingFees['${m}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
+    <td>${fmt(d.nc)}</td><td>${fmt(d.opd)}</td><td>${fmt(d.ipd)}</td>
+    <td>${ef(d.cb,`M.costBase['${m}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
+    <td class="${pC(d.pnl)}">${fmt(d.pnl)}</td></tr>`;
+  }).join('')+(filteredM.length>1?`<tr class="total-row"><td>Total</td><td>${fmt(T.gwp)}</td><td>${fmt(T.gwpI)}</td><td class="${pC(T.uw)}">${fmt(T.uw)}</td><td>${fmt(T.sf)}</td><td>${fmt(T.nc)}</td><td>${fmt(T.opd)}</td><td>${fmt(T.ipd)}</td><td>${fmt(T.cb)}</td><td class="${pC(T.pnl)}">${fmt(T.pnl)}</td></tr>`:'');
+
+  // Quarterly table
+  let TQ={epE:0,epI:0,epN:0,app:0,os:0,uw:0,sf:0,nc:0,opd:0,ipd:0,cb:0,pnl:0};
   document.getElementById('b-sum-q').innerHTML=QUARTERS.map(q=>{
     const epE=v(D.earnedExclQ,q),epI=v(D.earnedInclQ,q),epNet=epI*me;
     const app=v(D.approvedQ,q),os=v(D.osQ,q),ibnr=v(M.ibnrQ,q)/100,hl=v(M.hospLimitDedQ,q);
@@ -613,16 +719,19 @@ function renderSummary(){
     const ms=QM[q]||[];
     const opd=ms.reduce((s,m)=>s+v(D.hospOPD,m),0),ipd=ms.reduce((s,m)=>s+v(D.hospIPD,m),0);
     const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
+    TQ.epE+=epE;TQ.epI+=epI;TQ.uw+=uw;TQ.sf+=sf;TQ.nc+=nc;TQ.opd+=opd;TQ.ipd+=ipd;TQ.cb+=cb;TQ.pnl+=pnl;
     return`<tr><td>${q}</td><td>${fmt(epE)}</td><td>${fmt(epI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
     <td>${ef(sf,`M.sfQ['${q}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
     <td>${fmt(nc)}</td><td>${opd?fmt(opd):'—'}</td><td>${ipd?fmt(ipd):'—'}</td>
     <td>${ef(cb,`M.costBaseQ['${q}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
     <td class="${pC(pnl)}">${fmt(pnl)}</td></tr>`;
-  }).join('');
+  }).join('')+`<tr class="total-row"><td>Total</td><td>${fmt(TQ.epE)}</td><td>${fmt(TQ.epI)}</td><td class="${pC(TQ.uw)}">${fmt(TQ.uw)}</td><td>${fmt(TQ.sf)}</td><td>${fmt(TQ.nc)}</td><td>${fmt(TQ.opd)}</td><td>${fmt(TQ.ipd)}</td><td>${fmt(TQ.cb)}</td><td class="${pC(TQ.pnl)}">${fmt(TQ.pnl)}</td></tr>`;
 }
 
+// ── LOSS RATIOS ──
 function renderLR(){
   const me=parseFloat(document.getElementById('meFactor').value)||0.94;
+  const filteredM=filterMonths('mf-lr');
   const ytdEP=MONTHS.reduce((s,m)=>s+v(D.earnedExclM,m),0);
   const ytdApp=MONTHS.reduce((s,m)=>s+v(D.approvedM,m),0);
   const ytdOS=MONTHS.reduce((s,m)=>s+v(D.osM,m),0);
@@ -636,181 +745,197 @@ function renderLR(){
   `;
   const rowFn=(p,epE,epI,app,os,ibnr,hInc,hLim,edit,iF,lF)=>{
     const epN=epI*me,tot=app+os,lr=epN>0?(tot*(1+ibnr/100)+hInc-hLim)/epN*100:0,uw=(1-lr/100)*epE;
-    const lC=lr>100?'neg':lr>85?'warn':'pos';
     return`<tr><td>${p}</td><td>${fmt(epE)}</td><td>${fmt(epI)}</td><td>${fmt(epN)}</td>
     <td>${fmt(app)}</td><td>${fmt(os)}</td><td>${fmt(tot)}</td>
     <td>${edit?ef(ibnr,`${iF}['${p}']=Number(this.value);renderLR()`,'min-width:40px')+'%':fmtP(ibnr,2)}</td>
     <td>${fmt(hInc)}</td>
     <td>${edit?ef(hLim,`${lF}['${p}']=Number(this.value.replace(/,/g,''));renderLR()`,'min-width:70px'):fmt(hLim)}</td>
-    <td class="${lC}">${fmtP(lr,2)}</td><td class="${pC(uw)}">${fmt(uw)}</td></tr>`;
+    <td class="${lr>100?'neg':lr>85?'warn':'pos'}">${fmtP(lr,2)}</td><td class="${pC(uw)}">${fmt(uw)}</td></tr>`;
   };
-  document.getElementById('b-lr-m').innerHTML=MONTHS.map(m=>rowFn(m,v(D.earnedExclM,m),v(D.earnedInclM,m),v(D.approvedM,m),v(D.osM,m),v(M.ibnr,m),v(D.hospOPD,m),v(M.hospLimitDed,m),true,'M.ibnr','M.hospLimitDed')).join('');
-  document.getElementById('b-lr-q').innerHTML=QUARTERS.map(q=>rowFn(q,v(D.earnedExclQ,q),v(D.earnedInclQ,q),v(D.approvedQ,q),v(D.osQ,q),v(M.ibnrQ,q),0,v(M.hospLimitDedQ,q),false,'','')).join('');
+  // Monthly with total
+  const mRows=filteredM.map(m=>rowFn(m,v(D.earnedExclM,m),v(D.earnedInclM,m),v(D.approvedM,m),v(D.osM,m),v(M.ibnr,m),v(D.hospOPD,m),v(M.hospLimitDed,m),true,'M.ibnr','M.hospLimitDed'));
+  if(filteredM.length>1){
+    const tEP=filteredM.reduce((s,m)=>s+v(D.earnedExclM,m),0),tApp=filteredM.reduce((s,m)=>s+v(D.approvedM,m),0),tOS=filteredM.reduce((s,m)=>s+v(D.osM,m),0),tNet=filteredM.reduce((s,m)=>s+v(D.earnedInclM,m)*me,0);
+    const tLR=tNet>0?(tApp+tOS)/tNet*100:0,tUW=(1-tLR/100)*tEP;
+    mRows.push(`<tr class="total-row"><td>Total</td><td>${fmt(tEP)}</td><td>—</td><td>${fmt(tNet)}</td><td>${fmt(tApp)}</td><td>${fmt(tOS)}</td><td>${fmt(tApp+tOS)}</td><td>—</td><td>—</td><td>—</td><td class="${tLR>100?'neg':tLR>85?'warn':'pos'}">${fmtP(tLR,1)}</td><td class="${pC(tUW)}">${fmt(tUW)}</td></tr>`);
+  }
+  document.getElementById('b-lr-m').innerHTML=mRows.join('');
+  // Quarterly with total
+  const qRows=QUARTERS.map(q=>rowFn(q,v(D.earnedExclQ,q),v(D.earnedInclQ,q),v(D.approvedQ,q),v(D.osQ,q),v(M.ibnrQ,q),0,v(M.hospLimitDedQ,q),false,'',''));
+  const tEPQ=QUARTERS.reduce((s,q)=>s+v(D.earnedExclQ,q),0),tAppQ=QUARTERS.reduce((s,q)=>s+v(D.approvedQ,q),0),tOSQ=QUARTERS.reduce((s,q)=>s+v(D.osQ,q),0),tNetQ=QUARTERS.reduce((s,q)=>s+v(D.earnedInclQ,q)*me,0);
+  const tLRQ=tNetQ>0?(tAppQ+tOSQ)/tNetQ*100:0,tUWQ=(1-tLRQ/100)*tEPQ;
+  qRows.push(`<tr class="total-row"><td>Total</td><td>${fmt(tEPQ)}</td><td>—</td><td>${fmt(tNetQ)}</td><td>${fmt(tAppQ)}</td><td>${fmt(tOSQ)}</td><td>${fmt(tAppQ+tOSQ)}</td><td>—</td><td>—</td><td>—</td><td class="${tLRQ>100?'neg':tLRQ>85?'warn':'pos'}">${fmtP(tLRQ,1)}</td><td class="${pC(tUWQ)}">${fmt(tUWQ)}</td></tr>`);
+  document.getElementById('b-lr-q').innerHTML=qRows.join('');
 }
 
+// ── OPS ──
 function renderOps(){
-  document.getElementById('b-ps').innerHTML=MONTHS.map(m=>{
+  const fm=filterMonths('mf-ops');
+  document.getElementById('b-ps').innerHTML=fm.map(m=>{
     const c=M.chats[m]||0,cost=M.postSalesCost[m]||0;
     return`<tr><td>${m}</td>
-    <td>${ef(fmtN(c),`M.chats['${m}']=Number(this.value.replace(/,/g,''));renderOps()`,'min-width:60px')}</td>
+    <td>${ef(fmtN(c)||0,`M.chats['${m}']=Number(this.value.replace(/,/g,''));renderOps()`,'min-width:60px')}</td>
     <td>${ef(M.firstResponse[m]||'—',`M.firstResponse['${m}']=this.value`,'min-width:40px')}</td>
     <td>${ef(M.avgResponse[m]||'—',`M.avgResponse['${m}']=this.value`,'min-width:50px')}</td>
     <td>${ef(M.csat[m]||'—',`M.csat['${m}']=Number(this.value);renderOps()`,'min-width:36px')}</td>
     <td>${ef(cost,`M.postSalesCost['${m}']=Number(this.value.replace(/,/g,''));renderOps()`,'min-width:80px')}</td>
     <td>${fmt(c>0?cost/c:0)}</td></tr>`;
   }).join('');
-  document.getElementById('b-clcomb').innerHTML=MONTHS.map(m=>{
+  document.getElementById('b-clcomb').innerHTML=fm.map(m=>{
     const r=D.riCL[m]||{},act=r.total_actioned||0,req=r.requested_amount||0,app=r.approved_amount||0,cost=M.claimsBaseCost[m]||0;
     return`<tr><td>${m}</td><td>${fmtN(act)}</td><td>${fmt(req)}</td><td>${fmt(app)}</td>
     <td>${ef(cost,`M.claimsBaseCost['${m}']=Number(this.value.replace(/,/g,''));renderOps()`,'min-width:80px')}</td>
     <td>${fmt(act>0?cost/act:0)}</td></tr>`;
   }).join('');
-  renderRI();
-  document.getElementById('b-cl').innerHTML=MONTHS.map(m=>{
+  renderRI(fm);
+  document.getElementById('b-cl').innerHTML=fm.map(m=>{
     const r=D.cashless[m]||{};
     return`<tr><td>${m}</td><td>${fmtN(r.cashless_actioned||0)}</td><td>${fmt(r.requested_amount||0)}</td><td>${fmt(r.approved_amount||0)}</td></tr>`;
   }).join('');
 }
-function renderRI(){
+function renderRI(fm){
+  if(!fm)fm=filterMonths('mf-ops');
   const src=riV==='incl'?D.riIncl:D.riExcl;
-  document.getElementById('b-ri').innerHTML=MONTHS.map(m=>{
+  document.getElementById('b-ri').innerHTML=fm.map(m=>{
     const r=src[m]||{},act=r.ri_actioned||0,req=r.requested_amount||0,app=r.approved_amount||0;
     const rej=r.rejected_amount||0,paid=r.claims_paid||0,q2=r.claims_queried||0,rejN=r.claims_rejected||0;
-    const ap=req>0?app/req*100:0,ra=req>0?rej/req*100:0,rn=act>0?rejN/act*100:0;
     return`<tr><td>${m}</td><td>${fmtN(act)}</td><td>${fmt(req)}</td><td>${fmt(app)}</td>
     <td>${fmt(rej)}</td><td>${fmtN(paid)}</td><td>${fmtN(q2)}</td><td>${fmtN(rejN)}</td>
     <td>${ef(M.tat[m]||'—',`M.tat['${m}']=this.value`,'min-width:40px')}</td>
-    <td>${fmtP(ap,1)}</td><td>${fmtP(ra,1)}</td><td>${fmtP(rn,1)}</td></tr>`;
+    <td>${req>0?fmtP(app/req*100,1):'—'}</td><td>${req>0?fmtP(rej/req*100,1):'—'}</td><td>${act>0?fmtP(rejN/act*100,1):'—'}</td></tr>`;
   }).join('');
 }
 
+// ── INTERNALISATION ──
 function renderInternalisation(){
-  // The internalisation data from Metabase card has different columns
-  const rows=D.internalisation;
-  // Engagement table
-  document.getElementById('b-int-eng').innerHTML=rows.map(r=>`<tr>
-    <td>${r['Data as of']||'—'}</td><td>${fmtN(r['Total lives'])}</td><td>${fmtN(r['Downloaded'])}</td>
-    <td>${fmtN(r['BLR lives'])}</td><td>${fmtN(r['10km hospital lives'])}</td>
-    <td>—</td><td>${fmtN(r['Volume (CL+RI)'])}</td><td>—</td><td>${fmtN(r['Volume (TC)'])}</td><td>—</td>
-  </tr>`).join('');
-  // Claims count
-  document.getElementById('b-int-claims').innerHTML=rows.map(r=>`<tr>
-    <td>${r['Data as of']||'—'}</td><td>${fmtN(r['Even TC'])}</td>
-    <td>—</td><td>—</td><td>${fmtN(r['Non EHRC OPD'])}</td><td>—</td>
-  </tr>`).join('');
-  // Claims amount
-  document.getElementById('b-int-amt').innerHTML=rows.map(r=>`<tr>
+  const fm=filterMonths('mf-int');
+  // Engagement — from hardcoded M.intEng
+  document.getElementById('b-int-eng').innerHTML=fm.map(m=>{
+    const d=M.intEng[m]||{};
+    return`<tr><td>${m}</td><td>${fmtN(d.total)}</td><td>${fmtN(d.downloaded)}</td><td>${fmtN(d.blr)}</td><td>${fmtN(d.tenKm)}</td><td>${d.blrPct||'—'}</td><td>${fmtN(d.engVol)}</td><td>${d.engPct||'—'}</td><td>${fmtN(d.tcVol)}</td><td>${d.tcPct||'—'}</td></tr>`;
+  }).join('');
+  // Claims count — from hardcoded M.intCC
+  document.getElementById('b-int-cc').innerHTML=fm.map(m=>{
+    const d=M.intCC[m]||{};
+    return`<tr><td>${m}</td><td>${fmtN(d.tc)}</td><td>${fmtN(d.ipd)}</td><td>${fmtN(d.opd)}</td><td>${fmtN(d.nonEhrc)}</td><td>${fmtN((d.tc||0)+(d.ipd||0)+(d.opd||0))}</td><td>${d.total||'—'}</td></tr>`;
+  }).join('');
+  // Claims amount — from Metabase card
+  document.getElementById('b-int-amt').innerHTML=(D.internalisation.filter(r=>{const m=r['Data as of'];return!m||fm.some(f=>f.startsWith(m.substring(0,3)));})||D.internalisation).map(r=>`<tr>
     <td>${r['Data as of']||'—'}</td>
     <td>${fmtN(r['Volume (CL+RI)'])}</td><td>${fmt(r['Amount (CL+RI)'])}</td>
     <td>${fmtN(r['Volume (TC)'])}</td><td>${fmt(r['Amount (TC)'])}</td>
     <td>${fmtN(r['Even TC'])}</td><td>${fmt(r['Even TC Amount'])}</td>
     <td>${fmtN(r['Non EHRC OPD'])}</td><td>${fmt(r['Non EHRC OPD Amount'])}</td>
   </tr>`).join('');
+  // Bookings — static from sheet
+  const bkWeeks=['7 Aug\'26','14 Aug\'26','21 Aug\'26','28 Aug\'26','4 Sep\'26','11 Sep\'26','18 Sep\'26','Grand Total'];
+  const bk1={booked:[79,17,3,0,0,0,0,99],completed:[75,17,3,0,0,0,0,95],booked2:[0,73,37,12,0,0,0,122],completed2:[0,69,36,12,0,0,0,117],booked3:[0,0,100,41,14,22,0,155],completed3:[0,0,95,38,13,13,0,146],booked4:[0,0,0,156,37,33,0,215],completed4:[0,0,0,150,33,22,0,183],booked5:[0,0,0,163,46,4,0,213],completed5:[0,0,0,130,0,0,0,130],gtB:[79,90,140,209,214,68,4,804],gtC:[75,86,134,200,176,0,0,671]};
+  const t1=document.getElementById('t-bookings1');
+  t1.querySelector('thead').innerHTML=`<tr><th>Created Week</th>${bkWeeks.slice(0,-1).map(w=>`<th colspan="2">${w}</th>`).join('')}<th colspan="2">Grand Total</th></tr><tr><th></th>${bkWeeks.map(()=>'<th>Booked</th><th>Completed</th>').join('')}</tr>`;
+  t1.querySelector('tbody').innerHTML=`<tr><td>7 Aug'26</td><td>${bk1.booked[0]}</td><td>${bk1.completed[0]}</td>${Array(6).fill('<td>—</td><td>—</td>').join('')}<td>${bk1.gtB[0]}</td><td>${bk1.gtC[0]}</td></tr>`;
 }
 
+// ── HR ──
 function renderHR(){
-  // Cost base table
   let prev=0;
   document.getElementById('b-hrcost').innerHTML=MONTHS.map(m=>{
     const cost=M.costBase[m]||0,delta=prev>0?cost-prev:null,pct=prev>0?(cost-prev)/prev*100:null;
     prev=cost;
     return`<tr><td>${m}</td>
-    <td>${ef(cost,`M.costBase['${m}']=Number(this.value.replace(/,/g,''));renderHR()`,'min-width:90px')}</td>
-    <td class="${delta>0?'neg':delta<0?'pos':''}">${delta!==null?fmt(delta):'—'}</td>
-    <td class="${delta>0?'neg':delta<0?'pos':''}">${pct!==null?fmtP(pct,1):'—'}</td>
-    <td><input class="ef" value="${M.costNotes[m]||''}" readonly style="min-width:150px;text-align:left" onchange="M.costNotes['${m}']=this.value" onclick="this.select()"></td></tr>`;
+    <td>${ef(cost,`M.costBase['${m}']=Number(this.value.replace(/,/g,''));renderHR();renderSummary()`,'min-width:90px')}</td>
+    <td class="${delta>0?'neg':delta<0?'pos':''}">${delta!==null?(delta>0?'+':'')+fmt(delta):'—'}</td>
+    <td class="${pct>0?'neg':pct<0?'pos':''}">${pct!==null?fmtP(pct,1):'—'}</td>
+    <td><input class="ef" value="${M.costNotes[m]||''}" readonly style="min-width:180px;text-align:left" onchange="M.costNotes['${m}']=this.value" onclick="this.select()"></td></tr>`;
   }).join('');
-  // Headcount
   const qCols=['Jan 2026','Apr 2026','Jul 2026','Sep 2026'];
   const teams=Object.entries(M.hrHeadcount);
   document.getElementById('b-hrhc').innerHTML=teams.map(([team,d])=>
     `<tr><td>${team}</td>${qCols.map(q=>`<td>${ef(d[q]||0,`M.hrHeadcount['${team}']['${q}']=Number(this.value);renderHR()`,'min-width:36px;text-align:right')}</td>`).join('')}</tr>`
   ).join('')+`<tr class="total-row"><td>Total</td>${qCols.map(q=>`<td>${fmtN(teams.reduce((s,[,d])=>s+(d[q]||0),0))}</td>`).join('')}</tr>`;
-  // Per head
   document.getElementById('b-hrph').innerHTML=MONTHS.map(m=>{
     const cost=M.costBase[m]||0;
     const qRef=['Jan 2026','Apr 2026','Jul 2026'];
-    let h=36;
-    for(let i=qRef.length-1;i>=0;i--){
-      if(m>=qRef[i]){h=teams.reduce((s,[,d])=>s+(d[qRef[i]]||0),0);break;}
-    }
+    let h=36;for(let i=qRef.length-1;i>=0;i--){if(m>=qRef[i]){h=teams.reduce((s,[,d])=>s+(d[qRef[i]]||0),0);break;}}
     return`<tr><td>${m}</td><td>${fmt(cost)}</td><td>${fmtN(h)}</td><td>${fmt(h>0?cost/h:0)}</td></tr>`;
   }).join('');
 }
 
+// ── PIPELINE ──
 function renderPipeline(){
-  const totalPolicies=MONTHS.reduce((s,m)=>s+(M.newBiz[m]?.policies||0),0);
-  const totalPremium=MONTHS.reduce((s,m)=>s+(M.newBiz[m]?.premium||0),0);
-  const totalDue=MONTHS.reduce((s,m)=>s+(M.renewals[m]?.due||0),0);
-  const totalRenewed=MONTHS.reduce((s,m)=>s+(M.renewals[m]?.renewed||0),0);
-  const avgRet=totalDue>0?totalRenewed/totalDue*100:0;
-  const totalGWPRen=MONTHS.reduce((s,m)=>s+(M.renewals[m]?.gwpRenewed||0),0);
+  const fm=filterMonths('mf-nb');
+  const totPol=fm.reduce((s,m)=>s+(M.newBiz[m]?.policies||0),0);
+  const totPrem=fm.reduce((s,m)=>s+(M.newBiz[m]?.premium||0),0);
+  const totDue=fm.reduce((s,m)=>s+(M.renewals[m]?.due||0),0);
+  const totRen=fm.reduce((s,m)=>s+(M.renewals[m]?.renewed||0),0);
+  const avgRet=totDue>0?totRen/totDue*100:0;
+  const totGWPR=fm.reduce((s,m)=>s+(M.renewals[m]?.gwpRenewed||0),0);
   document.getElementById('kpi-pipeline').innerHTML=`
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">New Policies (YTD)</div><div class="kpi-val">${fmtN(totalPolicies)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">New Business GWP (YTD)</div><div class="kpi-val">${fmt(totalPremium)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:${avgRet>=80?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Account Retention (YTD)</div><div class="kpi-val ${avgRet>=80?'pos':'neg'}">${fmtP(avgRet,1)}</div><div class="kpi-sub">${totalRenewed}/${totalDue} accounts</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Renewal GWP (YTD)</div><div class="kpi-val">${fmt(totalGWPRen)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">New Policies</div><div class="kpi-val">${fmtN(totPol)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">New Business GWP</div><div class="kpi-val">${fmt(totPrem)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:${avgRet>=80?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Account Retention</div><div class="kpi-val ${avgRet>=80?'pos':'neg'}">${fmtP(avgRet,1)}</div><div class="kpi-sub">${totRen}/${totDue} accounts</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Renewal GWP</div><div class="kpi-val">${fmt(totGWPR)}</div></div>
   `;
-  document.getElementById('b-newbiz').innerHTML=MONTHS.map(m=>{
+  document.getElementById('b-newbiz').innerHTML=fm.map(m=>{
     const d=M.newBiz[m]||{},pol=d.policies||0,prem=d.premium||0;
     return`<tr><td>${m}</td>
     <td>${ef(pol,`M.newBiz['${m}'].policies=Number(this.value);renderPipeline()`,'min-width:40px')}</td>
     <td>${ef(prem,`M.newBiz['${m}'].premium=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
     <td>${fmt(pol>0?prem/pol:0)}</td></tr>`;
   }).join('');
-  document.getElementById('b-ren').innerHTML=MONTHS.map(m=>{
-    const d=M.renewals[m]||{},due=d.due||0,gDue=d.gwpDue||0,ren=d.renewed||0,gRen=d.gwpRenewed||0;
-    const acct=d.acctRet||0,rev=d.revRet||0;
+  document.getElementById('b-ren').innerHTML=fm.map(m=>{
+    const d=M.renewals[m]||{};
     return`<tr><td>${m}</td>
-    <td>${ef(due,`M.renewals['${m}'].due=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
-    <td>${ef(gDue,`M.renewals['${m}'].gwpDue=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
-    <td>${ef(ren,`M.renewals['${m}'].renewed=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
-    <td>${ef(gRen,`M.renewals['${m}'].gwpRenewed=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
-    <td class="${acct>=80?'pos':acct>0?'warn':'neg'}">${due>0?fmtP(acct,2):'—'}</td>
-    <td class="${rev>=100?'pos':rev>0?'warn':'neg'}">${gDue>0?rev+'%':'—'}</td></tr>`;
+    <td>${ef(d.due||0,`M.renewals['${m}'].due=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
+    <td>${ef(d.gwpDue||0,`M.renewals['${m}'].gwpDue=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
+    <td>${ef(d.renewed||0,`M.renewals['${m}'].renewed=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
+    <td>${ef(d.gwpRenewed||0,`M.renewals['${m}'].gwpRenewed=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
+    <td class="${(d.acctRet||0)>=80?'pos':(d.acctRet||0)>0?'warn':'neg'}">${d.due>0?fmtP(d.acctRet,2):'—'}</td>
+    <td class="${(d.revRet||0)>=100?'pos':(d.revRet||0)>0?'warn':'neg'}">${d.gwpDue>0?(d.revRet||0)+'%':'—'}</td></tr>`;
   }).join('');
+  document.getElementById('b-marquee').innerHTML=M.marquee.map(r=>`<tr><td>${r.month}</td><td style="text-align:left;font-family:var(--sans)">${r.brands}</td></tr>`).join('');
+  document.getElementById('b-churned').innerHTML=M.churned.map(r=>`<tr>
+    <td>${r.month}</td><td style="text-align:left;font-family:var(--sans);font-weight:600">${r.account}</td>
+    <td>${fmt(r.premExcl)}</td><td>${fmt(r.premIncl)}</td>
+    <td style="text-align:left;font-family:var(--sans);color:var(--text2);max-width:300px;white-space:normal">${r.reason}</td>
+    <td class="${parseFloat(r.lr)>100?'neg':'warn'}">${r.lr}</td><td>${fmtN(r.total)}</td></tr>`).join('');
 }
 
+// ── RECEIVABLES ──
 function renderReceivables(){
-  // KPIs — total across all insurers
-  const allDue=[...Object.values(M.recABHI),...Object.values(M.recZuno),...Object.values(M.recDirect)].reduce((s,d)=>s+(d.due||0),0)
-    +M.recDigit.reduce((s,r)=>s+(r.due||0),0);
-  const allRec=[...Object.values(M.recABHI),...Object.values(M.recZuno),...Object.values(M.recDirect)].reduce((s,d)=>s+(d.received||0),0);
-  const allPen=allDue-allRec;
+  const allDue=Object.values(M.recABHI).reduce((s,d)=>s+(d.due||0),0)+Object.values(M.recZuno).reduce((s,d)=>s+(d.due||0),0)+M.recDigit.reduce((s,r)=>s+(r.due||0),0)+Object.values(M.recDirect).reduce((s,d)=>s+(d.due||0),0);
+  const allRec=Object.values(M.recABHI).reduce((s,d)=>s+(d.received||0),0)+Object.values(M.recZuno).reduce((s,d)=>s+(d.received||0),0)+M.recDigit.reduce((s,r)=>s+(r.received||0),0)+Object.values(M.recDirect).reduce((s,d)=>s+(d.received||0),0);
   const collPct=allDue>0?allRec/allDue*100:0;
   document.getElementById('kpi-rec').innerHTML=`
     <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Total Due</div><div class="kpi-val">${fmt(allDue)}</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Total Received</div><div class="kpi-val pos">${fmt(allRec)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Total Pending</div><div class="kpi-val neg">${fmt(allPen)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:${collPct>=50?'var(--warn)':'var(--danger)'}"></div><div class="kpi-label">Collection %</div><div class="kpi-val ${collPct>=50?'warn':'neg'}">${fmtP(collPct,1)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Total Pending</div><div class="kpi-val neg">${fmt(allDue-allRec)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Collection %</div><div class="kpi-val neg">${fmtP(collPct,1)}</div></div>
   `;
-  // Digit — different structure (line items not months)
   document.getElementById('b-rec-digit').innerHTML=M.recDigit.map((r,i)=>
-    `<tr><td>${ef(r.particulars,`M.recDigit[${i}].particulars=this.value;renderReceivables()`,'min-width:200px;text-align:left')}</td>
+    `<tr><td>${ef(r.particulars,`M.recDigit[${i}].particulars=this.value;renderReceivables()`,'min-width:220px;text-align:left')}</td>
     <td>${ef(r.amount,`M.recDigit[${i}].amount=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
     <td>${ef(r.due,`M.recDigit[${i}].due=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
     <td>${ef(r.received,`M.recDigit[${i}].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
     <td class="${r.balance>0?'neg':''}">${fmt(r.balance)}</td></tr>`
-  ).join('')+`<tr class="total-row"><td>Total</td>
-    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.amount,0))}</td>
-    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.due,0))}</td>
-    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.received,0))}</td>
-    <td class="neg">${fmt(M.recDigit.reduce((s,r)=>s+r.balance,0))}</td></tr>`;
+  ).join('')+`<tr class="total-row"><td>Total</td><td>${fmt(M.recDigit.reduce((s,r)=>s+r.amount,0))}</td><td>${fmt(M.recDigit.reduce((s,r)=>s+r.due,0))}</td><td>${fmt(M.recDigit.reduce((s,r)=>s+r.received,0))}</td><td class="neg">${fmt(M.recDigit.reduce((s,r)=>s+r.balance,0))}</td></tr>`;
 
-  // Monthly insurer tables
-  const monthlyInsurer=(data,key)=>REC_MONTHS.map(m=>{
-    const d=data[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=due-rec;
-    const cp=due>0?rec/due*100:0;
-    return`<tr><td>${m}</td>
-    <td>${ef(bk,`M.${key}['${m}'].booked=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
-    <td>${fmt(due)}</td>
-    <td>${ef(rec,`M.${key}['${m}'].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
-    <td class="${pen>0?'neg':'pos'}">${fmt(pen)}</td></tr>`;
-  }).join('');
-  ['ABHI','Zuno','Magma','Paz','Healthysure','Direct'].forEach(ins=>{
-    const key='rec'+ins,id='b-rec-'+ins.toLowerCase();
-    if(document.getElementById(id)) document.getElementById(id).innerHTML=monthlyInsurer(M[key],key);
-  });
+  const monthlyT=(data,key)=>{
+    const months=Object.keys(data);
+    return months.map(m=>{
+      const d=data[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=due-rec;
+      return`<tr><td>${m}</td>
+      <td>${ef(bk,`M.${key}['${m}'].booked=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
+      <td>${fmt(due)}</td>
+      <td>${ef(rec,`M.${key}['${m}'].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
+      <td class="${pen>0?'neg':'pos'}">${fmt(pen)}</td></tr>`;
+    }).join('');
+  };
+  document.getElementById('b-rec-abhi').innerHTML=monthlyT(M.recABHI,'recABHI');
+  document.getElementById('b-rec-zuno').innerHTML=monthlyT(M.recZuno,'recZuno');
+  document.getElementById('b-rec-magma').innerHTML=monthlyT(M.recMagma,'recMagma');
+  document.getElementById('b-rec-paz').innerHTML=monthlyT(M.recPaz,'recPaz');
+  document.getElementById('b-rec-healthysure').innerHTML=monthlyT(M.recHealthysure,'recHealthysure');
+  document.getElementById('b-rec-direct').innerHTML=monthlyT(M.recDirect,'recDirect');
 }
 
 loadAll();
