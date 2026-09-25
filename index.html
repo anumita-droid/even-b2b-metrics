@@ -87,7 +87,8 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
 .edit-mode .eh{display:inline}
 
 /* ── PARAMS ── */
-.params{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);align-items:center}
+.params{display:none;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);align-items:center}
+.edit-mode .params{display:flex}
 .pl{font-size:11px;color:var(--text2);white-space:nowrap}
 .pi{background:var(--bg);border:1px solid var(--border2);color:var(--text);padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:12px;width:64px;text-align:center}
 .pi:focus{outline:none;border-color:var(--accent)}
@@ -350,17 +351,7 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
 <div class="tab-pane" id="pane-receivables">
   <div class="ph"><div class="ph-title">Receivables</div></div>
   <div class="kpis" id="kpi-rec"></div>
-  <div class="tw"><table>
-    <thead><tr>
-      <th>Period</th>
-      <th>Premium Booked<span class="eh">✎</span></th>
-      <th>Total Due<span class="eh">✎</span></th>
-      <th>Received<span class="eh">✎</span></th>
-      <th>Pending</th>
-      <th>Collection %</th>
-    </tr></thead>
-    <tbody id="b-rec"></tbody>
-  </table></div>
+  <div id="rec-tables"></div>
 </div>
 
 </div><!-- /main -->
@@ -415,18 +406,85 @@ const M={
     'Aug 2026':{due:0,renewed:0,gwpDue:0,gwpRenewed:0,retention:0},
     'Sep 2026':{due:0,renewed:0,gwpDue:0,gwpRenewed:0,retention:0},
   },
-  // Receivables — from working sheet "Receivables" tab, summed across insurers per month
-  // ABHI + Zuno + Magma + Paz + Healthysure + Direct Accounts
+  // Receivables — insurer-wise from working sheet
   receivables:{
-    'Jan 2026':{booked:3270554,due:3270554,received:1503952,pending:3270554},
-    'Feb 2026':{booked:6780375,due:6270554,received:6780375,pending:3270554},
-    'Mar 2026':{booked:5595894,due:11145208,received:1595872,pending:11145208},
-    'Apr 2026':{booked:1886166,due:13031374,received:1886166,pending:13031374},
-    'May 2026':{booked:0,due:13031374,received:0,pending:13031374},
-    'Jun 2026':{booked:187477291,due:187477291,received:0,pending:187477291},
-    'Jul 2026':{booked:0,due:0,received:0,pending:0},
-    'Aug 2026':{booked:0,due:0,received:0,pending:0},
-    'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    'ABHI':{
+      'Jan 2026':{booked:3270554,due:3270554,received:0,pending:3270554},
+      'Feb 2026':{booked:0,due:3270554,received:0,pending:3270554},
+      'Mar 2026':{booked:2450022,due:5720576,received:0,pending:5720576},
+      'Apr 2026':{booked:0,due:5720576,received:0,pending:5720576},
+      'May 2026':{booked:0,due:5720576,received:0,pending:5720576},
+      'Jun 2026':{booked:0,due:5720576,received:0,pending:5720576},
+      'Jul 2026':{booked:0,due:0,received:0,pending:0},
+      'Aug 2026':{booked:0,due:0,received:0,pending:0},
+      'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    },
+    'Zuno':{
+      'Jan 2026':{booked:0,due:0,received:0,pending:0},
+      'Feb 2026':{booked:0,due:0,received:0,pending:0},
+      'Mar 2026':{booked:5424632,due:5424632,received:0,pending:5424632},
+      'Apr 2026':{booked:0,due:5424632,received:0,pending:5424632},
+      'May 2026':{booked:0,due:5424632,received:0,pending:5424632},
+      'Jun 2026':{booked:0,due:5424632,received:0,pending:5424632},
+      'Jul 2026':{booked:0,due:0,received:0,pending:0},
+      'Aug 2026':{booked:0,due:0,received:0,pending:0},
+      'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    },
+    'Direct Accounts':{
+      'Jan 2026':{booked:1503952,due:1503952,received:1503952,pending:0},
+      'Feb 2026':{booked:6780375,due:6780375,received:6780375,pending:0},
+      'Mar 2026':{booked:1595872,due:1595872,received:1595872,pending:0},
+      'Apr 2026':{booked:1886166,due:1886166,received:1886166,pending:0},
+      'May 2026':{booked:0,due:0,received:0,pending:0},
+      'Jun 2026':{booked:0,due:0,received:0,pending:0},
+      'Jul 2026':{booked:0,due:0,received:0,pending:0},
+      'Aug 2026':{booked:0,due:0,received:0,pending:0},
+      'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    },
+    'Digit':{
+      'Jan 2026':{booked:0,due:0,received:0,pending:0},
+      'Feb 2026':{booked:0,due:0,received:0,pending:0},
+      'Mar 2026':{booked:0,due:0,received:0,pending:0},
+      'Apr 2026':{booked:0,due:0,received:0,pending:0},
+      'May 2026':{booked:0,due:0,received:0,pending:0},
+      'Jun 2026':{booked:187477291,due:187477291,received:0,pending:187477291},
+      'Jul 2026':{booked:0,due:0,received:0,pending:0},
+      'Aug 2026':{booked:0,due:0,received:0,pending:0},
+      'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    },
+    'Magma':{
+      'Jan 2026':{booked:0,due:0,received:0,pending:0},
+      'Feb 2026':{booked:0,due:0,received:0,pending:0},
+      'Mar 2026':{booked:0,due:0,received:0,pending:0},
+      'Apr 2026':{booked:0,due:0,received:0,pending:0},
+      'May 2026':{booked:0,due:0,received:0,pending:0},
+      'Jun 2026':{booked:0,due:0,received:0,pending:0},
+      'Jul 2026':{booked:0,due:0,received:0,pending:0},
+      'Aug 2026':{booked:0,due:0,received:0,pending:0},
+      'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    },
+    'Paz':{
+      'Jan 2026':{booked:0,due:0,received:0,pending:0},
+      'Feb 2026':{booked:0,due:0,received:0,pending:0},
+      'Mar 2026':{booked:0,due:0,received:0,pending:0},
+      'Apr 2026':{booked:0,due:0,received:0,pending:0},
+      'May 2026':{booked:0,due:0,received:0,pending:0},
+      'Jun 2026':{booked:0,due:0,received:0,pending:0},
+      'Jul 2026':{booked:0,due:0,received:0,pending:0},
+      'Aug 2026':{booked:0,due:0,received:0,pending:0},
+      'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    },
+    'Healthysure':{
+      'Jan 2026':{booked:0,due:0,received:0,pending:0},
+      'Feb 2026':{booked:0,due:0,received:0,pending:0},
+      'Mar 2026':{booked:0,due:0,received:0,pending:0},
+      'Apr 2026':{booked:0,due:0,received:0,pending:0},
+      'May 2026':{booked:0,due:0,received:0,pending:0},
+      'Jun 2026':{booked:0,due:0,received:0,pending:0},
+      'Jul 2026':{booked:0,due:0,received:0,pending:0},
+      'Aug 2026':{booked:0,due:0,received:0,pending:0},
+      'Sep 2026':{booked:0,due:0,received:0,pending:0},
+    },
   }
 };
 
@@ -447,7 +505,8 @@ const fmtN=(n)=>{if(!n&&n!==0)return'—';return Number(n).toLocaleString('en-IN
 const fmtP=(n,dec=1)=>{if(n===null||n===undefined||isNaN(n))return'—';return Number(n).toFixed(dec)+'%'};
 const pC=(n)=>n>0?'pos':n<0?'neg':'';
 const v=(o,k)=>o?.[k]??0;
-const ef=(val,onChange,style='')=>`<input class="ef" value="${val}" readonly style="${style}" onchange="${onChange}" onclick="this.select()">`;
+const fmtEf=(val)=>{if(typeof val==='number'&&val>0)return Number(val).toLocaleString('en-IN');return val;};
+const ef=(val,onChange,style='')=>`<input class="ef" value="${fmtEf(val)}" readonly style="${style}" onchange="${onChange}" onclick="this.select()">`;
 
 function toMK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`${x.toLocaleString('en-US',{month:'short'})} ${x.getFullYear()}`}
 function toQK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`Q${Math.floor(x.getMonth()/3)+1}'${String(x.getFullYear()).slice(2)}`}
@@ -508,11 +567,13 @@ async function loadAll(){
     safe('os_quarterly',async()=>{(await ft('os_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Sum of requested_amount']||0});}),
     safe('network_comm_quarterly',async()=>{(await ft('network_comm_quarterly')).forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.netCommQ[k]=r['Sum of approved_amount']||0});}),
     safe('hospital_opd',async()=>{(await ft('hospital_opd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospOPD[k]=r.total_billed_amount||0});}),
-    safe('hospital_ipd',async()=>{(await ft('hospital_ipd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospIPD[k]=r.total_net_billed_amount||0});}),
+    // hospital_ipd excluded — card 8694 times out in Metabase (nested query)
+    // safe('hospital_ipd',async()=>{(await ft('hospital_ipd')).forEach(r=>{const k=toMK(r.month);if(k)D.hospIPD[k]=r.total_net_billed_amount||0});}),
     safe('internalisation',async()=>{D.internalisation=await ft('internalisation');}),
   ]);
 
-  if(errs.length){const b=document.getElementById('errBanner');b.textContent='Failed: '+errs.join(', ');b.style.display='block';}
+  const realErrs=errs.filter(e=>e!=='hospital_ipd');
+  if(realErrs.length){const b=document.getElementById('errBanner');b.textContent='Some data failed to load: '+realErrs.join(', ');b.style.display='block';}
   document.getElementById('lastUpdated').textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   renderAll();
   document.getElementById('overlay').classList.add('hidden');
@@ -734,25 +795,46 @@ function renderPipeline(){
 
 // ── RECEIVABLES ──
 function renderReceivables(){
-  const totalDue=MONTHS.reduce((s,m)=>s+(M.receivables[m]?.due||0),0);
-  const totalRec=MONTHS.reduce((s,m)=>s+(M.receivables[m]?.received||0),0);
-  const totalPending=MONTHS.reduce((s,m)=>s+(M.receivables[m]?.pending||0),0);
-  const collPct=totalDue>0?totalRec/totalDue*100:0;
+  const insurers=Object.keys(M.receivables);
+  // Compute grand totals across all insurers and months
+  let gDue=0,gRec=0,gPending=0;
+  insurers.forEach(ins=>MONTHS.forEach(m=>{
+    const d=M.receivables[ins][m]||{};
+    gDue+=d.due||0; gRec+=d.received||0; gPending+=d.pending||0;
+  }));
+  const collPct=gDue>0?gRec/gDue*100:0;
   document.getElementById('kpi-rec').innerHTML=`
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Total Due</div><div class="kpi-val">${fmt(totalDue)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Total Received</div><div class="kpi-val pos">${fmt(totalRec)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Total Pending</div><div class="kpi-val neg">${fmt(totalPending)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Total Due</div><div class="kpi-val">${fmt(gDue)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Total Received</div><div class="kpi-val pos">${fmt(gRec)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Total Pending</div><div class="kpi-val neg">${fmt(gPending)}</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:${collPct>=80?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Collection %</div><div class="kpi-val ${collPct>=80?'pos':'neg'}">${fmtP(collPct,1)}</div></div>
   `;
-  document.getElementById('b-rec').innerHTML=MONTHS.map(m=>{
-    const d=M.receivables[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=d.pending||0;
-    const cp=due>0?rec/due*100:0;
-    return`<tr><td>${m}</td>
-    <td>${ef(bk,`M.receivables['${m}'].booked=Number(this.value);renderReceivables()`,'min-width:90px')}</td>
-    <td>${ef(due,`M.receivables['${m}'].due=Number(this.value);renderReceivables()`,'min-width:90px')}</td>
-    <td>${ef(rec,`M.receivables['${m}'].received=Number(this.value);renderReceivables()`,'min-width:90px')}</td>
-    <td class="neg">${fmt(pen)}</td>
-    <td class="${cp>=90?'pos':cp>=50?'warn':'neg'}">${due>0?fmtP(cp,1):'—'}</td></tr>`;
+
+  // One table per insurer
+  document.getElementById('rec-tables').innerHTML=insurers.map(ins=>{
+    const rows=M.receivables[ins];
+    let iDue=0,iRec=0,iPen=0;
+    MONTHS.forEach(m=>{const d=rows[m]||{};iDue+=d.due||0;iRec+=d.received||0;iPen+=d.pending||0;});
+    if(iDue===0&&iRec===0) return ''; // skip empty insurers
+    const iColl=iDue>0?iRec/iDue*100:0;
+    const tbody=MONTHS.map(m=>{
+      const d=rows[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=d.pending||0;
+      const cp=due>0?rec/due*100:0;
+      if(bk===0&&due===0&&rec===0) return `<tr><td>${m}</td><td class="pos" style="color:var(--text3)">—</td><td style="color:var(--text3)">—</td><td style="color:var(--text3)">—</td><td style="color:var(--text3)">—</td><td style="color:var(--text3)">—</td></tr>`;
+      return`<tr><td>${m}</td>
+      <td>${ef(bk,`M.receivables['${ins}']['${m}'].booked=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
+      <td>${ef(due,`M.receivables['${ins}']['${m}'].due=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
+      <td>${ef(rec,`M.receivables['${ins}']['${m}'].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
+      <td class="${pen>0?'neg':''}">${fmt(pen)}</td>
+      <td class="${cp>=90?'pos':cp>=50?'warn':'neg'}">${due>0?fmtP(cp,1):'—'}</td></tr>`;
+    }).join('');
+    return`<div class="sdiv"><div class="sdiv-t">${ins}</div><div class="sdiv-l"></div>
+      <span style="font-size:10px;font-family:var(--mono);color:${iColl>=80?'var(--accent2)':'var(--danger)'}">Due ${fmt(iDue)} · Received ${fmt(iRec)} · ${fmtP(iColl,1)}</span>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Total Due<span class="eh">✎</span></th><th>Received<span class="eh">✎</span></th><th>Pending</th><th>Collection %</th></tr></thead>
+      <tbody>${tbody}</tbody>
+    </table></div>`;
   }).join('');
 }
 
