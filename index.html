@@ -6,12 +6,7 @@
 <title>Even B2B Metrics</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#0A0F1E;--surface:#111827;--surface2:#1a2236;--border:#1f2d45;
-  --accent:#3B82F6;--accent2:#10B981;--danger:#EF4444;
-  --text:#F1F5F9;--text2:#94A3B8;--text3:#64748B;
-  --mono:'DM Mono',monospace;--sans:'Inter',sans-serif;
-}
+:root{--bg:#0A0F1E;--surface:#111827;--surface2:#1a2236;--border:#1f2d45;--accent:#3B82F6;--accent2:#10B981;--danger:#EF4444;--text:#F1F5F9;--text2:#94A3B8;--text3:#64748B;--mono:'DM Mono',monospace;--sans:'Inter',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;font-size:13px}
 .header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;z-index:100}
@@ -78,10 +73,7 @@ tbody td:first-child{text-align:left;font-family:var(--sans);font-weight:500;col
 <div class="header">
   <div class="logo">
     <div class="logo-mark">E</div>
-    <div>
-      <div class="logo-text">Even B2B Metrics</div>
-      <div class="logo-sub">Founders Dashboard · Live</div>
-    </div>
+    <div><div class="logo-text">Even B2B Metrics</div><div class="logo-sub">Founders Dashboard · Live</div></div>
   </div>
   <div class="header-right">
     <span class="last-updated" id="lastUpdated">Loading...</span>
@@ -196,17 +188,13 @@ tbody td:first-child{text-align:left;font-family:var(--sans);font-weight:500;col
     <tbody id="body-internalisation"></tbody>
   </table></div>
 </div>
-
 </div>
 
 <script>
 // ══════════════════════════════════════════════
-// CONFIG
+// CONFIG — Apps Script web app URL
 // ══════════════════════════════════════════════
-const VERCEL = 'https://even-b2b-metrics.vercel.app';
-
-const sheetUrl = (tab) => `${VERCEL}/api/metabase?tab=${tab}`;
-const masterUrl = () => `${VERCEL}/api/metabase?master=1`;
+const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/even.in/s/AKfycbyavB34D873t5rCtudHoja93bwpi8XfD_IXVjsQPAPHPNOLBgcIbPIbouqJJiF-yQNqfw/exec';
 
 const MONTHS = ['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026','Jul 2026','Aug 2026','Sep 2026'];
 const QUARTERS = ["Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
@@ -221,7 +209,7 @@ const D = {
   approvedQ:{}, osQ:{}, netCommQ:{},
   hospOPD:{}, hospIPD:{},
   riCL:{}, cashless:{}, riIncl:{}, riExcl:{},
-  internalisation:[],
+  internalisation:[]
 };
 
 // ══════════════════════════════════════════════
@@ -241,7 +229,7 @@ const M = {
   csat:{'Jan 2026':4.57,'Feb 2026':4.58,'Mar 2026':4.53,'Apr 2026':4.47,'May 2026':4.35,'Jun 2026':4.08,'Jul 2026':4.37,'Aug 2026':4.36,'Sep 2026':4.36},
   postSalesCost:{'Jan 2026':221833,'Feb 2026':221833,'Mar 2026':246833,'Apr 2026':419833,'May 2026':516916,'Jun 2026':675475,'Jul 2026':714417,'Aug 2026':714417,'Sep 2026':714417},
   claimsBaseCost:{'Jan 2026':33375,'Feb 2026':66750,'Mar 2026':66750,'Apr 2026':164750,'May 2026':202250,'Jun 2026':300750,'Jul 2026':404094,'Aug 2026':390000,'Sep 2026':390000},
-  tat:{'Jan 2026':'2.06d','Feb 2026':'2.16d','Mar 2026':'2.93d','Apr 2026':'4.6d','May 2026':'7.85d','Jun 2026':'6.45d','Jul 2026':'3.5d','Aug 2026':'2.9d','Sep 2026':'—'},
+  tat:{'Jan 2026':'2.06d','Feb 2026':'2.16d','Mar 2026':'2.93d','Apr 2026':'4.6d','May 2026':'7.85d','Jun 2026':'6.45d','Jul 2026':'3.5d','Aug 2026':'2.9d','Sep 2026':'—'}
 };
 
 let summaryView='monthly', lrView='monthly', riView='incl';
@@ -257,113 +245,153 @@ const v=(obj,k)=>obj?.[k]??0;
 
 function toMonthKey(dateStr) {
   if (!dateStr) return null;
-  const d = new Date(dateStr.replace('+05:30',''));
+  const d = new Date(String(dateStr).replace('+05:30',''));
   if (isNaN(d)) return null;
   return `${d.toLocaleString('en-US',{month:'short'})} ${d.getFullYear()}`;
 }
-
 function toQuarterKey(dateStr) {
   if (!dateStr) return null;
-  const d = new Date(dateStr.replace('+05:30',''));
+  const d = new Date(String(dateStr).replace('+05:30',''));
   if (isNaN(d)) return null;
-  const y = d.getFullYear(); const q = Math.floor(d.getMonth()/3)+1;
-  return `Q${q}'${String(y).slice(2)}`;
+  return `Q${Math.floor(d.getMonth()/3)+1}'${String(d.getFullYear()).slice(2)}`;
+}
+function parseAmt(s) {
+  return parseFloat(String(s||'').replace(/[₹,\s]/g,'')) || 0;
+}
+function parseDate(s) {
+  s = String(s||'').trim();
+  if (!s || s==='-') return null;
+  const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) return new Date(parseInt(m[3]), parseInt(m[2])-1, parseInt(m[1]));
+  const m2 = s.match(/^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/);
+  if (m2) return new Date(`${m2[2]} ${m2[1]} ${m2[3]}`);
+  const d = new Date(s);
+  return isNaN(d) ? null : d;
+}
+
+// ══════════════════════════════════════════════
+// FETCH VIA JSONP FROM APPS SCRIPT
+// ══════════════════════════════════════════════
+let _cbId = 0;
+const _pending = {};
+
+function fetchFromAppsScript(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = '__cb' + (++_cbId);
+    const timer = setTimeout(() => {
+      delete window[cbName];
+      reject(new Error('Timeout'));
+    }, 45000);
+
+    window[cbName] = (data) => {
+      clearTimeout(timer);
+      delete window[cbName];
+      resolve(String(data||''));
+    };
+
+    const url = APPS_SCRIPT_URL + '?' + params + '&callback=' + cbName + '&_t=' + Date.now();
+    const s = document.createElement('script');
+    s.src = url;
+    s.onerror = () => { clearTimeout(timer); delete window[cbName]; reject(new Error('Script load failed')); };
+    document.head.appendChild(s);
+  });
 }
 
 // ══════════════════════════════════════════════
 // CSV PARSER
 // ══════════════════════════════════════════════
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
+  const lines = String(text||'').trim().split(/\r?\n/);
   if (lines.length < 2) return [];
-  const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim());
+  const parseLine = (line) => {
+    const vals = []; let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c==='"') { if (inQ && line[i+1]==='"') { cur+='"'; i++; } else inQ=!inQ; }
+      else if (c===',' && !inQ) { vals.push(cur); cur=''; }
+      else cur+=c;
+    }
+    vals.push(cur);
+    return vals;
+  };
+  const headers = parseLine(lines[0]).map(h=>h.replace(/^"|"$/g,'').trim());
   return lines.slice(1).map(line => {
-    const vals = line.match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g) || [];
+    const vals = parseLine(line);
     const row = {};
     headers.forEach((h,i) => {
-      let v = (vals[i]||'').replace(/^"|"$/g,'').trim();
-      row[h] = isNaN(v)||v==='' ? v : Number(v);
+      let val = (vals[i]||'').replace(/^"|"$/g,'').trim();
+      row[h] = (!isNaN(val) && val!=='') ? Number(val) : val;
     });
     return row;
-  }).filter(r => Object.values(r).some(v => v !== '' && v !== null));
-}
-
-async function fetchCSV(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`Failed: ${url}`);
-  return parseCSV(await r.text());
+  }).filter(row => Object.values(row).some(v=>v!==''&&v!==null&&v!==undefined));
 }
 
 // ══════════════════════════════════════════════
-// PARSE MASTER LIST FOR GWP + EARNED PREMIUM
+// PARSE MASTER LIST
 // ══════════════════════════════════════════════
 function parseMasterList(rows) {
-  const OPD = ['even opd','hcu','even hcu','hcu on utilisation'];
+  const INCLUDE = ['even opd','hcu','even hcu','hcu on utilisation'];
   const gwpM={},gwpIM={},gwpQ={},gwpIQ={};
   const epExclM={},epInclM={},epExclQ={},epInclQ={};
 
   const monthRanges = {
-    'Jan 2026':[new Date('2026-01-01'),new Date('2026-01-31')],
-    'Feb 2026':[new Date('2026-02-01'),new Date('2026-02-28')],
-    'Mar 2026':[new Date('2026-03-01'),new Date('2026-03-31')],
-    'Apr 2026':[new Date('2026-04-01'),new Date('2026-04-30')],
-    'May 2026':[new Date('2026-05-01'),new Date('2026-05-31')],
-    'Jun 2026':[new Date('2026-06-01'),new Date('2026-06-30')],
-    'Jul 2026':[new Date('2026-07-01'),new Date('2026-07-31')],
-    'Aug 2026':[new Date('2026-08-01'),new Date('2026-08-31')],
-    'Sep 2026':[new Date('2026-09-01'),new Date('2026-09-30')],
+    'Jan 2026':[new Date(2026,0,1),new Date(2026,0,31)],
+    'Feb 2026':[new Date(2026,1,1),new Date(2026,1,28)],
+    'Mar 2026':[new Date(2026,2,1),new Date(2026,2,31)],
+    'Apr 2026':[new Date(2026,3,1),new Date(2026,3,30)],
+    'May 2026':[new Date(2026,4,1),new Date(2026,4,31)],
+    'Jun 2026':[new Date(2026,5,1),new Date(2026,5,30)],
+    'Jul 2026':[new Date(2026,6,1),new Date(2026,6,31)],
+    'Aug 2026':[new Date(2026,7,1),new Date(2026,7,31)],
+    'Sep 2026':[new Date(2026,8,1),new Date(2026,8,30)],
   };
   const quarterRanges = {
-    "Q1'25":[new Date('2025-01-01'),new Date('2025-03-31')],
-    "Q2'25":[new Date('2025-04-01'),new Date('2025-06-30')],
-    "Q3'25":[new Date('2025-07-01'),new Date('2025-09-30')],
-    "Q4'25":[new Date('2025-10-01'),new Date('2025-12-31')],
-    "Q1'26":[new Date('2026-01-01'),new Date('2026-03-31')],
-    "Q2'26":[new Date('2026-04-01'),new Date('2026-06-30')],
-    "Q3'26":[new Date('2026-07-01'),new Date('2026-09-30')],
+    "Q1'25":[new Date(2025,0,1),new Date(2025,2,31)],
+    "Q2'25":[new Date(2025,3,1),new Date(2025,5,30)],
+    "Q3'25":[new Date(2025,6,1),new Date(2025,8,30)],
+    "Q4'25":[new Date(2025,9,1),new Date(2025,11,31)],
+    "Q1'26":[new Date(2026,0,1),new Date(2026,2,31)],
+    "Q2'26":[new Date(2026,3,1),new Date(2026,5,30)],
+    "Q3'26":[new Date(2026,6,1),new Date(2026,8,30)],
   };
 
-  const daysOverlap=(ps,pe,ms,me)=>Math.max(0,(Math.min(pe,me)-Math.max(ps,ms))/86400000+1);
-  const parseAmt=(s)=>parseFloat(String(s||'').replace(/[₹,\s\-]/g,''))||0;
+  const overlap=(ps,pe,ms,me)=>Math.max(0,(Math.min(pe.getTime(),me.getTime())-Math.max(ps.getTime(),ms.getTime()))/86400000+1);
 
   rows.forEach(row => {
-    const pType = String(row['Policy type']||row['policy type']||'').toLowerCase();
-    if (!OPD.some(t=>pType.includes(t))) return;
+    const pType = String(row['Policy type']||row['policy type']||'').toLowerCase().trim();
+    if (!INCLUDE.some(t=>pType.includes(t))) return;
 
-    const rm = String(row['Renewal Month']||row['renewal month']||'').trim().replace('-',' ');
-    const q = String(row['Quarter']||row['quarter']||'').trim();
-    const ip = parseAmt(row['Inception Premium']||row['inception premium']);
+    const ip    = parseAmt(row['Inception Premium']||row['inception premium']);
     const ipGST = parseAmt(row['Inception Premium (inc GST)']||row['inception premium (inc gst)']);
     if (!ip && !ipGST) return;
 
-    // GWP — books one year before renewal month (e.g. renewal Jan-2027 → GWP Jan 2026)
+    // GWP: books one year before renewal month
+    const renewalRaw = String(row['Renewal Month']||row['renewal month']||'').trim();
+    const rm = renewalRaw.match(/^([A-Za-z]{3})-(\d{4})$/);
     if (rm) {
-      const parts = rm.split(' ');
-      if (parts.length === 2) {
-        const gwpKey = parts[0] + ' ' + (parseInt(parts[1]) - 1);
-        gwpM[gwpKey] = (gwpM[gwpKey]||0) + ip;
-        gwpIM[gwpKey] = (gwpIM[gwpKey]||0) + ipGST;
-      }
+      const gwpKey = rm[1] + ' ' + (parseInt(rm[2])-1);
+      gwpM[gwpKey]  = (gwpM[gwpKey]||0)  + ip;
+      gwpIM[gwpKey] = (gwpIM[gwpKey]||0) + ipGST;
     }
+
+    const q = String(row['Quarter']||row['quarter']||'').trim();
     if (q) { gwpQ[q]=(gwpQ[q]||0)+ip; gwpIQ[q]=(gwpIQ[q]||0)+ipGST; }
 
-    // Earned Premium
-    const startD=new Date(String(row['Start Date']||row['start date']||'').replace(/(\d+)\/(\d+)\/(\d+)/,'$3-$2-$1'));
-    const endD=new Date(String(row['End Date']||row['end date']||'').replace(/(\d+)\/(\d+)\/(\d+)/,'$3-$2-$1'));
-    if (isNaN(startD)||isNaN(endD)) return;
-    const totalDays=(endD-startD)/86400000+1;
+    // Earned Premium: daily proration
+    const startD = parseDate(row['Start Date']||row['start date']);
+    const endD   = parseDate(row['End Date']||row['end date']);
+    if (!startD||!endD||endD<=startD) return;
+    const totalDays = (endD.getTime()-startD.getTime())/86400000+1;
     if (totalDays<=0) return;
     const pdExcl=ip/totalDays, pdIncl=ipGST/totalDays;
 
     for (const [m,[ms,me]] of Object.entries(monthRanges)) {
-      const d=daysOverlap(startD,endD,ms,me);
-      epExclM[m]=(epExclM[m]||0)+pdExcl*d;
-      epInclM[m]=(epInclM[m]||0)+pdIncl*d;
+      const d=overlap(startD,endD,ms,me);
+      if(d>0){epExclM[m]=(epExclM[m]||0)+pdExcl*d;epInclM[m]=(epInclM[m]||0)+pdIncl*d;}
     }
     for (const [q2,[qs,qe]] of Object.entries(quarterRanges)) {
-      const d=daysOverlap(startD,endD,qs,qe);
-      epExclQ[q2]=(epExclQ[q2]||0)+pdExcl*d;
-      epInclQ[q2]=(epInclQ[q2]||0)+pdIncl*d;
+      const d=overlap(startD,endD,qs,qe);
+      if(d>0){epExclQ[q2]=(epExclQ[q2]||0)+pdExcl*d;epInclQ[q2]=(epInclQ[q2]||0)+pdIncl*d;}
     }
   });
 
@@ -371,7 +399,7 @@ function parseMasterList(rows) {
 }
 
 // ══════════════════════════════════════════════
-// LOAD ALL DATA
+// LOAD ALL
 // ══════════════════════════════════════════════
 function setStep(s){document.getElementById('loadingStep').textContent=s}
 
@@ -379,80 +407,38 @@ async function loadAll() {
   document.getElementById('loadingOverlay').classList.remove('hidden');
   document.getElementById('errorBanner').style.display='none';
   const errors=[];
+  const safe=async(name,fn)=>{try{await fn()}catch(e){errors.push(name+': '+(e.message||e));console.error(name,e)}};
 
-  const safe=async(name,fn)=>{try{await fn()}catch(e){errors.push(name+': '+e.message);console.error(name,e)}};
+  const fetchTab = async(tab) => parseCSV(await fetchFromAppsScript('tab='+tab));
+  const fetchMaster = async() => parseCSV(await fetchFromAppsScript('master=1'));
 
-  setStep('Loading Master List (GWP & Earned Premium)...');
-  await safe('Master List', async()=>{
-    const rows=await fetchCSV(masterUrl());
-    parseMasterList(rows);
-  });
+  setStep('Loading Master List...');
+  await safe('Master List', async()=>{ parseMasterList(await fetchMaster()); });
 
   setStep('Loading claims data...');
   await Promise.all([
-    safe('ri_cl_combined', async()=>{
-      const rows=await fetchCSV(sheetUrl('ri_cl_combined'));
-      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.riCL[k]=r});
-    }),
-    safe('cashless', async()=>{
-      const rows=await fetchCSV(sheetUrl('cashless'));
-      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.cashless[k]=r});
-    }),
-    safe('ri_incl_tally', async()=>{
-      const rows=await fetchCSV(sheetUrl('ri_incl_tally'));
-      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.riIncl[k]=r});
-    }),
-    safe('ri_excl_tally', async()=>{
-      const rows=await fetchCSV(sheetUrl('ri_excl_tally'));
-      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.riExcl[k]=r});
-    }),
+    safe('ri_cl_combined', async()=>{ (await fetchTab('ri_cl_combined')).forEach(r=>{const k=toMonthKey(r.month);if(k)D.riCL[k]=r}); }),
+    safe('cashless',       async()=>{ (await fetchTab('cashless')).forEach(r=>{const k=toMonthKey(r.month);if(k)D.cashless[k]=r}); }),
+    safe('ri_incl_tally',  async()=>{ (await fetchTab('ri_incl_tally')).forEach(r=>{const k=toMonthKey(r.month);if(k)D.riIncl[k]=r}); }),
+    safe('ri_excl_tally',  async()=>{ (await fetchTab('ri_excl_tally')).forEach(r=>{const k=toMonthKey(r.month);if(k)D.riExcl[k]=r}); }),
   ]);
 
   setStep('Loading loss ratio data...');
   await Promise.all([
-    safe('approved_monthly', async()=>{
-      const rows=await fetchCSV(sheetUrl('approved_monthly'));
-      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.approvedM[k]=r['Sum of approved_amount']||0});
-    }),
-    safe('os_monthly', async()=>{
-      const rows=await fetchCSV(sheetUrl('os_monthly'));
-      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.osM[k]=r['Distinct values of claim_id']||0});
-    }),
-    safe('network_comm_monthly', async()=>{
-      const rows=await fetchCSV(sheetUrl('network_comm_monthly'));
-      rows.forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.netCommM[k]=r['Sum of approved_amount']||0});
-    }),
-    safe('approved_quarterly', async()=>{
-      const rows=await fetchCSV(sheetUrl('approved_quarterly'));
-      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.approvedQ[k]=r['Sum of approved_amount']||0});
-    }),
-    safe('os_quarterly', async()=>{
-      const rows=await fetchCSV(sheetUrl('os_quarterly'));
-      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Distinct values of claim_id']||0});
-    }),
-    safe('network_comm_quarterly', async()=>{
-      const rows=await fetchCSV(sheetUrl('network_comm_quarterly'));
-      rows.forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.netCommQ[k]=r['Sum of approved_amount']||0});
-    }),
-    safe('hospital_opd', async()=>{
-      const rows=await fetchCSV(sheetUrl('hospital_opd'));
-      rows.forEach(r=>{const k=toMonthKey(r.month);if(k)D.hospOPD[k]=r.total_billed_amount||0});
-    }),
-    // hospital_ipd tab not yet created in sheet
+    safe('approved_monthly',      async()=>{ (await fetchTab('approved_monthly')).forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.approvedM[k]=r['Sum of approved_amount']||0}); }),
+    safe('os_monthly',            async()=>{ (await fetchTab('os_monthly')).forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.osM[k]=r['Sum of requested_amount']||0}); }),
+    safe('network_comm_monthly',  async()=>{ (await fetchTab('network_comm_monthly')).forEach(r=>{const k=toMonthKey(r['visit_time: Month']);if(k)D.netCommM[k]=r['Sum of approved_amount']||0}); }),
+    safe('approved_quarterly',    async()=>{ (await fetchTab('approved_quarterly')).forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.approvedQ[k]=r['Sum of approved_amount']||0}); }),
+    safe('os_quarterly',          async()=>{ (await fetchTab('os_quarterly')).forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.osQ[k]=r['Sum of requested_amount']||0}); }),
+    safe('network_comm_quarterly',async()=>{ (await fetchTab('network_comm_quarterly')).forEach(r=>{const k=toQuarterKey(r['visit_time: Quarter']);if(k)D.netCommQ[k]=r['Sum of approved_amount']||0}); }),
+    safe('hospital_opd',          async()=>{ (await fetchTab('hospital_opd')).forEach(r=>{const k=toMonthKey(r.month);if(k)D.hospOPD[k]=r.total_billed_amount||0}); }),
+    safe('hospital_ipd',          async()=>{ (await fetchTab('hospital_ipd')).forEach(r=>{const k=toMonthKey(r.month);if(k)D.hospIPD[k]=r.total_net_billed_amount||0}); }),
   ]);
 
   setStep('Loading internalisation...');
-  await safe('internalisation', async()=>{
-    const rows=await fetchCSV(sheetUrl('internalisation'));
-    D.internalisation=rows;
-  });
+  await safe('internalisation', async()=>{ D.internalisation=await fetchTab('internalisation'); });
 
-  if(errors.length>0){
-    const b=document.getElementById('errorBanner');
-    b.textContent='Some data failed: '+errors.join(' | ');
-    b.style.display='block';
-  }
-
+  if(errors.length>0){const b=document.getElementById('errorBanner');b.textContent='Some data failed: '+errors.join(' | ');b.style.display='block'}
   document.getElementById('lastUpdated').textContent='Updated '+new Date().toLocaleTimeString('en-IN');
   setStep('Done');
   renderAll();
@@ -467,9 +453,9 @@ function switchTab(name){
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
 }
-function setSummaryView(v,btn){summaryView=v;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('summary-monthly').style.display=v==='monthly'?'block':'none';document.getElementById('summary-quarterly').style.display=v==='quarterly'?'block':'none';}
-function setLRView(v,btn){lrView=v;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('lr-monthly').style.display=v==='monthly'?'block':'none';document.getElementById('lr-quarterly').style.display=v==='quarterly'?'block':'none';}
-function setRIView(v,btn){riView=v;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRI();}
+function setSummaryView(vw,btn){summaryView=vw;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('summary-monthly').style.display=vw==='monthly'?'block':'none';document.getElementById('summary-quarterly').style.display=vw==='quarterly'?'block':'none';}
+function setLRView(vw,btn){lrView=vw;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('lr-monthly').style.display=vw==='monthly'?'block':'none';document.getElementById('lr-quarterly').style.display=vw==='quarterly'?'block':'none';}
+function setRIView(vw,btn){riView=vw;btn.parentElement.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRI();}
 
 // ══════════════════════════════════════════════
 // RENDER
@@ -489,12 +475,11 @@ function renderSummary(){
     const hospInc=v(D.hospOPD,m),hospLim=v(M.hospLimitDed,m);
     const lr=epNet>0?((approved+os)*(1+ibnr)+hospInc-hospLim)/epNet:0;
     const uw=(1-lr)*v(D.earnedExclM,m);
-    const sf=v(M.servicingFees,m);
-    const nc=v(D.netCommM,m)*(netPct/0.125);
-    const opd=v(D.hospOPD,m),ipd=v(D.hospIPD,m);
-    const cb=v(M.costBase,m);
+    const sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(netPct/0.125);
+    const opd=v(D.hospOPD,m),ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
     const pnl=uw+sf+nc+opd+(ipd*ipdPct)-cb;
-    return`<tr><td>${m}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
+    return`<tr><td>${m}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td>
+    <td class="${pC(uw)}">${fmt(uw)}</td>
     <td><input class="editable-input" value="${sf}" style="min-width:90px" onchange="M.servicingFees['${m}']=Number(this.value);renderAll()" onclick="this.select()"></td>
     <td>${fmt(nc)}</td><td>${fmt(opd)}</td><td>${fmt(ipd)}</td>
     <td><input class="editable-input" value="${cb}" style="min-width:90px" onchange="M.costBase['${m}']=Number(this.value);renderAll()" onclick="this.select()"></td>
@@ -505,31 +490,29 @@ function renderSummary(){
     const gwp=v(D.gwpQ,q),gwpI=v(D.gwpInclQ,q);
     const epNet=v(D.earnedInclQ,q)*me;
     const approved=v(D.approvedQ,q),os=v(D.osQ,q);
-    const ibnr=v(M.ibnrQ,q)/100;
-    const hospLim=v(M.hospLimitDedQ,q);
+    const ibnr=v(M.ibnrQ,q)/100,hospLim=v(M.hospLimitDedQ,q);
     const lr=epNet>0?((approved+os)*(1+ibnr)-hospLim)/epNet:0;
     const uw=(1-lr)*v(D.earnedExclQ,q);
-    const sf=v(M.servicingFees,q)||0;
-    const nc=v(D.netCommQ,q)*(netPct/0.125);
-    const cb=v(M.costBaseQ,q);
+    const sf=v(M.servicingFees,q)||0,nc=v(D.netCommQ,q)*(netPct/0.125),cb=v(M.costBaseQ,q);
     const pnl=uw+sf+nc-cb;
-    return`<tr><td>${q}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
-    <td>${fmt(sf)}</td><td>${fmt(nc)}</td><td>—</td><td>—</td><td>${fmt(cb)}</td><td class="${pC(pnl)}">${fmt(pnl)}</td></tr>`;
+    return`<tr><td>${q}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td>
+    <td class="${pC(uw)}">${fmt(uw)}</td><td>${fmt(sf)}</td><td>${fmt(nc)}</td>
+    <td>—</td><td>—</td><td>${fmt(cb)}</td><td class="${pC(pnl)}">${fmt(pnl)}</td></tr>`;
   }).join('');
 }
 
 function renderLR(){
   const me=parseFloat(document.getElementById('meFactor').value)||0.94;
-  const row=(period,epExcl,epIncl,approved,os,ibnr,hospInc,hospLim,editable,ibnrField,limField)=>{
+  const row=(period,epExcl,epIncl,approved,os,ibnr,hospInc,hospLim,editable,ibnrF,limF)=>{
     const epNet=epIncl*me,total=approved+os;
     const lr=epNet>0?(total*(1+ibnr/100)+hospInc-hospLim)/epNet*100:0;
     const uw=(1-lr/100)*epExcl;
     const lrC=lr>100?'neg':lr>85?'':'pos';
     return`<tr><td>${period}</td><td>${fmt(epExcl)}</td><td>${fmt(epIncl)}</td><td>${fmt(epNet)}</td>
     <td>${fmt(approved)}</td><td>${fmt(os)}</td><td>${fmt(total)}</td>
-    <td>${editable?`<input class="editable-input" value="${ibnr}" style="min-width:50px" onchange="${ibnrField}['${period}']=Number(this.value);renderAll()" onclick="this.select()">%`:fmtP(ibnr)}</td>
+    <td>${editable?`<input class="editable-input" value="${ibnr}" style="min-width:50px" onchange="${ibnrF}['${period}']=Number(this.value);renderAll()" onclick="this.select()">%`:fmtP(ibnr)}</td>
     <td>${fmt(hospInc)}</td>
-    <td>${editable?`<input class="editable-input" value="${hospLim}" style="min-width:80px" onchange="${limField}['${period}']=Number(this.value);renderAll()" onclick="this.select()">`:fmt(hospLim)}</td>
+    <td>${editable?`<input class="editable-input" value="${hospLim}" style="min-width:80px" onchange="${limF}['${period}']=Number(this.value);renderAll()" onclick="this.select()">`:fmt(hospLim)}</td>
     <td class="${lrC}">${fmtP(lr)}</td><td class="${pC(uw)}">${fmt(uw)}</td></tr>`;
   };
   document.getElementById('body-lr-monthly').innerHTML=MONTHS.map(m=>row(m,v(D.earnedExclM,m),v(D.earnedInclM,m),v(D.approvedM,m),v(D.osM,m),v(M.ibnr,m),v(D.hospOPD,m),v(M.hospLimitDed,m),true,'M.ibnr','M.hospLimitDed')).join('');
@@ -550,8 +533,7 @@ function renderOps(){
 
   document.getElementById('body-claims-combined').innerHTML=MONTHS.map(m=>{
     const r=D.riCL[m]||{};
-    const act=r.total_actioned||0,req=r.requested_amount||0,app=r.approved_amount||0;
-    const cost=M.claimsBaseCost[m]||0;
+    const act=r.total_actioned||0,req=r.requested_amount||0,app=r.approved_amount||0,cost=M.claimsBaseCost[m]||0;
     return`<tr><td>${m}</td><td>${fmtN(act)}</td><td>${fmt(req)}</td><td>${fmt(app)}</td>
     <td><input class="editable-input" value="${cost}" style="min-width:90px" onchange="M.claimsBaseCost['${m}']=Number(this.value);renderOps()" onclick="this.select()"></td>
     <td>${fmt(act>0?cost/act:0)}</td></tr>`;
@@ -581,19 +563,12 @@ function renderRI(){
 
 function renderInternalisation(){
   document.getElementById('body-internalisation').innerHTML=D.internalisation.map(r=>`<tr>
-    <td>${r['Data as of']||'—'}</td>
-    <td>${fmtN(r['Total lives'])}</td>
-    <td>${fmtN(r['Downloaded'])}</td>
-    <td>${fmtN(r['BLR lives'])}</td>
-    <td>${fmtN(r['10km hospital lives'])}</td>
-    <td>${fmtN(r['Volume (CL+RI)'])}</td>
-    <td>${fmt(r['Amount (CL+RI)'])}</td>
-    <td>${fmtN(r['Volume (TC)'])}</td>
-    <td>${fmt(r['Amount (TC)'])}</td>
-    <td>${fmtN(r['Even TC'])}</td>
-    <td>${fmt(r['Even TC Amount'])}</td>
-    <td>${fmtN(r['Non EHRC OPD'])}</td>
-    <td>${fmt(r['Non EHRC OPD Amount'])}</td>
+    <td>${r['Data as of']||'—'}</td><td>${fmtN(r['Total lives'])}</td><td>${fmtN(r['Downloaded'])}</td>
+    <td>${fmtN(r['BLR lives'])}</td><td>${fmtN(r['10km hospital lives'])}</td>
+    <td>${fmtN(r['Volume (CL+RI)'])}</td><td>${fmt(r['Amount (CL+RI)'])}</td>
+    <td>${fmtN(r['Volume (TC)'])}</td><td>${fmt(r['Amount (TC)'])}</td>
+    <td>${fmtN(r['Even TC'])}</td><td>${fmt(r['Even TC Amount'])}</td>
+    <td>${fmtN(r['Non EHRC OPD'])}</td><td>${fmt(r['Non EHRC OPD Amount'])}</td>
   </tr>`).join('');
 }
 
