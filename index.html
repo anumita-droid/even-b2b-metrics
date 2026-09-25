@@ -485,7 +485,7 @@ const MONTHS=['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026',
 const QUARTERS=["Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
 const QM={"Q1'25":[],"Q2'25":[],"Q3'25":[],"Q4'25":[],"Q1'26":['Jan 2026','Feb 2026','Mar 2026'],"Q2'26":['Apr 2026','May 2026','Jun 2026'],"Q3'26":['Jul 2026','Aug 2026','Sep 2026']};
 
-const D={earnedExclM:{},earnedInclM:{},earnedExclQ:{},earnedInclQ:{},approvedM:{},osM:{},netCommM:{},approvedQ:{},osQ:{},netCommQ:{},hospOPD:{},hospIPD:{},riCL:{},cashless:{},riIncl:{},riExcl:{},internalisation:[]};
+const D={earnedExclM:{},earnedInclM:{},earnedExclQ:{},earnedInclQ:{},approvedM:{},osM:{},netCommM:{},approvedQ:{},osQ:{},netCommQ:{},hospOPD:{},hospIPD:{},riCL:{},cashless:{},riIncl:{},riExcl:{},internalisation:[],tallyTopupM:{},tallyTopupQ:{}};
 
 const M={
   servicingFees:{'Jan 2026':130000,'Feb 2026':130000,'Mar 2026':130000,'Apr 2026':160000,'May 2026':160000,'Jun 2026':160000,'Jul 2026':160000,'Aug 2026':160000,'Sep 2026':160000},
@@ -757,6 +757,8 @@ async function loadAll(){
 
     // loss ratios
     ft('approved_monthly').forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.approvedM[k]=r['Sum of approved_amount']||0;});
+    ft('tally_topup_monthly').forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.tallyTopupM[k]=r['tally_topup_amount']||0;});
+    ft('tally_topup_quarterly').forEach(r=>{const k=r['quarter'];if(k)D.tallyTopupQ[k]=r['tally_topup_amount']||0;});
     ft('os_monthly').forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.osM[k]=r['Sum of requested_amount']||0;});
     ft('network_comm_monthly').forEach(r=>{const k=toMK(r['visit_time: Month']);if(k)D.netCommM[k]=r['Sum of approved_amount']||0;});
     ft('approved_quarterly').forEach(r=>{const k=toQK(r['visit_time: Quarter']);if(k)D.approvedQ[k]=r['Sum of approved_amount']||0;});
@@ -815,7 +817,7 @@ function renderAll(){renderSummary();renderLR();renderOps();renderInternalisatio
 // ── SUMMARY ──
 function calcRow(m,me,np,ip){
   const gwp=v(D.earnedExclM,m),gwpI=v(D.earnedInclM,m),epNet=gwpI*me;
-  const app=v(D.approvedM,m),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,hosp=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
+  const app=v(D.approvedM,m)+(v(D.tallyTopupM,m)||0),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,hosp=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
   const lr=epNet>0?((app+os)*(1+ibnr)+hosp-hl)/epNet:0;
   const uw=(1-lr)*gwp,sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(np/0.125),opd=hosp,ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
   const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
@@ -858,7 +860,7 @@ function renderSummary(){
   let TQ={epE:0,epI:0,epN:0,app:0,os:0,uw:0,sf:0,nc:0,opd:0,ipd:0,cb:0,pnl:0};
   document.getElementById('b-sum-q').innerHTML=QUARTERS.map(q=>{
     const epE=v(D.earnedExclQ,q),epI=v(D.earnedInclQ,q),epNet=epI*me;
-    const app=v(D.approvedQ,q),os=v(D.osQ,q),ibnr=v(M.ibnrQ,q)/100,hl=v(M.hospLimitDedQ,q);
+    const app=v(D.approvedQ,q)+(v(D.tallyTopupQ,q)||0),os=v(D.osQ,q),ibnr=v(M.ibnrQ,q)/100,hl=v(M.hospLimitDedQ,q);
     const lr=epNet>0?((app+os)*(1+ibnr)-hl)/epNet:0;
     const uw=(1-lr)*epE,sf=v(M.sfQ,q),nc=v(D.netCommQ,q)*(np/0.125),cb=v(M.costBaseQ,q);
     const ms=QM[q]||[];
@@ -878,7 +880,7 @@ function renderLR(){
   const me=parseFloat(document.getElementById('meFactor').value)||0.94;
   const filteredM=filterMonths('mf-lr');
   const ytdEP=MONTHS.reduce((s,m)=>s+v(D.earnedExclM,m),0);
-  const ytdApp=MONTHS.reduce((s,m)=>s+v(D.approvedM,m),0);
+  const ytdApp=MONTHS.reduce((s,m)=>s+v(D.approvedM,m)+(v(D.tallyTopupM,m)||0),0);
   const ytdOS=MONTHS.reduce((s,m)=>s+v(D.osM,m),0);
   const ytdNet=MONTHS.reduce((s,m)=>s+v(D.earnedInclM,m)*me,0);
   const ytdLR=ytdNet>0?(ytdApp+ytdOS)/ytdNet*100:0;
@@ -898,16 +900,16 @@ function renderLR(){
     <td class="${lr>100?'neg':lr>85?'warn':'pos'}">${fmtP(lr,2)}</td><td class="${pC(uw)}">${fmt(uw)}</td></tr>`;
   };
   // Monthly with total
-  const mRows=filteredM.map(m=>rowFn(m,v(D.earnedExclM,m),v(D.earnedInclM,m),v(D.approvedM,m),v(D.osM,m),v(M.ibnr,m),v(D.hospOPD,m),v(M.hospLimitDed,m),true,'M.ibnr','M.hospLimitDed'));
+  const mRows=filteredM.map(m=>rowFn(m,v(D.earnedExclM,m),v(D.earnedInclM,m),v(D.approvedM,m)+(v(D.tallyTopupM,m)||0),v(D.osM,m),v(M.ibnr,m),v(D.hospOPD,m),v(M.hospLimitDed,m),true,'M.ibnr','M.hospLimitDed'));
   if(filteredM.length>1){
-    const tEP=filteredM.reduce((s,m)=>s+v(D.earnedExclM,m),0),tApp=filteredM.reduce((s,m)=>s+v(D.approvedM,m),0),tOS=filteredM.reduce((s,m)=>s+v(D.osM,m),0),tNet=filteredM.reduce((s,m)=>s+v(D.earnedInclM,m)*me,0);
+    const tEP=filteredM.reduce((s,m)=>s+v(D.earnedExclM,m),0),tApp=filteredM.reduce((s,m)=>s+v(D.approvedM,m)+(v(D.tallyTopupM,m)||0),0),tOS=filteredM.reduce((s,m)=>s+v(D.osM,m),0),tNet=filteredM.reduce((s,m)=>s+v(D.earnedInclM,m)*me,0);
     const tLR=tNet>0?(tApp+tOS)/tNet*100:0,tUW=(1-tLR/100)*tEP;
     mRows.push(`<tr class="total-row"><td>Total</td><td>${fmt(tEP)}</td><td>—</td><td>${fmt(tNet)}</td><td>${fmt(tApp)}</td><td>${fmt(tOS)}</td><td>${fmt(tApp+tOS)}</td><td>—</td><td>—</td><td>—</td><td class="${tLR>100?'neg':tLR>85?'warn':'pos'}">${fmtP(tLR,1)}</td><td class="${pC(tUW)}">${fmt(tUW)}</td></tr>`);
   }
   document.getElementById('b-lr-m').innerHTML=mRows.join('');
   // Quarterly with total
-  const qRows=QUARTERS.map(q=>rowFn(q,v(D.earnedExclQ,q),v(D.earnedInclQ,q),v(D.approvedQ,q),v(D.osQ,q),v(M.ibnrQ,q),0,v(M.hospLimitDedQ,q),false,'',''));
-  const tEPQ=QUARTERS.reduce((s,q)=>s+v(D.earnedExclQ,q),0),tAppQ=QUARTERS.reduce((s,q)=>s+v(D.approvedQ,q),0),tOSQ=QUARTERS.reduce((s,q)=>s+v(D.osQ,q),0),tNetQ=QUARTERS.reduce((s,q)=>s+v(D.earnedInclQ,q)*me,0);
+  const qRows=QUARTERS.map(q=>rowFn(q,v(D.earnedExclQ,q),v(D.earnedInclQ,q),v(D.approvedQ,q)+(v(D.tallyTopupQ,q)||0),v(D.osQ,q),v(M.ibnrQ,q),0,v(M.hospLimitDedQ,q),false,'',''));
+  const tEPQ=QUARTERS.reduce((s,q)=>s+v(D.earnedExclQ,q),0),tAppQ=QUARTERS.reduce((s,q)=>s+v(D.approvedQ,q)+(v(D.tallyTopupQ,q)||0),0),tOSQ=QUARTERS.reduce((s,q)=>s+v(D.osQ,q),0),tNetQ=QUARTERS.reduce((s,q)=>s+v(D.earnedInclQ,q)*me,0);
   const tLRQ=tNetQ>0?(tAppQ+tOSQ)/tNetQ*100:0,tUWQ=(1-tLRQ/100)*tEPQ;
   qRows.push(`<tr class="total-row"><td>Total</td><td>${fmt(tEPQ)}</td><td>—</td><td>${fmt(tNetQ)}</td><td>${fmt(tAppQ)}</td><td>${fmt(tOSQ)}</td><td>${fmt(tAppQ+tOSQ)}</td><td>—</td><td>—</td><td>—</td><td class="${tLRQ>100?'neg':tLRQ>85?'warn':'pos'}">${fmtP(tLRQ,1)}</td><td class="${pC(tUWQ)}">${fmt(tUWQ)}</td></tr>`);
   document.getElementById('b-lr-q').innerHTML=qRows.join('');
