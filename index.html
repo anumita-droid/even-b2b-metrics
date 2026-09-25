@@ -588,19 +588,10 @@ const ef=(val,onChange,style='')=>`<input class="ef" value="${fmtEf(val)}" reado
 function toMK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`${x.toLocaleString('en-US',{month:'short'})} ${x.getFullYear()}`}
 function toQK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`Q${Math.floor(x.getMonth()/3)+1}'${String(x.getFullYear()).slice(2)}`}
 
-// ── JSONP ──
-let _id=0;
-function fetchAS(params){
-  return new Promise((res,rej)=>{
-    const cb='__cb'+(++_id);
-    const t=setTimeout(()=>{delete window[cb];rej(new Error('Timeout'))},45000);
-    window[cb]=(data)=>{clearTimeout(t);delete window[cb];res(String(data||''))};
-    const s=document.createElement('script');
-    s.src=AS+'?'+params+'&callback='+cb+'&_t='+Date.now();
-    s.onerror=()=>{clearTimeout(t);delete window[cb];rej(new Error('Load failed'))};
-    document.head.appendChild(s);
-  });
-}
+// ── DATA FETCH ──
+const DATA_URL='https://raw.githubusercontent.com/anumita-droid/even-b2b-metrics/main/data.json';
+const AS_FALLBACK='https://script.google.com/a/macros/even.in/s/AKfycbyavB34D873t5rCtudHoja93bwpi8XfD_IXVjsQPAPHPNOLBgcIbPIbouqJJiF-yQNqfw/exec';
+
 function parseCSV(text){
   const lines=String(text||'').trim().split(/\r?\n/);
   if(lines.length<2)return[];
@@ -609,16 +600,39 @@ function parseCSV(text){
   return lines.slice(1).map(line=>{const vals=pl(line);const row={};h.forEach((k,i)=>{let val=(vals[i]||'').replace(/^"|"$/g,'').trim();row[k]=(!isNaN(val)&&val!=='')?Number(val):val;});return row;}).filter(r=>Object.values(r).some(x=>x!==''&&x!==null));
 }
 
+// JSONP fallback for Apps Script
+let _id=0;
+function fetchAS(params){
+  return new Promise((res,rej)=>{
+    const cb='__cb'+(++_id);
+    const t=setTimeout(()=>{delete window[cb];rej(new Error('Timeout'))},45000);
+    window[cb]=(data)=>{clearTimeout(t);delete window[cb];res(String(data||''))};
+    const s=document.createElement('script');
+    s.src=AS_FALLBACK+'?'+params+'&callback='+cb+'&_t='+Date.now();
+    s.onerror=()=>{clearTimeout(t);delete window[cb];rej(new Error('Load failed'))};
+    document.head.appendChild(s);
+  });
+}
+
 // ── LOAD ──
 const setStep=s=>document.getElementById('ovStep').textContent=s;
 async function loadAll(){
   document.getElementById('overlay').classList.remove('hidden');
   document.getElementById('errBanner').style.display='none';
   renderAll();
-  setStep('Loading all data...');
+  setStep('Loading...');
   try {
-    const raw = await fetchAS('all=1');
-    const all = JSON.parse(raw);
+    // Try GitHub CDN first (instant), fallback to Apps Script
+    let all;
+    try {
+      const res = await fetch(DATA_URL+'?_t='+Date.now());
+      if(!res.ok) throw new Error('GitHub fetch failed');
+      all = await res.json();
+    } catch(e) {
+      setStep('Falling back to Apps Script...');
+      const raw = await fetchAS('all=1');
+      all = JSON.parse(raw);
+    }
     const ft = (tab) => parseCSV(all[tab]||'');
 
     // earned premium
