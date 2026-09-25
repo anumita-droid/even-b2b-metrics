@@ -93,14 +93,13 @@ tbody tr.total-row td:first-child{color:var(--text2)}
 .pos{color:var(--accent2)}.neg{color:var(--danger)}.warn{color:var(--warn)}
 
 /* EDITABLE */
-.ef{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:12px;text-align:right;width:100%;padding:0;}
-.ef:focus{outline:none;border-bottom:1.5px solid var(--accent2);background:rgba(14,168,116,.06);border-radius:3px 3px 0 0;padding:1px 4px}
-.edit-mode-body .ef{border-bottom:1.5px dashed var(--border2);cursor:text;}
+.ef{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:12px;text-align:right;width:100%;padding:0;pointer-events:none;}
+.ef:focus{outline:none;}
+body.edit-mode-body .ef{pointer-events:all;border-bottom:1.5px dashed var(--border2);cursor:text;}
+body.edit-mode-body .ef:focus{border-bottom:1.5px solid var(--accent2);background:rgba(14,168,116,.06);}
 .eh{display:none;font-size:8px;color:var(--accent2);margin-left:3px;font-family:var(--sans)}
-.edit-mode-body .eh{display:inline}
-/* Block editing when not in edit mode */
-.ef-wrap{position:relative;display:inline-block;width:100%}
-body:not(.edit-mode-body) .ef-wrap::after{content:'';position:absolute;inset:0;cursor:default;}
+body.edit-mode-body .eh{display:inline}
+.ef-wrap{display:inline-block;width:100%}
 
 /* PARAMS */
 .params{display:none;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:10px 16px;background:rgba(59,111,232,.04);border:1.5px solid rgba(59,111,232,.15);border-radius:var(--r);align-items:center}
@@ -617,8 +616,13 @@ function toggleEdit(){
   document.body.classList.toggle('edit-mode-body',editMode);
   document.getElementById('editPill').classList.toggle('active',editMode);
   document.getElementById('editLabel').textContent=editMode?'Done':'Edit';
+  // Directly set pointer-events and readonly on every ef input
+  document.querySelectorAll('.ef').forEach(el=>{
+    el.style.pointerEvents=editMode?'all':'none';
+    el.readOnly=!editMode;
+  });
   const nb=document.getElementById('nb-notes');
-  if(nb) nb.style.pointerEvents=editMode?'auto':'none';
+  if(nb){nb.style.pointerEvents=editMode?'auto':'none';nb.readOnly=!editMode;}
 }
 
 // ── UTILS ──
@@ -631,7 +635,7 @@ const fmtEf=(val)=>{if(typeof val==='number')return Number(val).toLocaleString('
 const ef=(val,fn,style='')=>{
   const v2=String(fmtEf(val)).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
   const handler=typeof fn==='string'?fn.replace(/this\.value/g,'this.value'):'';
-  return `<div class="ef-wrap"><input class="ef" value="${v2}" style="${style}" onchange="${handler}"></div>`;
+  return `<input class="ef" value="${v2}" style="${style}" onchange="${handler}">`;
 };
 const efTxt=(val,fn,style='')=>ef(val,fn,'text-align:left;font-family:var(--sans);'+style);
 const parseNum=(v)=>parseFloat(String(v).replace(/,/g,''))||0;
@@ -741,7 +745,13 @@ function setSV(w,btn){sv=w;btn.parentElement.querySelectorAll('.tgl-btn').forEac
 function setLRV(w,btn){lrv=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('lrv-monthly').style.display=w==='monthly'?'block':'none';document.getElementById('lrv-quarterly').style.display=w==='quarterly'?'block':'none';renderLR();}
 function setRI(w,btn){riV=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRI();}
 
-function renderAll(){renderSummary();renderLR();renderOps();renderInternalisation();renderHR();renderPipeline();renderReceivables();}
+function applyEditState(){
+  document.querySelectorAll('.ef').forEach(el=>{
+    el.style.pointerEvents=editMode?'all':'none';
+    el.readOnly=!editMode;
+  });
+}
+function renderAll(){renderSummary();renderLR();renderOps();renderInternalisation();renderHR();renderPipeline();renderReceivables();applyEditState();}
 
 // ── SUMMARY ──
 function calcRow(m,me,np,ip){
