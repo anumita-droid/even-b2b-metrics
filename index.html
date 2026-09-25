@@ -320,13 +320,13 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
 <!-- ══════════ NEW BUSINESS ══════════ -->
 <div class="tab-pane" id="pane-pipeline">
   <div class="ph"><div class="ph-title">New Business & Renewals</div></div>
+  <div class="kpis" id="kpi-pipeline"></div>
   <div class="sdiv"><div class="sdiv-t">New Business Closures</div><div class="sdiv-l"></div></div>
   <div class="tw"><table>
     <thead><tr>
-      <th>Period</th>
-      <th>New Policies<span class="eh">✎</span></th>
-      <th>Premium Closed<span class="eh">✎</span></th>
-      <th>Lives Added<span class="eh">✎</span></th>
+      <th>Renewal Month</th>
+      <th># New Policies<span class="eh">✎</span></th>
+      <th>New Business GWP<span class="eh">✎</span></th>
       <th>Avg Deal Size</th>
     </tr></thead>
     <tbody id="b-newbiz"></tbody>
@@ -334,12 +334,13 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
   <div class="sdiv"><div class="sdiv-t">Renewals</div><div class="sdiv-l"></div></div>
   <div class="tw"><table>
     <thead><tr>
-      <th>Period</th>
-      <th>Due<span class="eh">✎</span></th>
-      <th>Renewed<span class="eh">✎</span></th>
-      <th>Churned<span class="eh">✎</span></th>
-      <th>Renewal Rate</th>
-      <th>Premium Retained<span class="eh">✎</span></th>
+      <th>Renewal Month</th>
+      <th># Up for Renewal<span class="eh">✎</span></th>
+      <th>GWP for Renewal<span class="eh">✎</span></th>
+      <th># Renewed<span class="eh">✎</span></th>
+      <th>Renewal GWP<span class="eh">✎</span></th>
+      <th>Account Retention</th>
+      <th>Revenue Retention</th>
     </tr></thead>
     <tbody id="b-ren"></tbody>
   </table></div>
@@ -348,15 +349,14 @@ tbody tr.total-row td{font-weight:700;color:var(--text);background:var(--surface
 <!-- ══════════ RECEIVABLES ══════════ -->
 <div class="tab-pane" id="pane-receivables">
   <div class="ph"><div class="ph-title">Receivables</div></div>
+  <div class="kpis" id="kpi-rec"></div>
   <div class="tw"><table>
     <thead><tr>
       <th>Period</th>
-      <th>Total Billed<span class="eh">✎</span></th>
-      <th>Collected<span class="eh">✎</span></th>
-      <th>Outstanding<span class="eh">✎</span></th>
-      <th>0–30 Days<span class="eh">✎</span></th>
-      <th>31–60 Days<span class="eh">✎</span></th>
-      <th>60+ Days<span class="eh">✎</span></th>
+      <th>Premium Booked<span class="eh">✎</span></th>
+      <th>Total Due<span class="eh">✎</span></th>
+      <th>Received<span class="eh">✎</span></th>
+      <th>Pending</th>
       <th>Collection %</th>
     </tr></thead>
     <tbody id="b-rec"></tbody>
@@ -391,9 +391,43 @@ const M={
   tat:{'Jan 2026':'2.06d','Feb 2026':'2.16d','Mar 2026':'2.93d','Apr 2026':'4.6d','May 2026':'7.85d','Jun 2026':'6.45d','Jul 2026':'3.5d','Aug 2026':'2.9d','Sep 2026':'—'},
   hrHeadcount:{'Sales':{'Jan 2026':4,'Apr 2026':5,'Jul 2026':6,'Sep 2026':6},'Claims':{'Jan 2026':6,'Apr 2026':9,'Jul 2026':14,'Sep 2026':14},'Post Sales':{'Jan 2026':8,'Apr 2026':12,'Jul 2026':17,'Sep 2026':17},'Tech':{'Jan 2026':10,'Apr 2026':11,'Jul 2026':12,'Sep 2026':12},'Ops/Finance':{'Jan 2026':4,'Apr 2026':5,'Jul 2026':5,'Sep 2026':5},'Leadership':{'Jan 2026':4,'Apr 2026':4,'Jul 2026':4,'Sep 2026':4}},
   hrCost:{'Jan 2026':2113674,'Feb 2026':2230166,'Mar 2026':2319472,'Apr 2026':2637532,'May 2026':3143645,'Jun 2026':3505219,'Jul 2026':3935594,'Aug 2026':3935594,'Sep 2026':3990917},
-  newBiz:Object.fromEntries(MONTHS.map(m=>[m,{policies:0,premium:0,lives:0}])),
-  renewals:Object.fromEntries(MONTHS.map(m=>[m,{due:0,renewed:0,churned:0,retained:0}])),
-  receivables:Object.fromEntries(MONTHS.map(m=>[m,{billed:0,collected:0,outstanding:0,d030:0,d3160:0,d60p:0}]))
+  // New Business & Renewals — from working sheet "New business and renewals" tab
+  // Renewal Month = when policy renews (e.g. Jan-2027 = written in Jan 2026)
+  newBiz:{
+    'Jan 2026':{policies:10,premium:2951424},
+    'Feb 2026':{policies:9,premium:3120787},
+    'Mar 2026':{policies:29,premium:33258090},
+    'Apr 2026':{policies:15,premium:61765918},
+    'May 2026':{policies:12,premium:5005650},
+    'Jun 2026':{policies:5,premium:3425998},
+    'Jul 2026':{policies:0,premium:0},
+    'Aug 2026':{policies:0,premium:0},
+    'Sep 2026':{policies:0,premium:0},
+  },
+  renewals:{
+    'Jan 2026':{due:10,renewed:10,gwpDue:3195622,gwpRenewed:3427390,retention:100},
+    'Feb 2026':{due:9,renewed:8,gwpDue:3252231,gwpRenewed:5555144,retention:88.89},
+    'Mar 2026':{due:17,renewed:14,gwpDue:9584910,gwpRenewed:11359468,retention:82.35},
+    'Apr 2026':{due:5,renewed:2,gwpDue:670022,gwpRenewed:913202,retention:40},
+    'May 2026':{due:2,renewed:2,gwpDue:344101,gwpRenewed:318305,retention:100},
+    'Jun 2026':{due:11,renewed:9,gwpDue:3659296,gwpRenewed:4669030,retention:81.82},
+    'Jul 2026':{due:0,renewed:0,gwpDue:0,gwpRenewed:0,retention:0},
+    'Aug 2026':{due:0,renewed:0,gwpDue:0,gwpRenewed:0,retention:0},
+    'Sep 2026':{due:0,renewed:0,gwpDue:0,gwpRenewed:0,retention:0},
+  },
+  // Receivables — from working sheet "Receivables" tab, summed across insurers per month
+  // ABHI + Zuno + Magma + Paz + Healthysure + Direct Accounts
+  receivables:{
+    'Jan 2026':{booked:3270554,due:3270554,received:1503952,pending:3270554},
+    'Feb 2026':{booked:6780375,due:6270554,received:6780375,pending:3270554},
+    'Mar 2026':{booked:5595894,due:11145208,received:1595872,pending:11145208},
+    'Apr 2026':{booked:1886166,due:13031374,received:1886166,pending:13031374},
+    'May 2026':{booked:0,due:13031374,received:0,pending:13031374},
+    'Jun 2026':{booked:187477291,due:187477291,received:0,pending:187477291},
+    'Jul 2026':{booked:0,due:0,received:0,pending:0},
+    'Aug 2026':{booked:0,due:0,received:0,pending:0},
+    'Sep 2026':{booked:0,due:0,received:0,pending:0},
+  }
 };
 
 let sv='monthly',lrv='monthly',riV='incl',editMode=false;
@@ -665,39 +699,60 @@ function renderHR(){
 
 // ── PIPELINE ──
 function renderPipeline(){
+  const totalPolicies=MONTHS.reduce((s,m)=>s+(M.newBiz[m]?.policies||0),0);
+  const totalPremium=MONTHS.reduce((s,m)=>s+(M.newBiz[m]?.premium||0),0);
+  const totalDue=MONTHS.reduce((s,m)=>s+(M.renewals[m]?.due||0),0);
+  const totalRenewed=MONTHS.reduce((s,m)=>s+(M.renewals[m]?.renewed||0),0);
+  const avgRetention=totalDue>0?totalRenewed/totalDue*100:0;
+  const totalGWPRenewed=MONTHS.reduce((s,m)=>s+(M.renewals[m]?.gwpRenewed||0),0);
+  document.getElementById('kpi-pipeline').innerHTML=`
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">New Policies (YTD)</div><div class="kpi-val">${fmtN(totalPolicies)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">New Business GWP (YTD)</div><div class="kpi-val">${fmt(totalPremium)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:${avgRetention>=80?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Account Retention (YTD)</div><div class="kpi-val ${avgRetention>=80?'pos':'neg'}">${fmtP(avgRetention,1)}</div><div class="kpi-sub">${totalRenewed}/${totalDue} accounts</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Renewal GWP (YTD)</div><div class="kpi-val">${fmt(totalGWPRenewed)}</div></div>
+  `;
   document.getElementById('b-newbiz').innerHTML=MONTHS.map(m=>{
-    const d=M.newBiz[m]||{},pol=d.policies||0,prem=d.premium||0,lives=d.lives||0;
+    const d=M.newBiz[m]||{},pol=d.policies||0,prem=d.premium||0;
     return`<tr><td>${m}</td>
     <td>${ef(pol,`M.newBiz['${m}'].policies=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
-    <td>${ef(prem,`M.newBiz['${m}'].premium=Number(this.value);renderPipeline()`,'min-width:75px')}</td>
-    <td>${ef(lives,`M.newBiz['${m}'].lives=Number(this.value);renderPipeline()`,'min-width:55px')}</td>
+    <td>${ef(prem,`M.newBiz['${m}'].premium=Number(this.value);renderPipeline()`,'min-width:90px')}</td>
     <td>${fmt(pol>0?prem/pol:0)}</td></tr>`;
   }).join('');
   document.getElementById('b-ren').innerHTML=MONTHS.map(m=>{
-    const d=M.renewals[m]||{},due=d.due||0,ren=d.renewed||0,ch=d.churned||0,ret=d.retained||0;
-    const rate=due>0?ren/due*100:0;
+    const d=M.renewals[m]||{},due=d.due||0,ren=d.renewed||0,gDue=d.gwpDue||0,gRen=d.gwpRenewed||0;
+    const acct=due>0?ren/due*100:0;
+    const rev=gDue>0?gRen/gDue*100:0;
     return`<tr><td>${m}</td>
     <td>${ef(due,`M.renewals['${m}'].due=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
+    <td>${ef(gDue,`M.renewals['${m}'].gwpDue=Number(this.value);renderPipeline()`,'min-width:90px')}</td>
     <td>${ef(ren,`M.renewals['${m}'].renewed=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
-    <td>${ef(ch,`M.renewals['${m}'].churned=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
-    <td class="${rate>=90?'pos':rate>=70?'':'neg'}">${fmtP(rate,1)}</td>
-    <td>${ef(ret,`M.renewals['${m}'].retained=Number(this.value);renderPipeline()`,'min-width:75px')}</td></tr>`;
+    <td>${ef(gRen,`M.renewals['${m}'].gwpRenewed=Number(this.value);renderPipeline()`,'min-width:90px')}</td>
+    <td class="${acct>=80?'pos':acct>0?'warn':'neg'}">${due>0?fmtP(acct,1):'—'}</td>
+    <td class="${rev>=100?'pos':rev>0?'warn':'neg'}">${gDue>0?fmtP(rev,1)+'%':'—'}</td></tr>`;
   }).join('');
 }
 
 // ── RECEIVABLES ──
 function renderReceivables(){
+  const totalDue=MONTHS.reduce((s,m)=>s+(M.receivables[m]?.due||0),0);
+  const totalRec=MONTHS.reduce((s,m)=>s+(M.receivables[m]?.received||0),0);
+  const totalPending=MONTHS.reduce((s,m)=>s+(M.receivables[m]?.pending||0),0);
+  const collPct=totalDue>0?totalRec/totalDue*100:0;
+  document.getElementById('kpi-rec').innerHTML=`
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Total Due</div><div class="kpi-val">${fmt(totalDue)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Total Received</div><div class="kpi-val pos">${fmt(totalRec)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Total Pending</div><div class="kpi-val neg">${fmt(totalPending)}</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:${collPct>=80?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Collection %</div><div class="kpi-val ${collPct>=80?'pos':'neg'}">${fmtP(collPct,1)}</div></div>
+  `;
   document.getElementById('b-rec').innerHTML=MONTHS.map(m=>{
-    const d=M.receivables[m]||{},b=d.billed||0,c=d.collected||0,o=d.outstanding||0,d0=d.d030||0,d3=d.d3160||0,d6=d.d60p||0;
-    const cp=b>0?c/b*100:0;
+    const d=M.receivables[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=d.pending||0;
+    const cp=due>0?rec/due*100:0;
     return`<tr><td>${m}</td>
-    <td>${ef(b,`M.receivables['${m}'].billed=Number(this.value);renderReceivables()`,'min-width:75px')}</td>
-    <td>${ef(c,`M.receivables['${m}'].collected=Number(this.value);renderReceivables()`,'min-width:75px')}</td>
-    <td>${ef(o,`M.receivables['${m}'].outstanding=Number(this.value);renderReceivables()`,'min-width:75px')}</td>
-    <td>${ef(d0,`M.receivables['${m}'].d030=Number(this.value);renderReceivables()`,'min-width:75px')}</td>
-    <td>${ef(d3,`M.receivables['${m}'].d3160=Number(this.value);renderReceivables()`,'min-width:75px')}</td>
-    <td>${ef(d6,`M.receivables['${m}'].d60p=Number(this.value);renderReceivables()`,'min-width:75px')}</td>
-    <td class="${cp>=90?'pos':cp>=70?'':'neg'}">${fmtP(cp,1)}</td></tr>`;
+    <td>${ef(bk,`M.receivables['${m}'].booked=Number(this.value);renderReceivables()`,'min-width:90px')}</td>
+    <td>${ef(due,`M.receivables['${m}'].due=Number(this.value);renderReceivables()`,'min-width:90px')}</td>
+    <td>${ef(rec,`M.receivables['${m}'].received=Number(this.value);renderReceivables()`,'min-width:90px')}</td>
+    <td class="neg">${fmt(pen)}</td>
+    <td class="${cp>=90?'pos':cp>=50?'warn':'neg'}">${due>0?fmtP(cp,1):'—'}</td></tr>`;
   }).join('');
 }
 
