@@ -145,11 +145,33 @@ body.edit-mode-body .eh{display:inline}
 .ov-s{font-size:10px;color:var(--text3);font-family:var(--mono)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .err{background:rgba(224,52,43,.06);border:1.5px solid rgba(224,52,43,.2);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--danger);margin-bottom:14px;display:none;font-weight:500}
+/* SAVE BAR */
+.save-bar{display:none;align-items:center;justify-content:space-between;padding:8px 24px;background:#0F172A;border-bottom:1px solid #1E293B;flex-shrink:0;gap:12px}
+.edit-mode-body .save-bar{display:flex}
+.save-bar-left{display:flex;align-items:center;gap:8px}
+.save-dot{width:6px;height:6px;border-radius:50%;background:#F59E0B;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+#saveBarMsg{font-size:11px;color:#94A3B8;font-weight:500}
+.save-bar-right{display:flex;align-items:center;gap:8px}
+.save-btn-cancel{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);border:1.5px solid #334155;background:transparent;color:#94A3B8;transition:all .15s}
+.save-btn-cancel:hover{border-color:#CBD5E1;color:#E2E8F0}
+.save-btn-save{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);border:none;background:#0EA874;color:white;transition:all .15s}
+.save-btn-save:hover{background:#059669}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay"><div class="spin"></div><div class="ov-t">Even B2B</div><div class="ov-s" id="ovStep">Connecting...</div></div>
 <div class="edit-banner">✎ Edit mode — click any underlined field to update</div>
+<div class="save-bar" id="saveBar">
+  <div class="save-bar-left">
+    <div class="save-dot"></div>
+    <span id="saveBarMsg">Unsaved changes</span>
+  </div>
+  <div class="save-bar-right">
+    <button class="save-btn-cancel" onclick="cancelEdit()">↩ Undo & Cancel</button>
+    <button class="save-btn-save" onclick="saveEdit()">✓ Save Changes</button>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="topbar-left">
@@ -611,12 +633,45 @@ function initFilters(){
 function getMF(id){return document.getElementById(id)?.value||'all'}
 function filterMonths(mfId){const f=getMF(mfId);return f==='all'?MONTHS:MONTHS.filter(m=>m===f)}
 
+let _snapshot=null;
+let _dirty=false;
+
+function _markDirty(){
+  if(!editMode)return;
+  _dirty=true;
+  document.getElementById('saveBarMsg').textContent='Unsaved changes';
+  document.querySelector('.save-dot').style.background='#F59E0B';
+}
+
+function saveEdit(){
+  // Snapshot is already up to date (M was mutated in place), just exit edit mode
+  _snapshot=JSON.stringify(M);
+  _dirty=false;
+  document.getElementById('saveBarMsg').textContent='Saved!';
+  document.querySelector('.save-dot').style.background='#0EA874';
+  setTimeout(()=>{ toggleEdit(); },600);
+}
+
+function cancelEdit(){
+  if(_dirty && _snapshot){
+    // Restore M from snapshot
+    const restored=JSON.parse(_snapshot);
+    Object.keys(restored).forEach(k=>{ M[k]=restored[k]; });
+    renderAll();
+  }
+  _dirty=false;
+  toggleEdit();
+}
+
 function toggleEdit(){
+  if(!editMode && !_snapshot) _snapshot=JSON.stringify(M); // take snapshot on first edit
   editMode=!editMode;
   document.body.classList.toggle('edit-mode-body',editMode);
   document.getElementById('editPill').classList.toggle('active',editMode);
-  document.getElementById('editLabel').textContent=editMode?'Done':'Edit';
-  // Directly set pointer-events and readonly on every ef input
+  document.getElementById('editLabel').textContent=editMode?'Editing':'Edit';
+  document.getElementById('saveBarMsg').textContent='Unsaved changes';
+  document.querySelector('.save-dot').style.background='#F59E0B';
+  _dirty=false;
   document.querySelectorAll('.ef').forEach(el=>{
     el.style.pointerEvents=editMode?'all':'none';
     el.readOnly=!editMode;
@@ -749,6 +804,10 @@ function applyEditState(){
   document.querySelectorAll('.ef').forEach(el=>{
     el.style.pointerEvents=editMode?'all':'none';
     el.readOnly=!editMode;
+    if(!el._dirtyBound){
+      el._dirtyBound=true;
+      el.addEventListener('input',_markDirty);
+    }
   });
 }
 function renderAll(){renderSummary();renderLR();renderOps();renderInternalisation();renderHR();renderPipeline();renderReceivables();applyEditState();}
