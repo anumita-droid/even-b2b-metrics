@@ -93,11 +93,11 @@ tbody tr.total-row td:first-child{color:var(--text2)}
 .pos{color:var(--accent2)}.neg{color:var(--danger)}.warn{color:var(--warn)}
 
 /* EDITABLE */
-.ef{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:12px;text-align:right;width:100%;padding:0;cursor:default;pointer-events:none}
-.edit-mode .ef{cursor:text;pointer-events:auto;border-bottom:1.5px dashed var(--border2)}
-.edit-mode .ef:focus{outline:none;border-bottom-color:var(--accent2);background:rgba(14,168,116,.06);border-radius:3px 3px 0 0;padding:1px 4px}
+.ef{background:transparent;border:none;color:var(--text);font-family:var(--mono);font-size:12px;text-align:right;width:100%;padding:0;cursor:default;pointer-events:none;-webkit-user-select:none;user-select:none}
+.edit-mode-body .ef{cursor:text;pointer-events:auto;border-bottom:1.5px dashed var(--border2);-webkit-user-select:text;user-select:text}
+.edit-mode-body .ef:focus{outline:none;border-bottom-color:var(--accent2);background:rgba(14,168,116,.06);border-radius:3px 3px 0 0;padding:1px 4px}
 .eh{display:none;font-size:8px;color:var(--accent2);margin-left:3px;font-family:var(--sans)}
-.edit-mode .eh{display:inline}
+.edit-mode-body .eh{display:inline}
 
 /* PARAMS */
 .params{display:none;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:10px 16px;background:rgba(59,111,232,.04);border:1.5px solid rgba(59,111,232,.15);border-radius:var(--r);align-items:center}
@@ -122,7 +122,7 @@ tbody tr.total-row td:first-child{color:var(--text2)}
 /* NOTE BOX */
 .note-box{background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-bottom:14px}
 .note-box textarea{width:100%;background:transparent;border:none;color:var(--text2);font-family:var(--sans);font-size:12px;resize:none;outline:none;cursor:default;pointer-events:none;min-height:36px}
-.edit-mode .note-box textarea{cursor:text;pointer-events:auto}
+.edit-mode-body .note-box textarea{cursor:text;pointer-events:auto}
 .note-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--warn);margin-bottom:4px}
 
 /* INSURER BADGE */
@@ -614,8 +614,8 @@ function toggleEdit(){
   document.body.classList.toggle('edit-mode-body',editMode);
   document.getElementById('editPill').classList.toggle('active',editMode);
   document.getElementById('editLabel').textContent=editMode?'Done':'Edit';
-  document.querySelectorAll('.ef').forEach(el=>el.readOnly=!editMode);
-  const nb=document.getElementById('nb-notes');if(nb)nb.readOnly=!editMode;
+  const nb=document.getElementById('nb-notes');
+  if(nb) nb.style.pointerEvents=editMode?'auto':'none';
 }
 
 // ── UTILS ──
@@ -625,7 +625,7 @@ const fmtP=(n,dec=1)=>{if(n===null||n===undefined||isNaN(n))return'—';return N
 const pC=(n)=>n>0?'pos':n<0?'neg':'';
 const v=(o,k)=>o?.[k]??0;
 const fmtEf=(val)=>{if(typeof val==='number'&&val!==0)return Number(val).toLocaleString('en-IN');return val||''};
-const ef=(val,onChange,style='')=>`<input class="ef" value="${fmtEf(val)}" readonly style="${style}" onchange="${onChange}" onclick="this.select()">`;
+const ef=(val,onChange,style='')=>`<input class="ef" value="${fmtEf(val)}" style="${style}" onchange="${onChange}" onclick="this.select()">`;
 
 function toMK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`${x.toLocaleString('en-US',{month:'short'})} ${x.getFullYear()}`}
 function toQK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`Q${Math.floor(x.getMonth()/3)+1}'${String(x.getFullYear()).slice(2)}`}
@@ -911,7 +911,7 @@ function renderHR(){
     <td>${ef(cost,`M.costBase['${m}']=Number(this.value.replace(/,/g,''));renderHR();renderSummary()`,'min-width:90px')}</td>
     <td class="${delta>0?'neg':delta<0?'pos':''}">${delta!==null?(delta>0?'+':'')+fmt(delta):'—'}</td>
     <td class="${pct>0?'neg':pct<0?'pos':''}">${pct!==null?fmtP(pct,1):'—'}</td>
-    <td><input class="ef" value="${M.costNotes[m]||''}" readonly style="min-width:180px;text-align:left" onchange="M.costNotes['${m}']=this.value" onclick="this.select()"></td></tr>`;
+    <td><input class="ef" value="${M.costNotes[m]||''}"" style="min-width:180px;text-align:left" onchange="M.costNotes['${m}']=this.value" onclick="this.select()"></td></tr>`;
   }).join('');
 
   // POD tables — editable spend column
@@ -1050,16 +1050,16 @@ function renderPipeline(){
     <td class="${(d.revRet||0)>=100?'pos':(d.revRet||0)>0?'warn':'neg'}">${d.gwpDue>0?(d.revRet||0)+'%':'—'}</td></tr>`;
   }).join('');
   document.getElementById('b-marquee').innerHTML=M.marquee.map((r,i)=>`<tr>
-    <td><input class="ef" value="${r.month}" readonly style="min-width:80px;text-align:left" onchange="M.marquee[${i}].month=this.value;renderPipeline()" onclick="this.select()"></td>
-    <td><input class="ef" value="${r.brands}" readonly style="min-width:300px;text-align:left" onchange="M.marquee[${i}].brands=this.value" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.month}"" style="min-width:80px;text-align:left" onchange="M.marquee[${i}].month=this.value;renderPipeline()" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.brands}"" style="min-width:300px;text-align:left" onchange="M.marquee[${i}].brands=this.value" onclick="this.select()"></td>
   </tr>`).join('');
   document.getElementById('b-churned').innerHTML=M.churned.map((r,i)=>`<tr>
-    <td><input class="ef" value="${r.month}" readonly style="min-width:70px;text-align:left" onchange="M.churned[${i}].month=this.value" onclick="this.select()"></td>
-    <td><input class="ef" value="${r.account}" readonly style="min-width:100px;text-align:left;font-weight:600" onchange="M.churned[${i}].account=this.value" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.month}"" style="min-width:70px;text-align:left" onchange="M.churned[${i}].month=this.value" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.account}"" style="min-width:100px;text-align:left;font-weight:600" onchange="M.churned[${i}].account=this.value" onclick="this.select()"></td>
     <td>${ef(r.premExcl,`M.churned[${i}].premExcl=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:80px')}</td>
     <td>${ef(r.premIncl,`M.churned[${i}].premIncl=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:80px')}</td>
-    <td><input class="ef" value="${r.reason}" readonly style="min-width:250px;text-align:left;color:var(--text2)" onchange="M.churned[${i}].reason=this.value" onclick="this.select()"></td>
-    <td><input class="ef" value="${r.lr}" readonly style="min-width:60px" onchange="M.churned[${i}].lr=this.value" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.reason}"" style="min-width:250px;text-align:left;color:var(--text2)" onchange="M.churned[${i}].reason=this.value" onclick="this.select()"></td>
+    <td><input class="ef" value="${r.lr}"" style="min-width:60px" onchange="M.churned[${i}].lr=this.value" onclick="this.select()"></td>
     <td>${ef(r.total,`M.churned[${i}].total=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:70px')}</td>
   </tr>`).join('');
 }
