@@ -624,8 +624,17 @@ const fmtN=(n)=>{if(!n&&n!==0||n===0)return'—';return Number(n).toLocaleString
 const fmtP=(n,dec=1)=>{if(n===null||n===undefined||isNaN(n))return'—';return Number(n).toFixed(dec)+'%'};
 const pC=(n)=>n>0?'pos':n<0?'neg':'';
 const v=(o,k)=>o?.[k]??0;
-const fmtEf=(val)=>{if(typeof val==='number'&&val!==0)return Number(val).toLocaleString('en-IN');return val||''};
-const ef=(val,onChange,style='')=>`<input class="ef" value="${fmtEf(val)}" style="${style}" onchange="${onChange}" onclick="this.select()">`;
+const fmtEf=(val)=>{if(typeof val==='number')return Number(val).toLocaleString('en-IN');return val||''};
+// Simple editable field: stores handler fn in closure, uses data-id to call it
+const _cbs=[];
+const ef=(val,fn,style='')=>{
+  const idx=_cbs.length;
+  _cbs.push(typeof fn==='function'?fn:(v)=>{try{eval(fn.replace(/this\.value/g,JSON.stringify(v)));}catch(e){console.error(e);}});
+  const escaped=String(fmtEf(val)).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+  return `<input class="ef" value="${escaped}" style="${style}" data-cb="${idx}" onchange="var f=_cbs[+this.dataset.cb];f&&f(this.value)" onclick="this.select()">`;
+};
+const efTxt=(val,fn,style='')=>ef(val,fn,'text-align:left;font-family:var(--sans);'+style);
+const parseNum=(v)=>parseFloat(String(v).replace(/,/g,''))||0;
 
 function toMK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`${x.toLocaleString('en-US',{month:'short'})} ${x.getFullYear()}`}
 function toQK(d){if(!d)return null;const x=new Date(String(d).replace('+05:30',''));if(isNaN(x))return null;return`Q${Math.floor(x.getMonth()/3)+1}'${String(x.getFullYear()).slice(2)}`}
