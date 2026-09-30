@@ -192,7 +192,7 @@ body.edit-mode-body .eh{display:inline}
   <div class="nav-item" onclick="goTab('claims')">Operational</div>
   <div class="nav-item" onclick="goTab('internalisation')">Internalisation</div>
   <div class="nav-item" onclick="goTab('hr')">HR Summary</div>
-  <div class="nav-item" onclick="goTab('pipeline')">New Business</div>
+  <div class="nav-item" onclick="goTab('pipeline')">New Business & Renewals</div>
   <div class="nav-item" onclick="goTab('receivables')">Receivables</div>
 </div>
 
@@ -389,33 +389,39 @@ body.edit-mode-body .eh{display:inline}
   <div class="kpis" id="kpi-pipeline"></div>
   <div class="sub-tabs">
     <div class="sub-tab active" onclick="goSub('nb','new',this)">New Business</div>
-    <div class="sub-tab" onclick="goSub('nb','renewals',this)">Renewals</div>
-    <div class="sub-tab" onclick="goSub('nb','marquee',this)">Marquee Brands</div>
-    <div class="sub-tab" onclick="goSub('nb','churned',this)">Churned Accounts</div>
+    <div class="sub-tab" onclick="goSub('nb','renewals',this)">Renewal</div>
+    <div class="sub-tab" onclick="goSub('nb','retention',this)">Account Retention</div>
+    <div class="sub-tab" onclick="goSub('nb','lost',this)">Lost</div>
   </div>
   <div class="sub-pane active" id="nb-new">
     <div class="note-box"><div class="note-label">📝 Notes</div><textarea id="nb-notes" rows="2">Mar'26 spike: Tally renewal (₹33.25Cr GWP) + several enterprise closures. Apr'26: Godrej (₹61.7Cr) dominates new business.</textarea></div>
     <div class="tw"><table>
-      <thead><tr><th>Renewal Month</th><th># New Policies<span class="eh">✎</span></th><th>New Business GWP<span class="eh">✎</span></th><th>Avg Deal Size</th></tr></thead>
+      <thead><tr><th>Renewal Month</th><th># New Business<span class="eh">✎</span></th><th>New Business GWP<span class="eh">✎</span></th><th>Avg Deal Size</th></tr></thead>
       <tbody id="b-newbiz"></tbody>
     </table></div>
   </div>
   <div class="sub-pane" id="nb-renewals">
     <div class="tw"><table>
-      <thead><tr><th>Renewal Month</th><th># Up for Renewal<span class="eh">✎</span></th><th>GWP for Renewal<span class="eh">✎</span></th><th># Renewed<span class="eh">✎</span></th><th>Renewal GWP<span class="eh">✎</span></th><th>Account Retention</th><th>Revenue Retention</th></tr></thead>
+      <thead><tr><th>Renewal Month</th><th># Up for Renewal<span class="eh">✎</span></th><th>GWP for Renewal<span class="eh">✎</span></th><th># Renewed<span class="eh">✎</span></th><th>Renewal GWP<span class="eh">✎</span></th><th>Revenue Retention</th></tr></thead>
       <tbody id="b-ren"></tbody>
     </table></div>
   </div>
-  <div class="sub-pane" id="nb-marquee">
+  <div class="sub-pane" id="nb-retention">
     <div class="tw"><table>
-      <thead><tr><th>Renewal Month</th><th>Marquee Brands Added</th></tr></thead>
-      <tbody id="b-marquee"></tbody>
+      <thead><tr><th>Renewal Month</th><th># Up for Renewal</th><th># Renewed<span class="eh">✎</span></th><th>Account Retention %</th><th>GWP for Renewal</th><th>Renewal GWP<span class="eh">✎</span></th><th>Revenue Retention %</th></tr></thead>
+      <tbody id="b-retention"></tbody>
     </table></div>
   </div>
-  <div class="sub-pane" id="nb-churned">
+  <div class="sub-pane" id="nb-lost">
+    <div class="sdiv"><div class="sdiv-t">Churned Accounts</div><div class="sdiv-l"></div></div>
     <div class="tw"><table>
       <thead><tr><th>Renewal Month</th><th>Account Lost</th><th>Premium (excl GST)</th><th>Premium (incl GST)</th><th>Reason for Loss</th><th>Loss Ratio</th><th>Total Amount</th></tr></thead>
       <tbody id="b-churned"></tbody>
+    </table></div>
+    <div class="sdiv"><div class="sdiv-t">Marquee Brands Added</div><div class="sdiv-l"></div></div>
+    <div class="tw"><table>
+      <thead><tr><th>Renewal Month</th><th>Marquee Brands Added</th></tr></thead>
+      <tbody id="b-marquee"></tbody>
     </table></div>
   </div>
 </div>
@@ -423,55 +429,61 @@ body.edit-mode-body .eh{display:inline}
 <!-- ══ RECEIVABLES ══ -->
 <div class="tab-pane" id="pane-receivables">
   <div class="ph"><div class="ph-title">Receivables</div></div>
-  <div class="kpis" id="kpi-rec"></div>
   <div class="sub-tabs">
-    <div class="sub-tab active" onclick="goSub('rec','digit',this)"><span class="ins-badge ins-digit">Digit</span></div>
-    <div class="sub-tab" onclick="goSub('rec','abhi',this)"><span class="ins-badge ins-abhi">ABHI</span></div>
-    <div class="sub-tab" onclick="goSub('rec','zuno',this)"><span class="ins-badge ins-zuno">Zuno</span></div>
+    <div class="sub-tab active" onclick="goSub('rec','total',this)">Insurers — Total Outstanding</div>
+    <div class="sub-tab" onclick="goSub('rec','digit',this)">Digit</div>
+    <div class="sub-tab" onclick="goSub('rec','abhi',this)">ABHI</div>
+    <div class="sub-tab" onclick="goSub('rec','zuno',this)">Zuno</div>
     <div class="sub-tab" onclick="goSub('rec','magma',this)">Magma</div>
     <div class="sub-tab" onclick="goSub('rec','paz',this)">Paz</div>
     <div class="sub-tab" onclick="goSub('rec','healthysure',this)">Healthysure</div>
-    <div class="sub-tab" onclick="goSub('rec','direct',this)"><span class="ins-badge ins-direct">Direct</span></div>
+    <div class="sub-tab" onclick="goSub('rec','direct',this)">Direct Accounts (WIP)</div>
   </div>
-  <div class="sub-pane active" id="rec-digit">
+  <div class="sub-pane active" id="rec-total">
     <div class="tw"><table>
-      <thead><tr><th>Particulars</th><th>Amount (incl GST)</th><th>Amount Due</th><th>Amount Received</th><th>Balance</th></tr></thead>
+      <thead><tr><th>Insurer</th><th>Total Booked / Amount</th><th>Total Due</th><th>Total Received</th><th>Pending</th></tr></thead>
+      <tbody id="b-rec-total"></tbody>
+    </table></div>
+  </div>
+  <div class="sub-pane" id="rec-digit">
+    <div class="tw"><table>
+      <thead><tr><th>Particulars</th><th>Amount (incl GST)</th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Balance</th></tr></thead>
       <tbody id="b-rec-digit"></tbody>
     </table></div>
   </div>
   <div class="sub-pane" id="rec-abhi">
     <div class="tw"><table>
-      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <thead><tr><th>Particulars</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
       <tbody id="b-rec-abhi"></tbody>
     </table></div>
   </div>
   <div class="sub-pane" id="rec-zuno">
     <div class="tw"><table>
-      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <thead><tr><th>Particulars</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
       <tbody id="b-rec-zuno"></tbody>
     </table></div>
   </div>
   <div class="sub-pane" id="rec-magma">
     <div class="tw"><table>
-      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <thead><tr><th>Particulars</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
       <tbody id="b-rec-magma"></tbody>
     </table></div>
   </div>
   <div class="sub-pane" id="rec-paz">
     <div class="tw"><table>
-      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <thead><tr><th>Particulars</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
       <tbody id="b-rec-paz"></tbody>
     </table></div>
   </div>
   <div class="sub-pane" id="rec-healthysure">
     <div class="tw"><table>
-      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <thead><tr><th>Particulars</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
       <tbody id="b-rec-healthysure"></tbody>
     </table></div>
   </div>
   <div class="sub-pane" id="rec-direct">
     <div class="tw"><table>
-      <thead><tr><th>Period</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
+      <thead><tr><th>Particulars</th><th>Premium Booked<span class="eh">✎</span></th><th>Amount Due</th><th>Amount Received<span class="eh">✎</span></th><th>Pending</th></tr></thead>
       <tbody id="b-rec-direct"></tbody>
     </table></div>
   </div>
@@ -1129,8 +1141,18 @@ function renderPipeline(){
     <td>${ef(d.gwpDue||0,`M.renewals['${m}'].gwpDue=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
     <td>${ef(d.renewed||0,`M.renewals['${m}'].renewed=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
     <td>${ef(d.gwpRenewed||0,`M.renewals['${m}'].gwpRenewed=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
-    <td class="${(d.acctRet||0)>=80?'pos':(d.acctRet||0)>0?'warn':'neg'}">${d.due>0?fmtP(d.acctRet,2):'—'}</td>
     <td class="${(d.revRet||0)>=100?'pos':(d.revRet||0)>0?'warn':'neg'}">${d.gwpDue>0?(d.revRet||0)+'%':'—'}</td></tr>`;
+  }).join('');
+  document.getElementById('b-retention').innerHTML=fm.map(m=>{
+    const d=M.renewals[m]||{},due=d.due||0,ren=d.renewed||0,gDue=d.gwpDue||0,gRen=d.gwpRenewed||0;
+    const acct=due>0?ren/due*100:0,rev=gDue>0?gRen/gDue*100:0;
+    return`<tr><td>${m}</td>
+    <td>${fmtN(due)||'—'}</td>
+    <td>${ef(ren,`M.renewals['${m}'].renewed=Number(this.value);renderPipeline()`,'min-width:36px')}</td>
+    <td class="${acct>=80?'pos':acct>0?'warn':'neg'}">${due>0?fmtP(acct,2):'—'}</td>
+    <td>${fmt(gDue)||'—'}</td>
+    <td>${ef(gRen,`M.renewals['${m}'].gwpRenewed=Number(this.value.replace(/,/g,''));renderPipeline()`,'min-width:90px')}</td>
+    <td class="${rev>=100?'pos':rev>0?'warn':'neg'}">${gDue>0?fmtP(rev,1):'—'}</td></tr>`;
   }).join('');
   document.getElementById('b-marquee').innerHTML=M.marquee.map((r,i)=>`<tr>
     <td><input class="ef" value="${r.month}"" style="min-width:80px;text-align:left" onchange="M.marquee[${i}].month=this.value;renderPipeline()" onclick="this.select()"></td>
@@ -1149,15 +1171,24 @@ function renderPipeline(){
 
 // ── RECEIVABLES ──
 function renderReceivables(){
-  const allDue=Object.values(M.recABHI).reduce((s,d)=>s+(d.due||0),0)+Object.values(M.recZuno).reduce((s,d)=>s+(d.due||0),0)+M.recDigit.reduce((s,r)=>s+(r.due||0),0)+Object.values(M.recDirect).reduce((s,d)=>s+(d.due||0),0);
-  const allRec=Object.values(M.recABHI).reduce((s,d)=>s+(d.received||0),0)+Object.values(M.recZuno).reduce((s,d)=>s+(d.received||0),0)+M.recDigit.reduce((s,r)=>s+(r.received||0),0)+Object.values(M.recDirect).reduce((s,d)=>s+(d.received||0),0);
-  const collPct=allDue>0?allRec/allDue*100:0;
-  document.getElementById('kpi-rec').innerHTML=`
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Total Due</div><div class="kpi-val">${fmt(allDue)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent2)"></div><div class="kpi-label">Total Received</div><div class="kpi-val pos">${fmt(allRec)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Total Pending</div><div class="kpi-val neg">${fmt(allDue-allRec)}</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--danger)"></div><div class="kpi-label">Collection %</div><div class="kpi-val neg">${fmtP(collPct,1)}</div></div>
-  `;
+  // Per-insurer totals
+  const iTotal=(data)=>{const v=Object.values(data);return{booked:v.reduce((s,d)=>s+(d.booked||0),0),due:v.reduce((s,d)=>s+(d.due||0),0),rec:v.reduce((s,d)=>s+(d.received||0),0)};};
+  const dT={booked:M.recDigit.reduce((s,r)=>s+r.amount,0),due:M.recDigit.reduce((s,r)=>s+r.due,0),rec:M.recDigit.reduce((s,r)=>s+r.received,0)};
+  const aT=iTotal(M.recABHI),zT=iTotal(M.recZuno),mT=iTotal(M.recMagma),pT=iTotal(M.recPaz),hT=iTotal(M.recHealthysure),rT=iTotal(M.recDirect);
+  const insurers=[
+    {name:'Digit',      ...dT,pending:dT.due-dT.rec},
+    {name:'ABHI',       ...aT,pending:aT.due-aT.rec},
+    {name:'Zuno',       ...zT,pending:zT.due-zT.rec},
+    {name:'Magma',      ...mT,pending:mT.due-mT.rec},
+    {name:'Paz',        ...pT,pending:pT.due-pT.rec},
+    {name:'Healthysure',...hT,pending:hT.due-hT.rec},
+    {name:'Direct (WIP)',...rT,pending:rT.due-rT.rec},
+  ];
+  const tB=insurers.reduce((s,i)=>s+i.booked,0),tD=insurers.reduce((s,i)=>s+i.due,0),tR=insurers.reduce((s,i)=>s+i.rec,0),tP=insurers.reduce((s,i)=>s+i.pending,0);
+  document.getElementById('b-rec-total').innerHTML=
+    insurers.map(i=>`<tr><td style="font-weight:600">${i.name}</td><td>${fmt(i.booked)}</td><td>${fmt(i.due)}</td><td class="pos">${fmt(i.rec)}</td><td class="${i.pending>0?'neg':'pos'}">${fmt(i.pending)}</td></tr>`).join('')+
+    `<tr class="total-row"><td>Total</td><td>${fmt(tB)}</td><td>${fmt(tD)}</td><td class="pos">${fmt(tR)}</td><td class="neg">${fmt(tP)}</td></tr>`;
+
   document.getElementById('b-rec-digit').innerHTML=M.recDigit.map((r,i)=>{
     const bal=r.due-r.received;
     return`<tr><td>${ef(r.particulars,`M.recDigit[${i}].particulars=this.value;renderReceivables()`,'min-width:220px;text-align:left')}</td>
@@ -1166,18 +1197,16 @@ function renderReceivables(){
     <td>${ef(r.received,`M.recDigit[${i}].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
     <td class="${bal>0?'neg':'pos'}">${fmt(bal)}</td></tr>`;
   }).join('')+`<tr class="total-row"><td>Total</td>
-    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.amount,0))}</td>
-    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.due,0))}</td>
-    <td>${fmt(M.recDigit.reduce((s,r)=>s+r.received,0))}</td>
-    <td class="neg">${fmt(M.recDigit.reduce((s,r)=>s+(r.due-r.received),0))}</td></tr>`;
+    <td>${fmt(dT.booked)}</td><td>${fmt(dT.due)}</td><td>${fmt(dT.rec)}</td>
+    <td class="neg">${fmt(dT.due-dT.rec)}</td></tr>`;
 
   const monthlyT=(data,key)=>{
     const months=Object.keys(data);
     const rows=months.map(m=>{
       const d=data[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=due-rec;
-      const isOpening=m==='Opening Balance';
-      return`<tr${isOpening?' style="background:rgba(59,111,232,0.04)"':''}><td>${m}</td>
-      <td>${ef(bk,`M.${key}['${m}'].booked=Number(this.value.replace(/,/g,''));M.${key}['${m}'].due=M.${key}['${m}'].booked;renderReceivables()`,'min-width:90px')}</td>
+      const isOp=m==='Opening Balance';
+      return`<tr${isOp?' style="background:rgba(59,111,232,0.04)"':''}><td>${m}</td>
+      <td>${ef(bk,`M.${key}['${m}'].booked=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
       <td>${ef(due,`M.${key}['${m}'].due=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
       <td>${ef(rec,`M.${key}['${m}'].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
       <td class="${pen>0?'neg':'pos'}">${fmt(pen)}</td></tr>`;
