@@ -990,7 +990,7 @@ function calcRow(m,me,np,ip){
   const earned=v(D.earnedExclM,m),earnedI=v(D.earnedInclM,m),epNet=earnedI*me;
   const app=v(D.approvedM,m)+(v(D.tallyTopupM,m)||0),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,hosp=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
   const lr=epNet>0?((app+os)*(1+ibnr)+hosp-hl)/epNet:0;
-  const uw=(1-lr)*gwp,sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(np/0.125),opd=hosp,ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
+  const uw=(1-lr)*earned,sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(np/0.125),opd=hosp,ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
   const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
   return{gwp,gwpI,earned,earnedI,uw,sf,nc,opd,ipd,cb,pnl,lr};
 }
@@ -1034,7 +1034,7 @@ function renderSummary(){
     const epE=v(D.earnedExclQ,q),epI=v(D.earnedInclQ,q),epNet=epI*me;
     const app=v(D.approvedQ,q)+(v(D.tallyTopupQ,q)||0),os=v(D.osQ,q),ibnr=v(M.ibnrQ,q)/100,hl=v(M.hospLimitDedQ,q);
     const lr=epNet>0?((app+os)*(1+ibnr)-hl)/epNet:0;
-    const uw=(1-lr)*gwp,sf=v(M.sfQ,q),nc=v(D.netCommQ,q)*(np/0.125),cb=v(M.costBaseQ,q);
+    const uw=(1-lr)*epE,sf=v(M.sfQ,q),nc=v(D.netCommQ,q)*(np/0.125),cb=v(M.costBaseQ,q);
     const ms=QM[q]||[];
     const opd=ms.reduce((s,m)=>s+v(D.hospOPD,m),0),ipd=ms.reduce((s,m)=>s+v(D.hospIPD,m),0);
     const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
