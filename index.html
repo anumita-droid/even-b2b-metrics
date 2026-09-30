@@ -551,7 +551,7 @@ const M={
     'Jan 2026':{policies:10,premium:2951424},'Feb 2026':{policies:9,premium:3120787},
     'Mar 2026':{policies:29,premium:33258090},'Apr 2026':{policies:15,premium:61765918},
     'May 2026':{policies:12,premium:5005650},'Jun 2026':{policies:5,premium:3425998},
-    'Jul 2026':{policies:0,premium:0},'Aug 2026':{policies:0,premium:0},'Sep 2026':{policies:0,premium:0},
+    'Jul 2026':{policies:5,premium:7764926},'Aug 2026':{policies:9,premium:2187744},'Sep 2026':{policies:0,premium:0},
   },
   renewals:{
     'Jan 2026':{due:10,gwpDue:3195622,renewed:10,gwpRenewed:3427390,acctRet:100,revRet:107},
@@ -560,8 +560,8 @@ const M={
     'Apr 2026':{due:5,gwpDue:670022,renewed:2,gwpRenewed:913202,acctRet:40,revRet:136},
     'May 2026':{due:2,gwpDue:344101,renewed:2,gwpRenewed:318305,acctRet:100,revRet:93},
     'Jun 2026':{due:11,gwpDue:3659296,renewed:9,gwpRenewed:4669030,acctRet:81.82,revRet:128},
-    'Jul 2026':{due:0,gwpDue:0,renewed:0,gwpRenewed:0,acctRet:0,revRet:0},
-    'Aug 2026':{due:0,gwpDue:0,renewed:0,gwpRenewed:0,acctRet:0,revRet:0},
+    'Jul 2026':{due:7,gwpDue:16632876,renewed:6,gwpRenewed:25274859,acctRet:85.71,revRet:152},
+    'Aug 2026':{due:10,gwpDue:2985051,renewed:2,gwpRenewed:806276,acctRet:20,revRet:27},
     'Sep 2026':{due:0,gwpDue:0,renewed:0,gwpRenewed:0,acctRet:0,revRet:0},
   },
   marquee:[
@@ -787,6 +787,11 @@ async function loadAll(){
     // internalisation
     D.internalisation=ft('internalisation');
 
+    // ── WORKING SHEET TABS ──
+    parseNewBusiness(ft('New business and renewals'));
+    parseReceivables(ft('Receivables'));
+    parseHRSummary(ft('HR Summary'));
+
   } catch(e) {
     console.error('Load failed:',e);
     const b=document.getElementById('errBanner');
@@ -816,6 +821,122 @@ function goSub(prefix,name,btn){
 function setSV(w,btn){sv=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('sv-monthly').style.display=w==='monthly'?'block':'none';document.getElementById('sv-quarterly').style.display=w==='quarterly'?'block':'none';renderSummary();}
 function setLRV(w,btn){lrv=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('lrv-monthly').style.display=w==='monthly'?'block':'none';document.getElementById('lrv-quarterly').style.display=w==='quarterly'?'block':'none';renderLR();}
 function setRI(w,btn){riV=w;btn.parentElement.querySelectorAll('.tgl-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRI();}
+
+// ── WORKING SHEET PARSERS ──
+function pN(s){return parseFloat(String(s||'').replace(/[₹,\s%]/g,''))||0;}
+function mKey(s){
+  // Convert "Jan-2027" or "Jan 2027" → "Jan 2026" (renewal month = policy year, same month prev year)
+  // Actually sheet uses renewal month directly as the calendar month
+  s=String(s||'').trim();
+  const m=s.match(/^([A-Za-z]{3})[-\s](\d{4})$/);
+  if(!m)return null;
+  // Sheet says Jan-2027 but means Jan 2026 business (renewal year = next year)
+  // Map: Jan-2027→Jan 2026, Feb-2027→Feb 2026 etc.
+  const mon=m[1],yr=parseInt(m[2])-1;
+  return mon+' '+yr;
+}
+
+function parseNewBusiness(rows){
+  if(!rows||!rows.length)return;
+  rows.forEach(r=>{
+    const k=mKey(r['Renewal Month']);
+    if(!k||!MONTHS.includes(k))return;
+    // New business
+    if(r['# New Business']!==undefined&&r['# New Business']!==''){
+      M.newBiz[k]={policies:pN(r['# New Business']),premium:pN(r['New Business GWP'])};
+    }
+    // Renewals
+    if(r['# Up for Renewal']!==undefined&&r['# Up for Renewal']!==''){
+      M.renewals[k]={
+        due:pN(r['# Up for Renewal']),
+        gwpDue:pN(r['GWP for Renewal']),
+        renewed:pN(r['# Renewed']),
+        gwpRenewed:pN(r['Renewal GWP']),
+        acctRet:pN(r['Account Retention']),
+        revRet:pN(r['Revenue Retention']),
+      };
+    }
+  });
+}
+
+function parseReceivables(rows){
+  if(!rows||!rows.length)return;
+  // Sheet is wide-format: each insurer occupies 5 columns separated by blank columns
+  // Row 0 = blank, Row 1 = insurer names (merged), Row 2 = column headers, Row 3+ = data
+  // Since parseCSV treats row 0 as headers, we get raw rows with numeric keys
+  // Instead re-parse the raw CSV string directly
+
+  // We'll use the known column positions from the sheet:
+  // Digit: cols 1-5 (B-F): Particulars, Amount(incl GST), Amount Due, Amount Received, Balance
+  // ABHI:  cols 7-11 (H-L): Particulars, Premium Booked, Amount Due, Amount Received, Pending
+  // Zuno:  cols 13-17 (N-R)
+  // Magma: cols 19-23 (T-X)
+  // Paz:   cols 25-29 (Z-AD)
+  // Healthysure: cols 31-35 (AF-AJ)
+  // Direct: cols 37-41 (AL-AP)
+  // Col indices (0-based): 1,2,3,4,5 | 7,8,9,10,11 | 13,14,15,16,17 | 19,20,21,22,23 | 25,26,27,28,29 | 31,32,33,34,35 | 37,38,39,40,41
+
+  // rows is already parsed by parseCSV using row 0 as header
+  // The sheet has 3 header rows so actual data starts at row 3 (index 3 in raw, index 0 in parseCSV since row 0=headers)
+  // We need the raw rows — get them from the keys of the first row object
+  // Actually parseCSV already gives us objects. The headers from row 0 are blank/merged cell text.
+  // Let's just use the raw text keys as column indices
+
+  // Get all row objects and pick by column position using Object.values()
+  const getCol=(row,idx)=>Object.values(row)[idx]||'';
+
+  // Filter out header rows (first 2 rows are headers in the sheet, so skip rows where col 1 = 'Particulars' etc)
+  const dataRows=rows.filter(r=>{
+    const first=String(Object.values(r)[1]||'').trim();
+    return first&&first!=='Particulars'&&first!=='[merged] Digit'&&first!=='Digit';
+  });
+
+  if(!dataRows.length)return;
+
+  // Parse Digit (line items)
+  const newDigit=[];
+  dataRows.forEach(r=>{
+    const part=String(getCol(r,1)).trim();
+    if(!part)return;
+    const amt=pN(getCol(r,2)),due=pN(getCol(r,3)),rec=pN(getCol(r,4));
+    if(amt||due||rec) newDigit.push({particulars:part,amount:amt,due:due,received:rec,balance:due-rec});
+  });
+  if(newDigit.length) M.recDigit=newDigit;
+
+  // Helper to parse monthly insurer (cols offset by position)
+  const parseIns=(key,startCol)=>{
+    const result={};
+    dataRows.forEach(r=>{
+      const period=String(getCol(r,startCol)).trim();
+      if(!period)return;
+      const booked=pN(getCol(r,startCol+1));
+      const due=pN(getCol(r,startCol+2));
+      const rec=pN(getCol(r,startCol+3));
+      if(period||booked||due||rec) result[period]={booked,due,received:rec};
+    });
+    if(Object.keys(result).length) M[key]=result;
+  };
+
+  parseIns('recABHI',7);
+  parseIns('recZuno',13);
+  parseIns('recMagma',19);
+  parseIns('recPaz',25);
+  parseIns('recHealthysure',31);
+  parseIns('recDirect',37);
+}
+
+function parseHRSummary(rows){
+  if(!rows||!rows.length)return;
+  // MoM Cost Base: rows where col A looks like "Jan 2026" etc.
+  rows.forEach(r=>{
+    const m=r['Month']||r[''];
+    if(!m||!MONTHS.includes(String(m).trim()))return;
+    const cb=pN(r['Cost Base']||r['Cost Base ']);
+    if(cb>0) M.costBase[String(m).trim()]=cb;
+    const note=String(r['']||r['Notes']||'').trim();
+    if(note) M.costNotes[String(m).trim()]=note;
+  });
+}
 
 function applyEditState(){
   document.querySelectorAll('.ef').forEach(el=>{
