@@ -991,7 +991,8 @@ function calcRow(m,me,np,ip){
   const app=v(D.approvedM,m)+(v(D.tallyTopupM,m)||0),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,hosp=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
   const lr=epNet>0?((app+os)*(1+ibnr)+hosp-hl)/epNet:0;
   const uw=(1-lr)*earned,sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(np/0.125),opd=hosp,ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
-  const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
+  const ipdSplitForMonth = m==='Sep 2026' ? 0.35 : ip;
+  const pnl=uw+sf+nc+opd+(ipd*ipdSplitForMonth)-cb;
   return{gwp,gwpI,earned,earnedI,uw,sf,nc,opd,ipd,cb,pnl,lr};
 }
 
@@ -1037,7 +1038,8 @@ function renderSummary(){
     const uw=(1-lr)*epE,sf=v(M.sfQ,q),nc=v(D.netCommQ,q)*(np/0.125),cb=v(M.costBaseQ,q);
     const ms=QM[q]||[];
     const opd=ms.reduce((s,m)=>s+v(D.hospOPD,m),0),ipd=ms.reduce((s,m)=>s+v(D.hospIPD,m),0);
-    const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
+    const ipdRevenue=ms.reduce((s,m)=>s+v(D.hospIPD,m)*(m==='Sep 2026'?0.35:ip),0);
+    const pnl=uw+sf+nc+opd+ipdRevenue-cb;
     TQ.gwp+=gwp;TQ.gwpI+=gwpI;TQ.uw+=uw;TQ.sf+=sf;TQ.nc+=nc;TQ.opd+=opd;TQ.ipd+=ipd;TQ.cb+=cb;TQ.pnl+=pnl;
     return`<tr><td>${q}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
     <td>${ef(sf,`M.sfQ['${q}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
