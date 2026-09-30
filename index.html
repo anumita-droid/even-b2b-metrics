@@ -597,9 +597,12 @@ const M={
     'May 2026':{booked:0,due:0,received:0},'Jun 2026':{booked:0,due:0,received:0},
   },
   recPaz:{
-    'Jan 2026':{booked:0,due:0,received:0},'Feb 2026':{booked:0,due:0,received:0},
-    'Mar 2026':{booked:0,due:0,received:0},'Apr 2026':{booked:0,due:0,received:0},
-    'May 2026':{booked:0,due:0,received:0},'Jun 2026':{booked:0,due:0,received:0},
+    'Opening Balance':{booked:6688395,due:7455579,received:1393433},
+    'Feb 2026':{booked:0,due:0,received:0},
+    'Mar 2026':{booked:0,due:0,received:1204387},
+    'Apr 2026':{booked:0,due:0,received:463504},
+    'May 2026':{booked:0,due:0,received:0},
+    'Jun 2026':{booked:0,due:0,received:0},
   },
   recHealthysure:{
     'Jan 2026':{booked:0,due:0,received:0},'Feb 2026':{booked:0,due:0,received:0},
@@ -1172,7 +1175,8 @@ function renderReceivables(){
     const months=Object.keys(data);
     const rows=months.map(m=>{
       const d=data[m]||{},bk=d.booked||0,due=d.due||0,rec=d.received||0,pen=due-rec;
-      return`<tr><td>${m}</td>
+      const isOpening=m==='Opening Balance';
+      return`<tr${isOpening?' style="background:rgba(59,111,232,0.04)"':''}><td>${m}</td>
       <td>${ef(bk,`M.${key}['${m}'].booked=Number(this.value.replace(/,/g,''));M.${key}['${m}'].due=M.${key}['${m}'].booked;renderReceivables()`,'min-width:90px')}</td>
       <td>${ef(due,`M.${key}['${m}'].due=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
       <td>${ef(rec,`M.${key}['${m}'].received=Number(this.value.replace(/,/g,''));renderReceivables()`,'min-width:90px')}</td>
