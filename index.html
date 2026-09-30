@@ -761,7 +761,10 @@ async function loadAll(){
     const ft = (tab) => parseCSV(all[tab]||'');
 
     // earned premium
-    ft('earned_premium').forEach(r=>{const m=r.month;if(!m)return;D.earnedExclM[m]=r.earned_excl_gst||0;D.earnedInclM[m]=r.earned_incl_gst||0;});
+    const epRows=ft('earned_premium');
+    console.log('earned_premium rows:', epRows.length, epRows[0]);
+    epRows.forEach(r=>{const m=r.month;if(!m)return;D.earnedExclM[m]=r.earned_excl_gst||0;D.earnedInclM[m]=r.earned_incl_gst||0;});
+    console.log('earnedExclM keys:', Object.keys(D.earnedExclM));
     Object.entries(QM).forEach(([q,ms])=>{D.earnedExclQ[q]=ms.reduce((s,m)=>s+v(D.earnedExclM,m),0);D.earnedInclQ[q]=ms.reduce((s,m)=>s+v(D.earnedInclM,m),0);});
 
     // claims
@@ -839,84 +842,61 @@ function mKey(s){
 function parseNewBusiness(rows){
   if(!rows||!rows.length)return;
   rows.forEach(r=>{
-    const k=mKey(r['Renewal Month']);
+    const keys={};
+    Object.keys(r).forEach(k=>{ keys[k.trim().toLowerCase().replace(/\s+/g,' ')]=r[k]; });
+    const rawMonth=String(keys['renewal month']||'').trim();
+    const k=mKey(rawMonth);
     if(!k||!MONTHS.includes(k))return;
-    // New business
-    if(r['# New Business']!==undefined&&r['# New Business']!==''){
-      M.newBiz[k]={policies:pN(r['# New Business']),premium:pN(r['New Business GWP'])};
-    }
-    // Renewals
-    if(r['# Up for Renewal']!==undefined&&r['# Up for Renewal']!==''){
-      M.renewals[k]={
-        due:pN(r['# Up for Renewal']),
-        gwpDue:pN(r['GWP for Renewal']),
-        renewed:pN(r['# Renewed']),
-        gwpRenewed:pN(r['Renewal GWP']),
-        acctRet:pN(r['Account Retention']),
-        revRet:pN(r['Revenue Retention']),
-      };
-    }
+    const policies=pN(keys['# new business']||0);
+    const premium=pN(keys['new business gwp']||0);
+    if(policies||premium) M.newBiz[k]={policies,premium};
+    const due=pN(keys['# up for renewal']||0);
+    const gwpDue=pN(keys['gwp for renewal']||0);
+    const renewed=pN(keys['# renewed']||0);
+    const gwpRenewed=pN(keys['renewal gwp']||0);
+    const acctRet=pN(keys['account retention']||0);
+    const revRet=pN(keys['revenue retention']||0);
+    M.renewals[k]={due,gwpDue,renewed,gwpRenewed,acctRet,revRet};
   });
 }
 
 function parseReceivables(rows){
   if(!rows||!rows.length)return;
-  // Sheet is wide-format: each insurer occupies 5 columns separated by blank columns
-  // Row 0 = blank, Row 1 = insurer names (merged), Row 2 = column headers, Row 3+ = data
-  // Since parseCSV treats row 0 as headers, we get raw rows with numeric keys
-  // Instead re-parse the raw CSV string directly
+  // With startRow=3 in Code.gs, row 0 of CSV = actual column headers
+  // Headers (col positions 0-based): 
+  // 0=blank, 1=Particulars, 2=Amount(incl GST), 3=Amount Due, 4=Amount Received, 5=Balance
+  // 6=blank, 7=Particulars, 8=Premium Booked, 9=Amount Due, 10=Amount Received, 11=Pending
+  // 12=blank, 13=Particulars, 14=Premium Booked, 15=Amount Due, 16=Amount Received, 17=Pending
+  // etc.
+  const getCol=(row,idx)=>{const vals=Object.values(row);return String(vals[idx]||'').trim();};
 
-  // We'll use the known column positions from the sheet:
-  // Digit: cols 1-5 (B-F): Particulars, Amount(incl GST), Amount Due, Amount Received, Balance
-  // ABHI:  cols 7-11 (H-L): Particulars, Premium Booked, Amount Due, Amount Received, Pending
-  // Zuno:  cols 13-17 (N-R)
-  // Magma: cols 19-23 (T-X)
-  // Paz:   cols 25-29 (Z-AD)
-  // Healthysure: cols 31-35 (AF-AJ)
-  // Direct: cols 37-41 (AL-AP)
-  // Col indices (0-based): 1,2,3,4,5 | 7,8,9,10,11 | 13,14,15,16,17 | 19,20,21,22,23 | 25,26,27,28,29 | 31,32,33,34,35 | 37,38,39,40,41
-
-  // rows is already parsed by parseCSV using row 0 as header
-  // The sheet has 3 header rows so actual data starts at row 3 (index 3 in raw, index 0 in parseCSV since row 0=headers)
-  // We need the raw rows — get them from the keys of the first row object
-  // Actually parseCSV already gives us objects. The headers from row 0 are blank/merged cell text.
-  // Let's just use the raw text keys as column indices
-
-  // Get all row objects and pick by column position using Object.values()
-  const getCol=(row,idx)=>Object.values(row)[idx]||'';
-
-  // Filter out header rows (first 2 rows are headers in the sheet, so skip rows where col 1 = 'Particulars' etc)
+  // Skip any remaining header-like rows
   const dataRows=rows.filter(r=>{
-    const first=String(Object.values(r)[1]||'').trim();
-    return first&&first!=='Particulars'&&first!=='[merged] Digit'&&first!=='Digit';
+    const c1=getCol(r,1);
+    return c1&&c1!=='Particulars'&&!c1.includes('[merged]')&&!c1.includes('Digit');
   });
-
   if(!dataRows.length)return;
 
-  // Parse Digit (line items)
+  // Digit
   const newDigit=[];
   dataRows.forEach(r=>{
-    const part=String(getCol(r,1)).trim();
+    const part=getCol(r,1);
     if(!part)return;
     const amt=pN(getCol(r,2)),due=pN(getCol(r,3)),rec=pN(getCol(r,4));
-    if(amt||due||rec) newDigit.push({particulars:part,amount:amt,due:due,received:rec,balance:due-rec});
+    if(amt||due||part) newDigit.push({particulars:part,amount:amt,due:due,received:rec,balance:due-rec});
   });
   if(newDigit.length) M.recDigit=newDigit;
 
-  // Helper to parse monthly insurer (cols offset by position)
-  const parseIns=(key,startCol)=>{
-    const result={};
+  // Monthly insurers by column start
+  const parseIns=(key,sc)=>{
+    const res={};
     dataRows.forEach(r=>{
-      const period=String(getCol(r,startCol)).trim();
+      const period=getCol(r,sc);
       if(!period)return;
-      const booked=pN(getCol(r,startCol+1));
-      const due=pN(getCol(r,startCol+2));
-      const rec=pN(getCol(r,startCol+3));
-      if(period||booked||due||rec) result[period]={booked,due,received:rec};
+      res[period]={booked:pN(getCol(r,sc+1)),due:pN(getCol(r,sc+2)),received:pN(getCol(r,sc+3))};
     });
-    if(Object.keys(result).length) M[key]=result;
+    if(Object.keys(res).length) M[key]=res;
   };
-
   parseIns('recABHI',7);
   parseIns('recZuno',13);
   parseIns('recMagma',19);
@@ -927,14 +907,15 @@ function parseReceivables(rows){
 
 function parseHRSummary(rows){
   if(!rows||!rows.length)return;
-  // MoM Cost Base: rows where col A looks like "Jan 2026" etc.
   rows.forEach(r=>{
-    const m=r['Month']||r[''];
-    if(!m||!MONTHS.includes(String(m).trim()))return;
-    const cb=pN(r['Cost Base']||r['Cost Base ']);
-    if(cb>0) M.costBase[String(m).trim()]=cb;
-    const note=String(r['']||r['Notes']||'').trim();
-    if(note) M.costNotes[String(m).trim()]=note;
+    const keys={};
+    Object.keys(r).forEach(k=>{ keys[k.trim().toLowerCase().replace(/\s+/g,' ')]=r[k]; });
+    const m=String(keys['month']||'').trim();
+    if(!m||!MONTHS.includes(m))return;
+    const cb=pN(keys['cost base']||keys['cost base ']||0);
+    if(cb>0) M.costBase[m]=cb;
+    const note=String(keys['']||keys['notes']||'').trim();
+    if(note&&note!=='-') M.costNotes[m]=note;
   });
 }
 
