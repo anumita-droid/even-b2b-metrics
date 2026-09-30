@@ -497,7 +497,7 @@ const MONTHS=['Jan 2026','Feb 2026','Mar 2026','Apr 2026','May 2026','Jun 2026',
 const QUARTERS=["Q1'25","Q2'25","Q3'25","Q4'25","Q1'26","Q2'26","Q3'26"];
 const QM={"Q1'25":[],"Q2'25":[],"Q3'25":[],"Q4'25":[],"Q1'26":['Jan 2026','Feb 2026','Mar 2026'],"Q2'26":['Apr 2026','May 2026','Jun 2026'],"Q3'26":['Jul 2026','Aug 2026','Sep 2026']};
 
-const D={earnedExclM:{},earnedInclM:{},earnedExclQ:{},earnedInclQ:{},approvedM:{},osM:{},netCommM:{},approvedQ:{},osQ:{},netCommQ:{},hospOPD:{},hospIPD:{},riCL:{},cashless:{},riIncl:{},riExcl:{},internalisation:[],tallyTopupM:{},tallyTopupQ:{}};
+const D={gwpM:{},gwpInclM:{},gwpQ:{},gwpInclQ:{},earnedExclM:{},earnedInclM:{},earnedExclQ:{},earnedInclQ:{},approvedM:{},osM:{},netCommM:{},approvedQ:{},osQ:{},netCommQ:{},hospOPD:{},hospIPD:{},riCL:{},cashless:{},riIncl:{},riExcl:{},internalisation:[],tallyTopupM:{},tallyTopupQ:{}};
 
 const M={
   servicingFees:{'Jan 2026':130000,'Feb 2026':130000,'Mar 2026':130000,'Apr 2026':160000,'May 2026':160000,'Jun 2026':160000,'Jul 2026':160000,'Aug 2026':160000,'Sep 2026':160000},
@@ -741,6 +741,56 @@ function fetchAS(params){
 
 // ── LOAD ──
 const setStep=s=>document.getElementById('ovStep').textContent=s;
+
+// GWP is separate from Earned Premium.
+// Monthly GWP = full Inception Premium assigned to Renewal Month minus one year.
+// Quarterly GWP = full Inception Premium assigned to the Master List Quarter.
+function parseMasterGWP(rows){
+  D.gwpM={}; D.gwpInclM={}; D.gwpQ={}; D.gwpInclQ={};
+  if(!rows||!rows.length)return;
+
+  rows.forEach(r=>{
+    const org=String(r['Org Name']||r['org name']||'').trim().toLowerCase();
+    if(org.includes('tally'))return;
+
+    const type=String(r['Policy type']||r['policy type']||'').trim().toLowerCase();
+    if(!(type.includes('even opd')||type.includes('hcu')))return;
+
+    const verified=pN(r['Verified Inception Premium']);
+    const ip=verified>0?verified:pN(r['Inception Premium']);
+    const ipGST=pN(r['Inception Premium (inc GST)']);
+    if(ip<=0 && ipGST<=0)return;
+
+    const renewal=String(r['Renewal Month']||r['renewal month']||'').trim();
+    const mm=renewal.match(/^([A-Za-z]{3})[-\s](\d{4})$/);
+    if(mm){
+      const month=mm[1].charAt(0).toUpperCase()+mm[1].slice(1).toLowerCase();
+      const year=Number(mm[2])-1;
+      const key=month+' '+year;
+      if(MONTHS.includes(key)){
+        D.gwpM[key]=(D.gwpM[key]||0)+ip;
+        D.gwpInclM[key]=(D.gwpInclM[key]||0)+ipGST;
+      }
+    }
+
+    const q=String(r['Quarter']||r['quarter']||'').trim();
+    if(q && QUARTERS.includes(q)){
+      D.gwpQ[q]=(D.gwpQ[q]||0)+ip;
+      D.gwpInclQ[q]=(D.gwpInclQ[q]||0)+ipGST;
+    }
+  });
+}
+
+async function loadMasterGWP(){
+  try{
+    setStep('Loading Master List (GWP)...');
+    const raw=await fetchAS('master=1');
+    parseMasterGWP(parseCSV(raw));
+  }catch(e){
+    console.error('Master List GWP load failed:',e);
+    D.gwpM={}; D.gwpInclM={}; D.gwpQ={}; D.gwpInclQ={};
+  }
+}
 async function loadAll(){
   document.getElementById('overlay').classList.remove('hidden');
   document.getElementById('errBanner').style.display='none';
@@ -759,6 +809,9 @@ async function loadAll(){
       all = JSON.parse(raw);
     }
     const ft = (tab) => parseCSV(all[tab]||'');
+
+    // GWP comes from the live Master List, separately from Earned Premium.
+    await loadMasterGWP();
 
     // earned premium
     const epRows=ft('earned_premium');
@@ -933,12 +986,13 @@ function renderAll(){renderSummary();renderLR();renderOps();renderInternalisatio
 
 // ── SUMMARY ──
 function calcRow(m,me,np,ip){
-  const gwp=v(D.earnedExclM,m),gwpI=v(D.earnedInclM,m),epNet=gwpI*me;
+  const gwp=v(D.gwpM,m),gwpI=v(D.gwpInclM,m);
+  const earned=v(D.earnedExclM,m),earnedI=v(D.earnedInclM,m),epNet=earnedI*me;
   const app=v(D.approvedM,m)+(v(D.tallyTopupM,m)||0),os=v(D.osM,m),ibnr=v(M.ibnr,m)/100,hosp=v(D.hospOPD,m),hl=v(M.hospLimitDed,m);
   const lr=epNet>0?((app+os)*(1+ibnr)+hosp-hl)/epNet:0;
   const uw=(1-lr)*gwp,sf=v(M.servicingFees,m),nc=v(D.netCommM,m)*(np/0.125),opd=hosp,ipd=v(D.hospIPD,m),cb=v(M.costBase,m);
   const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
-  return{gwp,gwpI,uw,sf,nc,opd,ipd,cb,pnl,lr};
+  return{gwp,gwpI,earned,earnedI,uw,sf,nc,opd,ipd,cb,pnl,lr};
 }
 
 function renderSummary(){
@@ -953,7 +1007,7 @@ function renderSummary(){
   const ytdEP=MONTHS.reduce((s,m)=>s+v(D.earnedExclM,m),0);
   const ytdPNL=MONTHS.reduce((s,m)=>s+calcRow(m,me,np,ip).pnl,0);
   document.getElementById('kpi-summary').innerHTML=`
-    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Earned Prem · ${latest}</div><div class="kpi-val">${fmt(r.gwp)}</div><div class="kpi-sub">excl GST</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--accent)"></div><div class="kpi-label">Earned Prem · ${latest}</div><div class="kpi-val">${fmt(r.earned)}</div><div class="kpi-sub">excl GST</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:${r.lr*100>100?'var(--danger)':r.lr*100>85?'var(--warn)':'var(--accent2)'}"></div><div class="kpi-label">Loss Ratio · ${latest}</div><div class="kpi-val ${r.lr*100>100?'neg':r.lr*100>85?'warn':'pos'}">${fmtP(r.lr*100,1)}</div><div class="kpi-sub">IBNR ${v(M.ibnr,latest)}%</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:${r.uw>0?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">UW Profit · ${latest}</div><div class="kpi-val ${pC(r.uw)}">${fmt(r.uw)}</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:${r.pnl>0?'var(--accent2)':'var(--danger)'}"></div><div class="kpi-label">Net P&L · ${latest}</div><div class="kpi-val ${pC(r.pnl)}">${fmt(r.pnl)}</div></div>
@@ -974,22 +1028,23 @@ function renderSummary(){
   }).join('')+(filteredM.length>1?`<tr class="total-row"><td>Total</td><td>${fmt(T.gwp)}</td><td>${fmt(T.gwpI)}</td><td class="${pC(T.uw)}">${fmt(T.uw)}</td><td>${fmt(T.sf)}</td><td>${fmt(T.nc)}</td><td>${fmt(T.opd)}</td><td>${fmt(T.ipd)}</td><td>${fmt(T.cb)}</td><td class="${pC(T.pnl)}">${fmt(T.pnl)}</td></tr>`:'');
 
   // Quarterly table
-  let TQ={epE:0,epI:0,epN:0,app:0,os:0,uw:0,sf:0,nc:0,opd:0,ipd:0,cb:0,pnl:0};
+  let TQ={gwp:0,gwpI:0,uw:0,sf:0,nc:0,opd:0,ipd:0,cb:0,pnl:0};
   document.getElementById('b-sum-q').innerHTML=QUARTERS.map(q=>{
+    const gwp=v(D.gwpQ,q),gwpI=v(D.gwpInclQ,q);
     const epE=v(D.earnedExclQ,q),epI=v(D.earnedInclQ,q),epNet=epI*me;
     const app=v(D.approvedQ,q)+(v(D.tallyTopupQ,q)||0),os=v(D.osQ,q),ibnr=v(M.ibnrQ,q)/100,hl=v(M.hospLimitDedQ,q);
     const lr=epNet>0?((app+os)*(1+ibnr)-hl)/epNet:0;
-    const uw=(1-lr)*epE,sf=v(M.sfQ,q),nc=v(D.netCommQ,q)*(np/0.125),cb=v(M.costBaseQ,q);
+    const uw=(1-lr)*gwp,sf=v(M.sfQ,q),nc=v(D.netCommQ,q)*(np/0.125),cb=v(M.costBaseQ,q);
     const ms=QM[q]||[];
     const opd=ms.reduce((s,m)=>s+v(D.hospOPD,m),0),ipd=ms.reduce((s,m)=>s+v(D.hospIPD,m),0);
     const pnl=uw+sf+nc+opd+(ipd*ip)-cb;
-    TQ.epE+=epE;TQ.epI+=epI;TQ.uw+=uw;TQ.sf+=sf;TQ.nc+=nc;TQ.opd+=opd;TQ.ipd+=ipd;TQ.cb+=cb;TQ.pnl+=pnl;
-    return`<tr><td>${q}</td><td>${fmt(epE)}</td><td>${fmt(epI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
+    TQ.gwp+=gwp;TQ.gwpI+=gwpI;TQ.uw+=uw;TQ.sf+=sf;TQ.nc+=nc;TQ.opd+=opd;TQ.ipd+=ipd;TQ.cb+=cb;TQ.pnl+=pnl;
+    return`<tr><td>${q}</td><td>${fmt(gwp)}</td><td>${fmt(gwpI)}</td><td class="${pC(uw)}">${fmt(uw)}</td>
     <td>${ef(sf,`M.sfQ['${q}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
     <td>${fmt(nc)}</td><td>${opd?fmt(opd):'—'}</td><td>${ipd?fmt(ipd):'—'}</td>
     <td>${ef(cb,`M.costBaseQ['${q}']=Number(this.value.replace(/,/g,''));renderSummary()`,'min-width:80px')}</td>
     <td class="${pC(pnl)}">${fmt(pnl)}</td></tr>`;
-  }).join('')+`<tr class="total-row"><td>Total</td><td>${fmt(TQ.epE)}</td><td>${fmt(TQ.epI)}</td><td class="${pC(TQ.uw)}">${fmt(TQ.uw)}</td><td>${fmt(TQ.sf)}</td><td>${fmt(TQ.nc)}</td><td>${fmt(TQ.opd)}</td><td>${fmt(TQ.ipd)}</td><td>${fmt(TQ.cb)}</td><td class="${pC(TQ.pnl)}">${fmt(TQ.pnl)}</td></tr>`;
+  }).join('')+`<tr class="total-row"><td>Total</td><td>${fmt(TQ.gwp)}</td><td>${fmt(TQ.gwpI)}</td><td class="${pC(TQ.uw)}">${fmt(TQ.uw)}</td><td>${fmt(TQ.sf)}</td><td>${fmt(TQ.nc)}</td><td>${fmt(TQ.opd)}</td><td>${fmt(TQ.ipd)}</td><td>${fmt(TQ.cb)}</td><td class="${pC(TQ.pnl)}">${fmt(TQ.pnl)}</td></tr>`;
 }
 
 // ── LOSS RATIOS ──
